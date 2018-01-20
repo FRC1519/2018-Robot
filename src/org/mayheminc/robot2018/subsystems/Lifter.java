@@ -3,9 +3,9 @@ package org.mayheminc.robot2018.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.mayheminc.robot2018.RobotMap;
+import org.mayheminc.util.MayhemTalonSRX;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 /**
  *
@@ -17,13 +17,13 @@ public class Lifter extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	private static CANTalon m_lifterTalon = new CANTalon(RobotMap.LIFTER_TALON);
+	private static MayhemTalonSRX m_lifterTalon = new MayhemTalonSRX(RobotMap.LIFTER_TALON);
 	
 	public Lifter() {
 		m_lifterTalon.configNominalOutputVoltage(+0.0f, -0.0f);
 		m_lifterTalon.configPeakOutputVoltage(+12.0, -12.0);
 		
-		m_lifterTalon.changeControlMode(TalonControlMode.PercentVbus);
+		m_lifterTalon.changeControlMode(ControlMode.PercentOutput);
 		m_lifterTalon.enableControl();
 	}
 
@@ -33,7 +33,7 @@ public class Lifter extends Subsystem {
     }
     
     public void setLifterPower(double power){
-    	m_lifterTalon.set(power);
+    	m_lifterTalon.set((int) power);
     }
 
     public void stopLifter(){

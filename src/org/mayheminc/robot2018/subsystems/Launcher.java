@@ -1,7 +1,6 @@
 package org.mayheminc.robot2018.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
@@ -9,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
-
+import org.mayheminc.util.MayhemTalonSRX;
 /**
  *
  */
@@ -42,7 +41,7 @@ public class Launcher extends Subsystem{
     private Solenoid launchSolenoid = new Solenoid(RobotMap.LAUNCH_SOLENOID);
 //    private static DigitalInput LAUNCHER_LIMIT_SWITCH;// = new DigitalInput(RobotMap.LAUNCHER_RESET_LIMIT_SWITCH);
 //    private static DigitalInput LAUNCHER_LIMIT_SWITCH2;// = new DigitalInput(RobotMap.LAUNCHER_RESET_LIMIT_SWITCH2);
-    private CANTalon m_winchMotorTalon = new CANTalon(RobotMap.LAUNCHER_WINCH_TALON);
+    private MayhemTalonSRX m_winchMotorTalon = new MayhemTalonSRX(RobotMap.LAUNCHER_WINCH_TALON);
 //    private static final AnalogChannel LAUNCHER_SWITCH = new AnalogChannel(RobotMap.LAUNCHER_RESET);
     
     private boolean m_autonomousPermissionToLaunch = false;
@@ -57,7 +56,7 @@ public class Launcher extends Subsystem{
         if (d < 0.1) {
             d = 0;
         }
-        m_winchMotorTalon.set(-d);
+        m_winchMotorTalon.set((int) -d);
     }
     
     public boolean isRetracted(){

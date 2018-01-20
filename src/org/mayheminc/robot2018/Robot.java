@@ -22,7 +22,7 @@ import org.mayheminc.robot2018.subsystems.*;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends FRCWaitsForIterativeRobot {
+public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	static NetworkTable table;
 
 	public static final boolean DEBUG = true;

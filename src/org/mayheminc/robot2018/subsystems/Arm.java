@@ -3,9 +3,12 @@ package org.mayheminc.robot2018.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+//import edu.wpi.first.wpilibj.CANTalon;
+//import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.mayheminc.util.MayhemTalonSRX;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
@@ -48,7 +51,7 @@ public class Arm extends Subsystem{
     
     private static boolean usingUpSlot;
 	
-    private static final CANTalon ARM_TALON = new CANTalon(RobotMap.ARM_TALON);    
+    private static final MayhemTalonSRX ARM_TALON = new MayhemTalonSRX(RobotMap.ARM_TALON);    
     private static Solenoid ARM_BRAKE;
    
     private enum ArmModes { AUTO_ACTIVE, AUTO_RELAXED, MANUAL };
@@ -58,9 +61,9 @@ public class Arm extends Subsystem{
         ARM_BRAKE = new Solenoid(RobotMap.ARM_BRAKE_SOLENOID);
         
         if (m_armMode == ArmModes.AUTO_ACTIVE) {
-        	ARM_TALON.changeControlMode(CANTalon.TalonControlMode.Position);
+        	ARM_TALON.changeControlMode(ControlMode.Position);
         } else {
-        	ARM_TALON.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+        	ARM_TALON.changeControlMode(ControlMode.PercentOutput);
         }
         
         ARM_TALON.setProfile(DOWN_PID_SLOT);
@@ -128,7 +131,7 @@ public class Arm extends Subsystem{
     	if (m_armMode != ArmModes.AUTO_ACTIVE) {
     		setAutoActiveMode();
     	}    	
-        ARM_TALON.set(position);
+        ARM_TALON.set((int) position);
     }
     
     public boolean isAtPosition(int positionToCheck) {
@@ -149,7 +152,7 @@ public class Arm extends Subsystem{
     		setManualMode();
     	}    	
         setArmBrake(ARM_BRAKE_DISENGAGED);
-    	ARM_TALON.set(power);
+    	ARM_TALON.set((int) power);
     }
     
     public void stopArm() {
@@ -166,19 +169,19 @@ public class Arm extends Subsystem{
     
     public void setManualMode() {    	
     	m_armMode = ArmModes.MANUAL;
-        ARM_TALON.changeControlMode(TalonControlMode.PercentVbus);
+        ARM_TALON.changeControlMode(ControlMode.PercentOutput);
         ARM_TALON.enableControl();
     }
     
     public void setAutoRelaxedMode() {
     	m_armMode = ArmModes.AUTO_RELAXED;
-        ARM_TALON.changeControlMode(TalonControlMode.PercentVbus);
+        ARM_TALON.changeControlMode(ControlMode.PercentOutput);
         ARM_TALON.enableControl();
     }
     
     private void setAutoActiveMode() {
     	m_armMode = ArmModes.AUTO_ACTIVE;
-    	ARM_TALON.changeControlMode(TalonControlMode.Position);
+    	ARM_TALON.changeControlMode(ControlMode.Position);
         ARM_TALON.enableControl();    	
     }
     

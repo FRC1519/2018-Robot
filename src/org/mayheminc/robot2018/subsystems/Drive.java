@@ -10,6 +10,7 @@ import org.mayheminc.util.History;
 import edu.wpi.first.wpilibj.*;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 //import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 //import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
@@ -20,6 +21,7 @@ import org.mayheminc.robot2018.RobotPreferences;
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
 import org.mayheminc.util.MB1340Ultrasonic;
+import org.mayheminc.util.MayhemTalonSRX;
 import org.mayheminc.util.Utils;
 
 public class Drive extends Subsystem {
@@ -36,10 +38,10 @@ public class Drive extends Subsystem {
 	private PIDHeadingCorrection m_HeadingCorrection;
 
 	// Talons
-	private final TalonSRX leftFrontTalon = new TalonSRX(RobotMap.FRONT_LEFT_TALON);
-	private final TalonSRX leftRearTalon = new TalonSRX(RobotMap.BACK_LEFT_TALON);
-	private final TalonSRX rightFrontTalon = new TalonSRX(RobotMap.FRONT_RIGHT_TALON);
-	private final TalonSRX rightRearTalon = new TalonSRX(RobotMap.BACK_RIGHT_TALON);
+	private final MayhemTalonSRX leftFrontTalon = new MayhemTalonSRX(RobotMap.FRONT_LEFT_TALON);
+	private final MayhemTalonSRX leftRearTalon = new MayhemTalonSRX(RobotMap.BACK_LEFT_TALON);
+	private final MayhemTalonSRX rightFrontTalon = new MayhemTalonSRX(RobotMap.FRONT_RIGHT_TALON);
+	private final MayhemTalonSRX rightRearTalon = new MayhemTalonSRX(RobotMap.BACK_RIGHT_TALON);
 
 	// Sensors
 	private final MB1340Ultrasonic ultrasonic = new MB1340Ultrasonic(0);
@@ -90,10 +92,10 @@ public class Drive extends Subsystem {
 		m_HeadingPid.setAbsoluteTolerance(kToleranceDegreesPIDControl);
 
 		// set rear talons to follow their respective front talons
-		leftRearTalon.changeControlMode(TalonControlMode.Follower);
+		leftRearTalon.changeControlMode(ControlMode.Follower);
 		leftRearTalon.set(leftFrontTalon.getDeviceID());
 
-		rightRearTalon.changeControlMode(TalonControlMode.Follower);
+		rightRearTalon.changeControlMode(ControlMode.Follower);
 		rightRearTalon.set(rightFrontTalon.getDeviceID());
 
 		m_shifter = new Solenoid(RobotMap.SHIFTING_SOLENOID);
@@ -127,7 +129,7 @@ public class Drive extends Subsystem {
 		//      setDefaultCommand(new SpeedRacerDrive());
 	}
 
-	private void configureCanTalon(CANTalon talon)
+	private void configureCanTalon(MayhemTalonSRX talon)
 	{
 		double wheelP = 1.5;
 		double wheelI = 0.0;
@@ -140,6 +142,8 @@ public class Drive extends Subsystem {
 		//		wheelF = RobotPreferences.getWheelF();
 		
 		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		
+		
 		// Note:  comment out below line so that encoder units are forced to be in counts (x4)
         //  talon.configEncoderCodesPerRev(360);
 
@@ -148,15 +152,17 @@ public class Drive extends Subsystem {
 		talon.configPeakOutputVoltage(+12.0, -12.0);
 
 		if (m_closedLoopMode) {
-			talon.changeControlMode(TalonControlMode.Speed);
+			talon.changeControlMode(ControlMode.Velocity);
 			m_maxWheelSpeed = 270;
 		} else {
-			talon.changeControlMode(TalonControlMode.PercentVbus);
+			talon.changeControlMode(ControlMode.PercentOutput);
 			m_maxWheelSpeed = 1.0;
 		}
 
 		talon.setPID(wheelP, wheelI, wheelD, wheelF, 0, m_voltageRampRate, 0);
-		talon.enableControl();
+		
+		
+//		talon.enableControl();
 
 		DriverStation.reportError("setWheelPIDF: " + wheelP + " " + wheelI
 				+ " " + wheelD + " " + wheelF + "\n", false);
@@ -167,10 +173,17 @@ public class Drive extends Subsystem {
 	 * @param brakeMode - true for "brake in neutral" and false for "coast in neutral"
 	 */
 	public void setBrakeMode(boolean brakeMode) {
-		leftFrontTalon.enableBrakeMode(brakeMode);
-		leftRearTalon.enableBrakeMode(brakeMode);
-		rightFrontTalon.enableBrakeMode(brakeMode);
-		rightRearTalon.enableBrakeMode(brakeMode);
+//		leftFrontTalon.enableBrakeMode(brakeMode);
+//		leftRearTalon.enableBrakeMode(brakeMode);
+//		rightFrontTalon.enableBrakeMode(brakeMode);
+//		rightRearTalon.enableBrakeMode(brakeMode);
+		
+		NeutralMode mode = (brakeMode)?NeutralMode.Brake : NeutralMode.Coast;
+		
+		leftFrontTalon.setNeutralMode(mode);
+		leftRearTalon.setNeutralMode(mode);
+		rightFrontTalon.setNeutralMode(mode);
+		rightRearTalon.setNeutralMode(mode);
 	}
 
 	//***********************************CLOSED-LOOP MODE**********************************************************
@@ -210,20 +223,24 @@ public class Drive extends Subsystem {
 		return x;
 	}
 	public int getRightEncoder(){
-		return (int) rightFrontTalon.getPosition();
+//		return (int) rightFrontTalon.getPosition();
+		return rightFrontTalon.getSelectedSensorPosition(0);
 	}
 
 	public int getLeftEncoder(){
-		return (int) leftFrontTalon.getPosition();
+//		return (int) leftFrontTalon.getPosition();
+		return leftFrontTalon.getSelectedSensorPosition(0);
 	}
 
 	// speed is in inches per second
 	public double getRightSpeed(){
-		return rightFrontTalon.getSpeed();
+//		return rightFrontTalon.getSpeed();
+		return rightFrontTalon.getSelectedSensorVelocity(0);
 	}
 
 	public double getLeftSpeed() {
-		return leftFrontTalon.getSpeed();
+//		return leftFrontTalon.getSpeed();
+		return leftFrontTalon.getSelectedSensorVelocity(0);
 	}
 
 	//***********************************GYRO**********************************************************
@@ -326,8 +343,10 @@ public class Drive extends Subsystem {
 	private int LoopCounter = 0;
 
 	private void setMotorPower(double leftPower, double rightPower) {
-		rightFrontTalon.set(-rightPower * m_maxWheelSpeed);
-		leftFrontTalon.set(leftPower * m_maxWheelSpeed);
+//		rightFrontTalon.set(-rightPower * m_maxWheelSpeed);
+//		leftFrontTalon.set(leftPower * m_maxWheelSpeed);
+		rightFrontTalon.set(ControlMode.PercentOutput, -rightPower * m_maxWheelSpeed);
+		leftFrontTalon.set(ControlMode.PercentOutput, leftPower * m_maxWheelSpeed);
 	}
 
 	public void set(double rightPower, double leftPower){
@@ -337,8 +356,10 @@ public class Drive extends Subsystem {
 		if (leftPower > 1) { leftPower = 1; }
 		if (leftPower < -1) { leftPower = -1; }
 
-		rightFrontTalon.set(rightPower);
-		leftFrontTalon.set(leftPower);
+//		rightFrontTalon.set(rightPower);
+//		leftFrontTalon.set(leftPower);
+		rightFrontTalon.set(ControlMode.PercentOutput, -rightPower * m_maxWheelSpeed);
+		leftFrontTalon.set(ControlMode.PercentOutput, leftPower * m_maxWheelSpeed);
 	}
 
 	/**
@@ -541,19 +562,19 @@ public class Drive extends Subsystem {
 
 //		SmartDashboard.putNumber("ultrasonicDistance", (ultrasonic.getDistance() * 0.393701));
 
-		SmartDashboard.putNumber("Left Encoder Counts", leftFrontTalon.getPosition());
-		SmartDashboard.putNumber("Right Encoder Counts", -rightFrontTalon.getPosition());
+		SmartDashboard.putNumber("Left Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Encoder Counts", -rightFrontTalon.getSelectedSensorPosition(0));
 
 		// Note:  getSpeed() returns ticks per 0.1 seconds
-		SmartDashboard.putNumber("Left Encoder Speed", leftFrontTalon.getSpeed());
-		SmartDashboard.putNumber("Right Encoder Speed", -rightFrontTalon.getSpeed());
+		SmartDashboard.putNumber("Left Encoder Speed", leftFrontTalon.getSelectedSensorVelocity(0));
+		SmartDashboard.putNumber("Right Encoder Speed", -rightFrontTalon.getSelectedSensorVelocity(0));
 
 		// To convert ticks per 0.1 seconds into feet per second
 		// a - multiply be 10 (tenths of second per second)
 		// b - divide by 12 (1 foot per 12 inches)
 		// c - multiply by distance (in inches) per pulse
-		SmartDashboard.putNumber("Left Speed (fps)", leftFrontTalon.getSpeed() * 10 / 12 * DISTANCE_PER_PULSE);
-		SmartDashboard.putNumber("Right Speed (fps)", -rightFrontTalon.getSpeed() * 10 / 12 * DISTANCE_PER_PULSE);
+		SmartDashboard.putNumber("Left Speed (fps)", leftFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
+		SmartDashboard.putNumber("Right Speed (fps)", -rightFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
 
 		SmartDashboard.putNumber("Left Talon Setpoint", leftFrontTalon.getSetpoint());
 		SmartDashboard.putNumber("Right Talon Setpoint", -rightFrontTalon.getSetpoint());

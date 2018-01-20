@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
+//import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 import org.mayheminc.robot2018.commands.*;
 import org.mayheminc.robot2018.subsystems.Arm;
@@ -309,7 +309,7 @@ public class OI {
     
 	public void CheckInWithFieldManagement() {
 		m_CheckedInWithFieldManagement = true;
-		FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramStarting();
+//		FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramStarting();
 	}
 	
 	public boolean IsCheckedInWithFieldManagement() {

@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.mayheminc.robot2018.RobotMap;
 
-import edu.wpi.first.wpilibj.CANTalon;
+//import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+//import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import org.mayheminc.util.MayhemTalonSRX;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 /**
  *
  */
@@ -19,7 +21,7 @@ public class Claw extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	private static CANTalon rollerTalon = new CANTalon(RobotMap.ROLLER_TALON);
+	private static MayhemTalonSRX rollerTalon = new MayhemTalonSRX(RobotMap.ROLLER_TALON);
 	private Solenoid centeringPistons;
 	private Solenoid clawPistons;
 	
@@ -28,7 +30,7 @@ public class Claw extends Subsystem {
 		rollerTalon.configNominalOutputVoltage(+0.0f, -0.0f);
 		rollerTalon.configPeakOutputVoltage(+12.0, -12.0);
 		
-		rollerTalon.changeControlMode(TalonControlMode.PercentVbus);
+		rollerTalon.changeControlMode(ControlMode.PercentOutput);
 		rollerTalon.enableControl();
 		
 		centeringPistons = new Solenoid(RobotMap.CENTERING_PISTONS_SOLENOID);
@@ -42,7 +44,7 @@ public class Claw extends Subsystem {
     }
     
     public void setHarvester(double speed){
-    	rollerTalon.set(speed);
+    	rollerTalon.set((int) speed);
     }
     
     public void slowHarvesterRollers(){
