@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.networktables.*;
+import edu.wpi.first.networktables.*;
 
 import org.mayheminc.robot2018.commands.RunAutonomous;
 import org.mayheminc.robot2018.subsystems.*;
@@ -71,7 +71,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 */
 	public void robotInit() {
 
-		table = NetworkTable.getTable("datatable");
+		table = NetworkTableInstance.getDefault().getTable("datatable");
 
 		System.out.println("robotInit");
 		SmartDashboard.putString("Auto Prog", "Initializing...");
@@ -222,7 +222,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public void updateGRIP() {
 		double[] defaultValue = new double[0];
-		double[] areas = table.getNumberArray("area", defaultValue);
+		NetworkTableEntry entry = table.getEntry("area");
+		double[] areas = entry.getDoubleArray(defaultValue);
 		for (double area : areas) {
 			SmartDashboard.putNumber("grip_area", area);
 			DriverStation.reportError("GRIP Contour Report" + area, false);
@@ -310,7 +311,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	private static double latestImageHeading = 0.0;
 	
 	private static void updateImgResults() {
-	  latestImgResults = table.getNumberArray("ImgResults", DEFAULT_IMG_RESULTS);
+	  NetworkTableEntry entry = table.getEntry("ImgResults");
+	  latestImgResults = entry.getDoubleArray(DEFAULT_IMG_RESULTS);
 	  // check to see if these are new results
 	  if ( (int) latestImgResults[0] != latestFrameNum) {
 		  latestFrameNum = (int) latestImgResults[0];
