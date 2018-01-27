@@ -251,7 +251,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 * This function is called periodically during test mode
 	 */
 	public void testPeriodic() {
-		LiveWindow.run();
 	}
 
 	private long SMART_DASHBOARD_UPDATE_INTERVAL = 250;
