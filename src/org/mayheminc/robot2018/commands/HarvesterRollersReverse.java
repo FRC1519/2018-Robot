@@ -2,7 +2,6 @@ package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.Robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**

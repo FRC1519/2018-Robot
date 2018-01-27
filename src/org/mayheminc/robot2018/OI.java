@@ -2,7 +2,6 @@
 package org.mayheminc.robot2018;
 
 import org.mayheminc.util.*;
-import org.mayheminc.robot2018.autonomousroutines.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -11,6 +10,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.mayheminc.robot2018.commands.*;
 import org.mayheminc.robot2018.subsystems.Arm;
+import org.mayheminc.robot2018.subsystems.Claw;
+import org.mayheminc.robot2018.subsystems.Drive;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -71,11 +72,14 @@ public class OI {
 	private static final Button OPERATOR_PAD_BUTTON_FOUR = new JoystickButton(OPERATOR_PAD, 4);
 	private static final Button OPERATOR_PAD_BUTTON_FIVE = new JoystickButton(OPERATOR_PAD, 5);
 	private static final Button OPERATOR_PAD_BUTTON_SIX = new JoystickButton(OPERATOR_PAD, 6);
+	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_SEVEN = new JoystickButton(OPERATOR_PAD, 7);
 	private static final Button OPERATOR_PAD_BUTTON_EIGHT = new JoystickButton(OPERATOR_PAD, 8);
+	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_NINE = new JoystickButton(OPERATOR_PAD, 9);
 	private static final Button OPERATOR_PAD_BUTTON_TEN = new JoystickButton(OPERATOR_PAD, 10);
 	private static final Button OPERATOR_PAD_BUTTON_ELEVEN = new JoystickButton(OPERATOR_PAD, 11);
+	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_TWELVE = new JoystickButton(OPERATOR_PAD, 12);
 	
 	private static final Button FORCE_FIRE_BUTTON = new AndJoystickButton(OPERATOR_PAD, 5, OPERATOR_PAD, 7);
@@ -86,9 +90,13 @@ public class OI {
 	public static final int OPERATOR_PAD_RIGHT_Y_AXIS = 3;
 	
 //	Operator Control Buttons
+	@SuppressWarnings("unused")
 	private static final JoystickAxisButton OPERATOR_PAD_LEFT_Y_AXIS_UP = new JoystickAxisButton(OPERATOR_PAD, OPERATOR_PAD_LEFT_Y_AXIS, JoystickAxisButton.NEGATIVE_ONLY);
+	@SuppressWarnings("unused")
 	private static final JoystickAxisButton OPERATOR_PAD_LEFT_Y_AXIS_DOWN = new JoystickAxisButton(OPERATOR_PAD, OPERATOR_PAD_LEFT_Y_AXIS, JoystickAxisButton.POSITIVE_ONLY);
+	@SuppressWarnings("unused")
 	private static final JoystickAxisButton OPERATOR_PAD_RIGHT_Y_AXIS_UP = new JoystickAxisButton(OPERATOR_PAD, OPERATOR_PAD_RIGHT_Y_AXIS, JoystickAxisButton.NEGATIVE_ONLY);
+	@SuppressWarnings("unused")
 	private static final JoystickAxisButton OPERATOR_PAD_RIGHT_Y_AXIS_DOWN = new JoystickAxisButton(OPERATOR_PAD, OPERATOR_PAD_RIGHT_Y_AXIS, JoystickAxisButton.POSITIVE_ONLY);
 	
 	//	Axis Definitions for the F310 gamepad
@@ -121,23 +129,33 @@ public class OI {
 	
 	// Driver Control Modes
     private static final Button TOGGLE_CLOSED_LOOP_MODE_BUTTON = new DisabledOnlyJoystickButton(DRIVER_PAD, 7); 
-    private static final Button TOGGLE_FOD_BUTTON = new DisabledOnlyJoystickButton(DRIVER_PAD, 8);  
+	@SuppressWarnings("unused")
+	private static final Button TOGGLE_FOD_BUTTON = new DisabledOnlyJoystickButton(DRIVER_PAD, 8);  
     
     private static final Button DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON = new EnabledOnlyJoystickButton(DRIVER_PAD, GAMEPAD_F310_LEFT_BUTTON);
 	private static final JoystickAxisButton DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON = new JoystickAxisButton(DRIVER_PAD, GAMEPAD_F310_LEFT_TRIGGER, JoystickAxisButton.POSITIVE_ONLY);
 	private static final JoystickAxisButton DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON = new JoystickAxisButton(DRIVER_PAD, GAMEPAD_F310_RIGHT_TRIGGER, JoystickAxisButton.POSITIVE_ONLY);
 	
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_START_BUTTON = new JoystickButton(DRIVER_PAD, GAMEPAD_F310_START_BUTTON);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_GREEN_BUTTON = new JoystickButton(DRIVER_PAD, 1); // Green "A" button
 	private static final Button DRIVER_PAD_RED_BUTTON = new JoystickButton(DRIVER_PAD, 2); // RED 'B" button
 	private static final Button DRIVER_PAD_BLUE_BUTTON = new JoystickButton(DRIVER_PAD, 3); // BLUE 'X' button
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_YELLOW_BUTTON = new JoystickButton(DRIVER_PAD, 4); // YELLOW 'Y' button
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_BUTTON_FIVE = new JoystickButton(DRIVER_PAD, 5); // Left Top Trigger
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_BUTTON_SIX = new JoystickButton(DRIVER_PAD, 6); // Right Top Trigger
 	
+	@SuppressWarnings("unused")
 	private static final JoystickPOVButton DRIVER_PAD_D_PAD_UP = new JoystickPOVButton(DRIVER_PAD, 0);
+	@SuppressWarnings("unused")
 	private static final JoystickPOVButton DRIVER_PAD_D_PAD_RIGHT = new JoystickPOVButton(DRIVER_PAD, 90);
+	@SuppressWarnings("unused")
 	private static final JoystickPOVButton DRIVER_PAD_D_PAD_DOWN = new JoystickPOVButton(DRIVER_PAD, 180);
+	@SuppressWarnings("unused")
 	private static final JoystickPOVButton DRIVER_PAD_D_PAD_LEFT = new JoystickPOVButton(DRIVER_PAD, 270);
 		
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_LEFT = new JoystickPOVButton(OPERATOR_PAD, 270);
@@ -158,8 +176,8 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************8
     	
-        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new SetShifter(Robot.drive.HIGH_GEAR));
-        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new SetShifter(Robot.drive.LOW_GEAR));
+        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new SetShifter(Drive.HIGH_GEAR));
+        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new SetShifter(Drive.LOW_GEAR));
   
     	DRIVER_PAD_BLUE_BUTTON.whenPressed(new CheckInWithFieldManagement());
     	//DRIVER_PAD_RED_BUTTON.whileHeld(new CrossDefenseChevalDeFrise(Arm.REQUIRE_ARM_SUBSYSTEM)); //see autoInTeleop()
@@ -182,11 +200,11 @@ public class OI {
      	
      	//*************************OPERATOR PAD*******************************
      	
-     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new SetArmPosition(Robot.arm.LOW_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new SetArmPosition(Robot.arm.FLOOR_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new SetArmPosition(Robot.arm.FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new SetArmPosition(Robot.arm.UPRIGHT_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
+     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new SetArmPosition(Arm.LOW_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new SetArmPosition(Arm.FLOOR_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new SetArmPosition(Arm.FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new SetArmPosition(Arm.UPRIGHT_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
      	
      	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
 //     	OPERATOR_PAD_BUTTON_FIVE - RESERVED FOR "Permission to Fire"
@@ -195,8 +213,8 @@ public class OI {
      	OPERATOR_PAD_BUTTON_SIX.whileHeld(new HarvesterRollersForward());
      	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new HarvesterRollersReverse());
      	
-     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_TOGETHER));
-     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_APART));
+     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Claw.CENTERING_PISTONS_TOGETHER));
+     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new SetCenteringPistons(Claw.CENTERING_PISTONS_APART));
      	
      	OPERATOR_PAD_D_PAD_UP.whenPressed(new OpenClaw());
      	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());

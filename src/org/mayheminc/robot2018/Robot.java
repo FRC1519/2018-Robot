@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.*;
 
@@ -132,7 +131,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		gameData.Read();
 		
 		//force low gear
-		drive.setShifter(drive.LOW_GEAR);
+		drive.setShifter(Drive.LOW_GEAR);
 		// turn off the compressor
 		compressor.stop();
 
