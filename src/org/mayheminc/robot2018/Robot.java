@@ -93,7 +93,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 		// instantiate the command used for the autonomous period
 		autonomousCommand = new RunAutonomous();
-		DriverStation.reportError("Constructed auto command.\n", false);
+		DriverStation.reportWarning("Constructed auto command.\n", false);
 		SmartDashboard.putString("Auto Prog", "Done.");
 		Autonomous.updateSmartDashboard();
 	}
@@ -119,6 +119,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// update Smart Dashboard, including fields for setting up autonomous operation
 		updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
 		Robot.drive.updateHistory();
+		
+		PrintPeriodicPeriod();
 	}
 
 	public void autonomousInit() {
@@ -188,8 +190,19 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 */
 	boolean teleopOnce = false;
 
-	public void teleopPeriodic() {
+	static double teleopTimer = 0;
+	void PrintPeriodicPeriod()
+	{
+		double timer = Timer.getFPGATimestamp();
 
+		//DriverStation.reportWarning("teleop: " + (timer-teleopTimer), false);
+		System.out.println("periodic: " + (timer-teleopTimer));
+		teleopTimer = timer;		
+	}
+	
+	public void teleopPeriodic() {
+		PrintPeriodicPeriod();
+		
 		if (!teleopOnce) {
 			DriverStation.reportError("Teleop Periodic is running!", false);
 		}

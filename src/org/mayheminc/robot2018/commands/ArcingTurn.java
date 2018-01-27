@@ -12,7 +12,7 @@ public class ArcingTurn extends Command {
 	 double m_distance;
 	 double m_throttle;
 	 int m_startingEncPos;
-	 double m_steeringAmount;
+	 double m_steeringAmount; //the range is from -1 for left to +1 for right
 	 
 	 
 	/**

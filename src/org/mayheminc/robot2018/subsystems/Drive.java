@@ -361,14 +361,15 @@ public class Drive extends Subsystem {
 		rightFrontTalon.set(ControlMode.PercentOutput, -rightPower * m_maxWheelSpeed);
 		leftFrontTalon.set(ControlMode.PercentOutput, leftPower * m_maxWheelSpeed);
 	}
+	
+	PowerDistributionPanel pdp = new PowerDistributionPanel();
 
 	/**
 	 * updateSdbPdp
 	 * Update the Smart Dashboard with the Power Distribution Panel currents.
 	 */
-	private void updateSdbPdp(){
-		PowerDistributionPanel pdp = new PowerDistributionPanel();
-
+	private void updateSdbPdp()
+	{
 		double lf;
 		double rf;
 		double lb;

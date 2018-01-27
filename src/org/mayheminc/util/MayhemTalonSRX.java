@@ -42,18 +42,18 @@ public class MayhemTalonSRX extends TalonSRX{
 
 	public void configPeakOutputVoltage(double d, double e) {
 		// TODO Auto-generated method stub
-		this.configPeakOutputForward(d/12.0 * 100.0,  1000);
-		this.configPeakOutputReverse(e/12.0 * 100.0, 1000);
+		this.configPeakOutputForward(d/12.0,  1000);
+		this.configPeakOutputReverse(e/12.0, 1000);
 
 	}
 
 	public void setPID(double wheelP, double wheelI, double wheelD, double wheelF, int i, double m_voltageRampRate,
 			int j) {
 		// TODO Auto-generated method stub
-		this.config_kP(0, wheelP ,  1000);
-		this.config_kI(0, wheelI ,  1000);
-		this.config_kD(0, wheelD ,  1000);
-		this.config_kF(0, wheelF ,  1000);
+		this.config_kP(pidProfile, wheelP ,  1000);
+		this.config_kI(pidProfile, wheelI ,  1000);
+		this.config_kD(pidProfile, wheelD ,  1000);
+		this.config_kF(pidProfile, wheelF ,  1000);
 		
 	}
 
@@ -72,22 +72,21 @@ public class MayhemTalonSRX extends TalonSRX{
 		return (float) this.getMotorOutputVoltage();
 	}
 
-	public void setProfile(int downPidSlot) {
+	int pidProfile;
+	public void setProfile(int pidSlot) {
 		// TODO Auto-generated method stub
-		//this.pro
-		
+		pidProfile = pidSlot;	
 	}
 
 	public void setPID(double pDown, double iDown, double dDown) {
-		// TODO Auto-generated method stub
-	 setPID(pDown, iDown, dDown, 0.0, 0, 0.0, 0);	
+		setPID(pDown, iDown, dDown, 0.0, 0, 0.0, 0);	
 	}
 
 	public void setVoltageRampRate(double d) {
 		// TODO Auto-generated method stub
 		
 		// Need to convert volts per second to time
-		this.configClosedloopRamp(1.0,  1000);
+		this.configClosedloopRamp(0,  0);
 	
 	}
 

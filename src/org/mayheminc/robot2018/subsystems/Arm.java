@@ -49,7 +49,7 @@ public class Arm extends Subsystem{
     private static final int DOWN_PID_SLOT = 0;    
     private static final int UP_PID_SLOT = 1;
     
-    private static boolean usingUpSlot;
+//    private static boolean usingUpSlot;
 	
     private static final MayhemTalonSRX ARM_TALON = new MayhemTalonSRX(RobotMap.ARM_TALON);    
     private static Solenoid ARM_BRAKE;
@@ -67,7 +67,7 @@ public class Arm extends Subsystem{
         }
         
         ARM_TALON.setProfile(DOWN_PID_SLOT);
-        ARM_TALON.setPID(P_DOWN, I_DOWN, D_DOWN);
+		ARM_TALON.setPID(P_DOWN, I_DOWN, D_DOWN);
         ARM_TALON.setVoltageRampRate(96.0);
         ARM_TALON.configNominalOutputVoltage(+0.0f, -0.0f);
         ARM_TALON.configPeakOutputVoltage(+5f, -5f);
@@ -106,12 +106,12 @@ public class Arm extends Subsystem{
     
     public void setPIDSlot(int slot) {
     	ARM_TALON.setProfile(slot);
-    	if (slot == UP_PID_SLOT) {
-    		usingUpSlot = true;
-    	}
-    	if (slot == DOWN_PID_SLOT) {
-    		usingUpSlot = false;
-    	}
+//    	if (slot == UP_PID_SLOT) {
+//    		usingUpSlot = true;
+//    	}
+//    	if (slot == DOWN_PID_SLOT) {
+//    		usingUpSlot = false;
+//    	}
     }
     
     public double getEncoder() {
@@ -236,7 +236,7 @@ public class Arm extends Subsystem{
 		SmartDashboard.putNumber("Arm Setpoint", ARM_TALON.getSetpoint());
 		SmartDashboard.putNumber("Arm Error", ARM_TALON.getError()); 
 		
-		SmartDashboard.putBoolean("Arm using DOWN_PID_SLOT", !usingUpSlot);
+//		SmartDashboard.putBoolean("Arm using DOWN_PID_SLOT", !usingUpSlot);
 		
 		SmartDashboard.putNumber("Arm OI joystick value", Robot.oi.getArmManualControl());  
 		
