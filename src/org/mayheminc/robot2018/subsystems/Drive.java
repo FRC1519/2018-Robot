@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.mayheminc.robot2018.RobotPreferences;
+
+import java.util.Arrays;
+
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
 import org.mayheminc.util.MB1340Ultrasonic;
@@ -776,7 +779,42 @@ public class Drive extends Subsystem {
 		return headingHistory.getAzForTime(indexTime);
 	}
 	
+	double [] initialWheelDistance = new double[4];
+	double [] calcWheelDistance = new double[4];
+	/**
+	 * Start a distance travel
+	 */
+	public void saveInitialWheelDistance(){
+		initialWheelDistance[0] = rightFrontTalon.getSelectedSensorPosition(0);
+		initialWheelDistance[1] = rightRearTalon.getSelectedSensorPosition(0);
+		initialWheelDistance[2] = leftFrontTalon.getSelectedSensorPosition(0);
+		initialWheelDistance[3] = leftRearTalon.getSelectedSensorPosition(0);
+	}
+	/**
+	 * Calculate the distance travelled.  Return the second shortest distance.
+	 * If a wheel is floating, it will have a larger value - ignore it.
+	 * If a wheel is stuck, it will have a small value
+	 * @return
+	 */
+	public double getWheelDistance(){
+		calcWheelDistance[0] = Math.abs(rightFrontTalon.getSelectedSensorPosition(0) - initialWheelDistance[0]);
+		calcWheelDistance[1] = Math.abs(rightRearTalon.getSelectedSensorPosition(0) - initialWheelDistance[1]);
+		calcWheelDistance[2] = Math.abs(leftFrontTalon.getSelectedSensorPosition(0) - initialWheelDistance[2]);
+		calcWheelDistance[3] = Math.abs(leftRearTalon.getSelectedSensorPosition(0) - initialWheelDistance[3]);
+		Arrays.sort(calcWheelDistance);
+		return  calcWheelDistance[1];
+	}
+	
+	//NOTE the difference between rotateToHeading(...) and goToHeading(...)
+	public void setDesiredHeading(double desiredHeading) {
+		m_desiredHeading = desiredHeading;
+		m_iterationsSinceRotationCommanded = 50;
 
+		// reset the heading control loop for the new heading
+		m_HeadingPid.reset();
+		m_HeadingPid.enable();
+	}
+	
 	//**********************************MISC.***********************************************
 	public void toggleSpeedRacerDrive() {
 		m_speedRacerDriveMode = !m_speedRacerDriveMode;

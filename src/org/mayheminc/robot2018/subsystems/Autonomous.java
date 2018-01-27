@@ -43,6 +43,7 @@ public class Autonomous extends Subsystem {
 
 	private static Command autonomousPrograms[] = {
 			/* 0 */   new StayStill()  // do nothing	
+			/* 1a*/ , new auto1()
 			/* 1 */ , new TraverseDefense()
 			/* 2 */ , new TraverseDefenseAndScoreHigh()
 			/* 3 */ , new TraverseDefenseAndScoreHighWithReturn()

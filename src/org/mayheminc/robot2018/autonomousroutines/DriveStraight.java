@@ -5,6 +5,8 @@ import org.mayheminc.robot2018.subsystems.Drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+
+   
 /**
  *
  */
@@ -12,9 +14,8 @@ public class DriveStraight extends Command {
 	double m_targetPower;
 	double m_desiredDisplacement;
 	public int m_startPos = 0;
-	public enum DistanceUnits { ENCODER_TICKS, INCHES };
-    
-	
+	 
+	public static enum DistanceUnits { ENCODER_TICKS, INCHES }
 	/**
 	 * 
 	 * @param arg_targetPower +/- motor power [-1.0, +1.0]
