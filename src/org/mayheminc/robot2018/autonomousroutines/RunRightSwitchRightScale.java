@@ -1,18 +1,16 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
-import org.mayheminc.robot2018.Robot;
-import org.mayheminc.robot2018.autonomousroutines.DriveStraight.DistanceUnits;
-import org.mayheminc.robot2018.commands.*;
-import org.mayheminc.robot2018.subsystems.Arm;
+import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
+import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class AutoDefenseRockWall extends CommandGroup {
-    
-    public  AutoDefenseRockWall() {
+public class RunRightSwitchRightScale extends CommandGroup {
+
+    public RunRightSwitchRightScale() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -29,7 +27,10 @@ public class AutoDefenseRockWall extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addParallel(new SetArmPosition(Robot.arm.UPRIGHT_POSITION_COUNT, Arm.DONT_REQUIRE_ARM_SUBSYSTEM));
-    	addSequential(new DriveStraight(0.75, DistanceUnits.INCHES, 102.0));
+    	
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 140.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, -90.0));
+    	addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 20.0, 90.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 100.0, 0.0));
     }
 }

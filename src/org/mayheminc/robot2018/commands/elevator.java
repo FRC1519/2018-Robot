@@ -1,17 +1,13 @@
-package org.mayheminc.robot2018.autonomousroutines;
-import org.mayheminc.robot2018.Robot;
-import org.mayheminc.robot2018.autonomousroutines.DriveStraight.DistanceUnits;
-import org.mayheminc.robot2018.commands.*;
-import org.mayheminc.robot2018.subsystems.Arm;
+package org.mayheminc.robot2018.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class RetractLifter extends CommandGroup {
-    
-    public  RetractLifter(boolean arg_requireArm) {
+public class elevator extends CommandGroup {
+
+    public elevator() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -28,7 +24,5 @@ public class RetractLifter extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new SetArmPosition(Robot.arm.PORTCULLIS_POSITION_COUNT, arg_requireArm));
-    	addSequential(new MoveLifter(Robot.lifter.LIFTER_POWER_RETRACT));
     }
 }

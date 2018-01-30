@@ -1,16 +1,16 @@
 package org.mayheminc.robot2018.autonomousroutines;
-import org.mayheminc.robot2018.Robot;
-import org.mayheminc.robot2018.autonomousroutines.DriveStraight.DistanceUnits;
-import org.mayheminc.robot2018.commands.*;
+
+import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
+import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class DeployLifter extends CommandGroup {
-    
-    public  DeployLifter(boolean arg_requireArm) {
+public class RunRightScaleLeftSwitch extends CommandGroup {
+
+    public RunRightScaleLeftSwitch() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -27,8 +27,10 @@ public class DeployLifter extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new SetArmPosition(Robot.arm.PORTCULLIS_POSITION_COUNT, arg_requireArm));
-    	addSequential(new CloseClaw());
-    	addParallel(new MoveLifter(Robot.lifter.LIFTER_POWER_DEPLOY));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 400.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, -90.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 500.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20, 90.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 30.0, 0.0));
     }
 }

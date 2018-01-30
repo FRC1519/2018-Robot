@@ -16,16 +16,16 @@ public class SelfTest extends CommandGroup {
     public  SelfTest() {
     	super("SelfTest");
     	    	
-    	addParallel(new SelfTestDrive(SelfTestDrive.k_frontLeft));
-    	addParallel(new SelfTestDrive(SelfTestDrive.k_frontRight));
-    	addParallel(new SelfTestDrive(SelfTestDrive.k_backLeft));
-    	addSequential(new SelfTestDrive(SelfTestDrive.k_backRight));
+//    	addParallel(new SelfTestDrive(SelfTestDrive.k_frontLeft));
+//    	addParallel(new SelfTestDrive(SelfTestDrive.k_frontRight));
+//    	addParallel(new SelfTestDrive(SelfTestDrive.k_backLeft));
+//    	addSequential(new SelfTestDrive(SelfTestDrive.k_backRight));
     	
 //    	addParallel(new SelfTestIRSensor(SelfTestIRSensor.k_outerLeft));
 //    	addParallel(new SelfTestIRSensor(SelfTestIRSensor.k_innerLeft));
 //    	addParallel(new SelfTestIRSensor(SelfTestIRSensor.k_innerRight));
 //    	addSequential(new SelfTestIRSensor(SelfTestIRSensor.k_outerRight));
     	
-    	addSequential(new SelfTestGyro());
+//    	addSequential(new SelfTestGyro());
     }
 }

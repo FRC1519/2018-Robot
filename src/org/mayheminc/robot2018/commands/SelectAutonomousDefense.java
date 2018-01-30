@@ -20,11 +20,11 @@ public class SelectAutonomousDefense extends Command {
         m_Offset = Offset;
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-
-    	Robot.autonomous.adjustDefenseNumber(m_Offset);
-    }
+//    // Called just before this Command runs the first time
+//    protected void initialize() {
+//
+//    	Robot.autonomous.adjustDefenseNumber(m_Offset);
+//    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {

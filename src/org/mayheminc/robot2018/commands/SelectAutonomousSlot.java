@@ -20,9 +20,9 @@ public class SelectAutonomousSlot extends Command {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.autonomous.adjustSlot(m_slot);
-    	}
+//    protected void initialize() {
+//    	Robot.autonomous.adjustSlot(m_slot);
+//    	}
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {

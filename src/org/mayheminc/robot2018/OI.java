@@ -162,9 +162,9 @@ public class OI {
         DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new SetShifter(Robot.drive.LOW_GEAR));
   
     	DRIVER_PAD_BLUE_BUTTON.whenPressed(new CheckInWithFieldManagement());
-    	DRIVER_PAD_RED_BUTTON.whileHeld(new CrossDefenseChevalDeFrise(Arm.REQUIRE_ARM_SUBSYSTEM)); //see autoInTeleop()
-    	DRIVER_PAD_YELLOW_BUTTON.whenPressed(new DeployLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-    	DRIVER_PAD_GREEN_BUTTON.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
+    	//DRIVER_PAD_RED_BUTTON.whileHeld(new CrossDefenseChevalDeFrise(Arm.REQUIRE_ARM_SUBSYSTEM)); //see autoInTeleop()
+    	//DRIVER_PAD_YELLOW_BUTTON.whenPressed(new DeployLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
+    	//DRIVER_PAD_GREEN_BUTTON.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
     	
     	// adjust auto parameters
      	DRIVER_STICK_BUTTON_SIX.whenPressed(new SelectAutonomousSlot(1));
@@ -201,7 +201,7 @@ public class OI {
      	OPERATOR_PAD_D_PAD_UP.whenPressed(new OpenClaw());
      	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());
 
-     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
+     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new SetArmManualMode(Arm.REQUIRE_ARM_SUBSYSTEM));
 	}
 	

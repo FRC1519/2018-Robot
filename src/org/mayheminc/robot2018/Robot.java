@@ -110,6 +110,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 			DriverStation.reportError("Autonomous Time Elapsed: " + autonomousTimeElapsed + "\n", false);
 			printAutoElapsedTime = false;
 		}
+		gameData.Read();
 	}
 
 	public void disabledPeriodic() {
@@ -123,6 +124,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		Robot.drive.updateHistory();
 		
 		PrintPeriodicPeriod();
+		gameData.Read();
 	}
 
 	public void autonomousInit() {
@@ -272,6 +274,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
 				SmartDashboard.putBoolean("FRC Comm Checked In", oi.IsCheckedInWithFieldManagement());
 
+				SmartDashboard.putString("Game Data",  gameData.toString());
+				
 				// display mode information
 				// SmartDashboard.putBoolean("Is Teleop",
 				// DriverStation.getInstance().isOperatorControl());
