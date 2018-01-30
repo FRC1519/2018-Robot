@@ -40,6 +40,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static Lifter lifter = new Lifter();
 	public static Launcher launcher = new Launcher();
 	public static Arm arm = new Arm();
+	public static GameData gameData = new GameData();
+	
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()
 	public static Autonomous autonomous;
@@ -124,6 +126,9 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	}
 
 	public void autonomousInit() {
+		// read the game data for the switch and scale positions.
+		gameData.Read();
+		
 		//force low gear
 		drive.setShifter(drive.LOW_GEAR);
 		// turn off the compressor
