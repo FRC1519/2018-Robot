@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 //import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 import org.mayheminc.robot2018.commands.*;
-import org.mayheminc.robot2018.subsystems.Arm;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -182,27 +181,27 @@ public class OI {
      	
      	//*************************OPERATOR PAD*******************************
      	
-     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new SetArmPosition(Robot.arm.LOW_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new SetArmPosition(Robot.arm.FLOOR_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new SetArmPosition(Robot.arm.FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new SetArmPosition(Robot.arm.UPRIGHT_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
-     	
-     	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
-//     	OPERATOR_PAD_BUTTON_FIVE - RESERVED FOR "Permission to Fire"
-//     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
-     	
-     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new HarvesterRollersForward());
-     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new HarvesterRollersReverse());
-     	
-     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_TOGETHER));
-     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_APART));
-     	
-     	OPERATOR_PAD_D_PAD_UP.whenPressed(new OpenClaw());
-     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());
-
-     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new SetArmManualMode(Arm.REQUIRE_ARM_SUBSYSTEM));
+//     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new SetArmPosition(Robot.arm.LOW_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+//     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new SetArmPosition(Robot.arm.FLOOR_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+//     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new SetArmPosition(Robot.arm.FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+//     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new SetArmPosition(Robot.arm.UPRIGHT_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
+//     	
+//     	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
+////     	OPERATOR_PAD_BUTTON_FIVE - RESERVED FOR "Permission to Fire"
+////     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
+//     	
+//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new HarvesterRollersForward());
+//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new HarvesterRollersReverse());
+//     	
+//     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_TOGETHER));
+//     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_APART));
+//     	
+//     	OPERATOR_PAD_D_PAD_UP.whenPressed(new OpenClaw());
+//     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());
+//
+//     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
+//     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new SetArmManualMode(Arm.REQUIRE_ARM_SUBSYSTEM));
 	}
 	
     public boolean quickTurn() {

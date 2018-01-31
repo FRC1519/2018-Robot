@@ -22,6 +22,13 @@ public class RobotMap {
 	// Claw Talon	
 	public static final int LIFTER_TALON = 5;
 	
+	// Pivot Talon
+	public static final int PIVOT_TALON = 20;
+	
+	// Intake Talons
+	public static final int INTAKE_LEFT_TALON = 21;
+	public static final int INTAKE_RIGHT_TALON = 22;
+	
 	// Launcher Talon
 	public static final int LAUNCHER_WINCH_TALON = 6;
 	

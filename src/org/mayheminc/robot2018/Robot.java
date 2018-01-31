@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.networktables.*;
 
 import org.mayheminc.robot2018.commands.RunAutonomous;
 import org.mayheminc.robot2018.subsystems.*;
@@ -36,10 +36,10 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static final Compressor compressor = new Compressor();
 	public static final Drive drive = new Drive();
 	public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
-	public static Claw claw = new Claw();
-	public static Lifter lifter = new Lifter();
-	public static Launcher launcher = new Launcher();
-	public static Arm arm = new Arm();
+//	public static Claw claw = new Claw();
+//	public static Lifter lifter = new Lifter();
+//	public static Launcher launcher = new Launcher();
+//	public static Arm arm = new Arm();
 	public static GameData gameData = new GameData();
 	
 	// allocate the "virtual" subsystems; wait to construct these until
@@ -72,8 +72,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-
-		table = NetworkTableInstance.getDefault().getTable("datatable");
+		table = NetworkTable.getTable("datatable");
 
 		System.out.println("robotInit");
 		SmartDashboard.putString("Auto Prog", "Initializing...");
@@ -145,7 +144,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		autonomousStartTime = System.currentTimeMillis();
 		printAutoElapsedTime = true;
 
-        launcher.treatAutonomousStartAsCalibrated();
+//        launcher.treatAutonomousStartAsCalibrated();
         
 		DriverStation.reportError(
 				"AutonomousTimeRemaining from autonomousInit = " + Robot.autonomousTimeRemaining() + "\n", false);
@@ -166,8 +165,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		Scheduler.getInstance().run();
 
 		// update subsystems that need periodic update
-		arm.periodic();
-		launcher.periodic();
+//		arm.periodic();
+//		launcher.periodic();
 		
 		updateSmartDashboard(DONT_UPDATE_AUTO_SETUP_FIELDS);
 		Robot.drive.updateHistory();
@@ -231,8 +230,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		}
 
 		// update subsystems that need periodic update
-		arm.periodic();
-		launcher.periodic();
+//		arm.periodic();
+//		launcher.periodic();
 
 		updateSmartDashboard(DONT_UPDATE_AUTO_SETUP_FIELDS);
 
@@ -242,8 +241,11 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public void updateGRIP() {
 		double[] defaultValue = new double[0];
-		NetworkTableEntry entry = table.getEntry("area");
-		double[] areas = entry.getDoubleArray(defaultValue);
+		
+//		NetworkTableEntry entry = table.getEntry("area");
+//		double[] areas = entry.getDoubleArray(defaultValue);
+
+		double[] areas = table.getNumberArray("area", defaultValue);
 		for (double area : areas) {
 			SmartDashboard.putNumber("grip_area", area);
 			DriverStation.reportError("GRIP Contour Report" + area, false);
@@ -291,8 +293,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				// oi.driveRotation());
 
 				drive.updateSmartDashboard();
-				arm.updateSmartDashboard();
-				launcher.updateSmartDashboard();
+//				arm.updateSmartDashboard();
+//				launcher.updateSmartDashboard();
 
 				if (updateAutoFields) {
 					Autonomous.updateSmartDashboard();
@@ -333,8 +335,11 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	private static double latestImageHeading = 0.0;
 	
 	private static void updateImgResults() {
-	  NetworkTableEntry entry = table.getEntry("ImgResults");
-	  latestImgResults = entry.getDoubleArray(DEFAULT_IMG_RESULTS);
+//	  NetworkTableEntry entry = table.getEntry("ImgResults");
+//	  latestImgResults = entry.getDoubleArray(DEFAULT_IMG_RESULTS);
+	  
+	  latestImgResults = table.getNumberArray("ImgResults", DEFAULT_IMG_RESULTS);
+	  
 	  // check to see if these are new results
 	  if ( (int) latestImgResults[0] != latestFrameNum) {
 		  latestFrameNum = (int) latestImgResults[0];

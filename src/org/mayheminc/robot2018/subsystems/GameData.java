@@ -20,6 +20,7 @@ public class GameData extends Subsystem {
     public void Read()
     {
     	gameData = DriverStation.getInstance().getGameSpecificMessage();
+//    	DriverStation.getInstance().
     	OurSwitch = (gameData.charAt(0) == 'R');
     	Scale = (gameData.charAt(1) == 'R');
     	OpposingSwitch = (gameData.charAt(2) == 'R');
