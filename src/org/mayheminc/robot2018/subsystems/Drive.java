@@ -9,15 +9,12 @@ import org.mayheminc.util.History;
 
 import edu.wpi.first.wpilibj.*;
 import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 //import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 //import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.mayheminc.robot2018.RobotPreferences;
 
 import java.util.Arrays;
 
@@ -216,7 +213,7 @@ public class Drive extends Subsystem {
 	//***********************************ENCODER- GETTERS**********************************************************
 
 	public double distanceTravelledMeters() {
-		double y = Navx.getDisplacementY();
+		//double y = Navx.getDisplacementY();
 		double x = Navx.getDisplacementX();
 
 		//Pythagorean theorem
@@ -628,10 +625,10 @@ public class Drive extends Subsystem {
 		m_highGear = position;
 	}
 
-	private static final double LEFT_SHIFT_HIGH = 0.0;
-	private static final double LEFT_SHIFT_LOW = 1.0;
-	private static final double RIGHT_SHIFT_HIGH = 0.0;
-	private static final double RIGHT_SHIFT_LOW = 1.0;
+	//private static final double LEFT_SHIFT_HIGH = 0.0;
+	//private static final double LEFT_SHIFT_LOW = 1.0;
+	//private static final double RIGHT_SHIFT_HIGH = 0.0;
+	//private static final double RIGHT_SHIFT_LOW = 1.0;
 
 	public final void setGear(boolean gear) {
 		m_priorShiftTime = Timer.getFPGATimestamp();
@@ -661,7 +658,7 @@ public class Drive extends Subsystem {
 	// shift speeds are in inches per second.
 
 	//TODO: SeanM thinks that these constants are not great for 2016 Robot.  Should be re-evaluated at large practice space.
-	private static final double SHIFT_RATIO = 2.56;    // Gear spread is 2.56:1 in sonic shifter
+	//private static final double SHIFT_RATIO = 2.56;    // Gear spread is 2.56:1 in sonic shifter
 	private static final double SHIFT_TO_HIGH = 30.0;  // numbers determined empirically
 	private static final double SHIFT_TO_LOW = SHIFT_TO_HIGH / 2.56;   // numbers determined empirically
 	private static final double SHIFT_DELAY = .5;

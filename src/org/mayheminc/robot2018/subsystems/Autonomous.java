@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.mayheminc.robot2018.autonomousroutines.*;
-import org.mayheminc.robot2018.autonomousroutines.DriveStraight.DistanceUnits;
-import org.mayheminc.robot2018.commands.ArcingTurn;
 
 /**
  *
