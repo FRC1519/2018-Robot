@@ -23,6 +23,24 @@ public class JoystickAxisButton extends Button {
     private int axisInt;
     private int direction;
     
+    private double getAxis(Joystick.AxisType axis) {
+    	switch (axis) {
+    		case kX:
+    			return joystick.getX();
+    		case kY:
+    			return joystick.getY();
+    		case kZ:
+    			return joystick.getZ();
+    		case kThrottle:
+    			return joystick.getThrottle();
+    		case kTwist:
+    			return joystick.getTwist();
+    		default:
+    			// Unreachable
+    			return 0.0;
+    	}
+    }
+    
     public JoystickAxisButton(Joystick stick, Joystick.AxisType axis) {
         this(stick, axis, BOTH_WAYS);
     }
@@ -48,7 +66,7 @@ public class JoystickAxisButton extends Button {
         switch (direction) {
             case BOTH_WAYS:
                 if (axis != null) {
-                    return Math.abs(joystick.getAxis(axis)) > AXIS_THRESHOLD;
+                    return Math.abs(getAxis(axis)) > AXIS_THRESHOLD;
                 }
                 else {
                     return Math.abs(joystick.getRawAxis(axisInt)) > AXIS_THRESHOLD;
@@ -56,7 +74,7 @@ public class JoystickAxisButton extends Button {
             
             case POSITIVE_ONLY:
                 if (axis != null) {
-                    return joystick.getAxis(axis) > AXIS_THRESHOLD;
+                    return getAxis(axis) > AXIS_THRESHOLD;
                 }
                 else {
                     return joystick.getRawAxis(axisInt) > AXIS_THRESHOLD;
@@ -64,7 +82,7 @@ public class JoystickAxisButton extends Button {
                 
             case NEGATIVE_ONLY:
                 if (axis != null) {
-                    return joystick.getAxis(axis) < -AXIS_THRESHOLD;
+                    return getAxis(axis) < -AXIS_THRESHOLD;
                 }
                 else {
                     return joystick.getRawAxis(axisInt) < -AXIS_THRESHOLD;

@@ -294,13 +294,13 @@ public class Launcher extends Subsystem{
 
     		// handle "permission to fire" shooting in auto
     		if (m_autonomousPermissionToLaunch &&  
-    				Robot.drive.isAlignedToTarget(Robot.drive.AIM_REQUIRED_LOOPS_ON_TARGET_AUTONOMOUS)) {
+    				Robot.drive.isAlignedToTarget(Drive.AIM_REQUIRED_LOOPS_ON_TARGET_AUTONOMOUS)) {
     			launch = true;
     		}
 
     		// handle "permission to fire" shooting in teleop
     		if (Robot.oi.permissionToLaunch() &&  
-    				Robot.drive.isAlignedToTarget(Robot.drive.AIM_REQUIRED_LOOPS_ON_TARGET_TELEOP)) {
+    				Robot.drive.isAlignedToTarget(Drive.AIM_REQUIRED_LOOPS_ON_TARGET_TELEOP)) {
     			launch = true;
     		}
     		

@@ -1,6 +1,8 @@
 package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.Robot;
+import org.mayheminc.robot2018.subsystems.Claw;
+
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,7 +19,7 @@ public class OpenClaw extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.claw.setClawPosition(Robot.claw.CLAW_OPEN);
+    	Robot.claw.setClawPosition(Claw.CLAW_OPEN);
     }
 
     // Called repeatedly when this Command is scheduled to run

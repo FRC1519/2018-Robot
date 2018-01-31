@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.mayheminc.robot2018.RobotMap;
 
 //import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 //import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import org.mayheminc.util.MayhemTalonSRX;

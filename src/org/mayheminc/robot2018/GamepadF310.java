@@ -7,7 +7,6 @@ import org.mayheminc.util.DisabledOnlyJoystickButton;
 import org.mayheminc.util.JoystickAxisButton;
 import org.mayheminc.util.JoystickPOVButton;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;

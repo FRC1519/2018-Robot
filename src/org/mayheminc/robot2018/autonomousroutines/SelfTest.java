@@ -2,12 +2,6 @@ package org.mayheminc.robot2018.autonomousroutines;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-import org.mayheminc.robot2018.Robot;
-
-//import org.mayheminc.robot2015.subsystems.Drive;
-//import org.mayheminc.robot2015.autonomousroutines.*;
-//import java.math.*;
-
 /**
  *
  */
