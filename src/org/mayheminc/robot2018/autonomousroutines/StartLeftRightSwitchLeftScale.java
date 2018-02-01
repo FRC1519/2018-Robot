@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class RunLeftSwitchRightScale extends CommandGroup {
+public class StartLeftRightSwitchLeftScale extends CommandGroup {
 
-    public RunLeftSwitchRightScale() {
+    public StartLeftRightSwitchLeftScale() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -27,13 +27,13 @@ public class RunLeftSwitchRightScale extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 140.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, -90.0));
+    	addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 20.0, 90.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 100.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, -90.0));
     	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 300.0, 0.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, 90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 500.0, 0.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, 90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, -20.0, 90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 500.0, 0.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, 90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20, 90.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 50.0, 0.0));
     }
 }

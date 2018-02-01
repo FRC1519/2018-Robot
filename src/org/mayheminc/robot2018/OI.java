@@ -185,8 +185,6 @@ public class OI {
     	// adjust auto parameters
      	DRIVER_STICK_BUTTON_SIX.whenPressed(new SelectAutonomousSlot(1));
      	DRIVER_STICK_BUTTON_SEVEN.whenPressed(new SelectAutonomousSlot(-1));
-     	DRIVER_STICK_BUTTON_ELEVEN.whenPressed(new SelectAutonomousDefense(1));
-     	DRIVER_STICK_BUTTON_TEN.whenPressed(new SelectAutonomousDefense(-1));
      	DRIVER_STICK_BUTTON_THREE.whenPressed(new SelectAutonomousProgram(1));
      	DRIVER_STICK_BUTTON_TWO.whenPressed(new SelectAutonomousProgram(-1));
      	DRIVER_STICK_BUTTON_FOUR.whenPressed(new SelectAutonomousDelay(-1));

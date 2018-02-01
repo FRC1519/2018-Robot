@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class RunLeftSwtichLeftScale extends CommandGroup {
+public class StartMidLeftSwitchRightScale extends CommandGroup {
 
-    public RunLeftSwtichLeftScale() {
+    public StartMidLeftSwitchRightScale() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -32,7 +32,8 @@ public class RunLeftSwtichLeftScale extends CommandGroup {
     	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 500.0, 0.0));
     	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, 90.0));
     	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, -20.0, 90.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 500.0, 0.0));
     	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, 90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 30.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, 0.0));
     }
 }

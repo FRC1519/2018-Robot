@@ -35,11 +35,12 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static final Compressor compressor = new Compressor();
 	public static final Drive drive = new Drive();
 	public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
-//	public static Claw claw = new Claw();
-//	public static Lifter lifter = new Lifter();
-//	public static Launcher launcher = new Launcher();
-//	public static Arm arm = new Arm();
+
 	public static GameData gameData = new GameData();
+	public static Intake intake = new Intake();
+	public static Pivot pivot = new Pivot();
+//	public static Elevator elevator = new Elevator();
+	
 	
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()

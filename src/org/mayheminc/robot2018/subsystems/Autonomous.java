@@ -42,9 +42,27 @@ public class Autonomous extends Subsystem {
 	private static Command autonomousPrograms[] = {
 			/* 0 */   new StayStill()  // do nothing	
 			/* 1a*/ , new auto1()
-			, new Qualification2CubeAutoFromRight()
+			, new Auto2CubeFromRight()
+			, new Auto2CubeFromMid()
+			, new Auto2CubeFromLeft()
 
-
+			, new StartRightLeftSwitchLeftScale()
+			, new StartRightLeftSwitchLeftScale()
+			, new StartRightRightSwitchLeftScale()
+			, new StartRightRightSwitchRightScale()
+			, new StartRightRightSwitchRightScale()
+			
+			, new StartMidLeftSwitchLeftScale()
+			, new StartMidLeftSwitchLeftScale()
+			, new StartMidRightSwitchLeftScale()
+			, new StartMidRightSwitchRightScale()
+			, new StartMidRightSwitchRightScale()
+					
+			, new StartLeftLeftSwitchLeftScale()
+			, new StartLeftLeftSwitchLeftScale()
+			, new StartLeftRightSwitchLeftScale()
+			, new StartLeftRightSwitchRightScale()
+			, new StartLeftRightSwitchRightScale()
 					
 	};
 
