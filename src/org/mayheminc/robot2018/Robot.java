@@ -39,8 +39,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static GameData gameData = new GameData();
 	public static Intake intake = new Intake();
 	public static Pivot pivot = new Pivot();
-//	public static Elevator elevator = new Elevator();
-	
+	public static Elevator elevator = new Elevator();
+	public static ElevatorArms elevatorArms = new ElevatorArms();
 	
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()
