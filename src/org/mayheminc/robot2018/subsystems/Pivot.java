@@ -6,6 +6,8 @@ import org.mayheminc.robot2018.RobotMap;
 import org.mayheminc.util.MayhemTalonSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.*;
 
 /**
  * The Pivot lifts the intake to the upright position so the elevator can
@@ -18,6 +20,17 @@ public class Pivot extends Subsystem {
 	
 	MayhemTalonSRX m_pivotmoter = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
 
+	public Pivot()
+	{
+		super();
+		
+		m_pivotmoter.config_kP(0, 1, 0);
+		m_pivotmoter.config_kI(0, 0, 0);
+		m_pivotmoter.config_kD(0, 0, 0);
+		m_pivotmoter.config_kF(0, 0, 0);
+		
+		m_pivotmoter.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+	}
     protected void initDefaultCommand() {
 	}
     
@@ -32,13 +45,18 @@ public class Pivot extends Subsystem {
      * Set the pivot to the up position.
      */
     public void pivotUp() {
-    	m_pivotmoter.set(ControlMode.Position, UPRIGHT_POSITION );
+    	moveTo(UPRIGHT_POSITION );
     }
     
     /**
      * Set the pivot to the down position.
      */
     public void pivotDown() {
-    	m_pivotmoter.set(ControlMode.Position, DOWNWARD_POSITION);
+    	moveTo(DOWNWARD_POSITION);
+    }
+    
+    void moveTo(int position)
+    {
+    	m_pivotmoter.set(ControlMode.Position, position);
     }
 }

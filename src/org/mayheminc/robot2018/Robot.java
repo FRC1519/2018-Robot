@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.networktables.*;
+
+import edu.wpi.first.networktables.*;
 
 import org.mayheminc.robot2018.commands.RunAutonomous;
 import org.mayheminc.robot2018.subsystems.*;
@@ -51,10 +52,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	private static long autonomousStartTime;
 	private static boolean printAutoElapsedTime = false;
 
-	// timer for the match, will rumble when twenty seconds are left
-	public static final Timer rumbleTimer = new Timer();
-	public static final Timer brownoutTimer = new Timer();
-
 	public static final double BROWNOUT_VOLTAGE_LOWER_THRESHOLD = 10.0;
 	public static final double BROWNOUT_VOLTAGE_UPPER_THRESHOLD = 11.0;
 	public static final double BROWNOUT_REST_PERIOD = 3;
@@ -72,7 +69,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		table = NetworkTable.getTable("datatable");
+		table = NetworkTableInstance.getDefault().getTable("datatable");
 
 		System.out.println("robotInit");
 		SmartDashboard.putString("Auto Prog", "Initializing...");
@@ -109,7 +106,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 			DriverStation.reportError("Autonomous Time Elapsed: " + autonomousTimeElapsed + "\n", false);
 			printAutoElapsedTime = false;
 		}
-		gameData.Read();
 	}
 
 	public void disabledPeriodic() {
@@ -144,8 +140,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		autonomousStartTime = System.currentTimeMillis();
 		printAutoElapsedTime = true;
 
-//        launcher.treatAutonomousStartAsCalibrated();
-        
 		DriverStation.reportError(
 				"AutonomousTimeRemaining from autonomousInit = " + Robot.autonomousTimeRemaining() + "\n", false);
 	}
@@ -164,10 +158,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		
 		Scheduler.getInstance().run();
 
-		// update subsystems that need periodic update
-//		arm.periodic();
-//		launcher.periodic();
-		
 		updateSmartDashboard(DONT_UPDATE_AUTO_SETUP_FIELDS);
 		Robot.drive.updateHistory();
 	}
@@ -185,8 +175,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		}
 
 		DriverStation.reportError("Entering Teleop.\n", false);
-		rumbleTimer.reset();
-		rumbleTimer.start();
 
 		drive.zeroHeadingGyro();
 	}
@@ -226,12 +214,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				drive.tankDrive(oi.tankDriveLeft(), oi.tankDriveRight());
 			}
 		} else {
-//			DriverStation.reportError("Running Command: " + drive.getCurrentCommand(), false);
 		}
-
-		// update subsystems that need periodic update
-//		arm.periodic();
-//		launcher.periodic();
 
 		updateSmartDashboard(DONT_UPDATE_AUTO_SETUP_FIELDS);
 
@@ -240,14 +223,12 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	}
 
 	public void updateGRIP() {
-		double[] defaultValue = new double[0];
+		Number[] defaultValue = new Number[0];
 		
-//		NetworkTableEntry entry = table.getEntry("area");
-//		double[] areas = entry.getDoubleArray(defaultValue);
+		Number[] areas = table.getEntry("area").getNumberArray(defaultValue);
 
-		double[] areas = table.getNumberArray("area", defaultValue);
-		for (double area : areas) {
-			SmartDashboard.putNumber("grip_area", area);
+		for (Number area : areas) {
+			SmartDashboard.putNumber("grip_area", area.doubleValue());
 			DriverStation.reportError("GRIP Contour Report" + area, false);
 		}
 	}
@@ -327,8 +308,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	//    (1000.0 is a "magic number" meaning no target found by image processing)
 	//    (1001.0 is a "magic number" meaning no info in network tables
 	
-	private static final double[] DEFAULT_IMG_RESULTS = {0.0, 1001.0};
-	private static double[] latestImgResults = {0.0, 1001.0};
+	private static final Number[] DEFAULT_IMG_RESULTS = {0.0, 1001.0};
+	private static Number[] latestImgResults = {0.0, 1001.0};
 	private static int latestFrameNum = 0;
 	private static int latestCenterX = 1001;
 	private static double latestImageHeading = 0.0;
@@ -337,7 +318,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 //	  NetworkTableEntry entry = table.getEntry("ImgResults");
 //	  latestImgResults = entry.getDoubleArray(DEFAULT_IMG_RESULTS);
 	  
-	  latestImgResults = table.getNumberArray("ImgResults", DEFAULT_IMG_RESULTS);
+//	  latestImgResults = table.getNumberArray("ImgResults", DEFAULT_IMG_RESULTS);
+	  latestImgResults = table.getEntry("ImgResults").getNumberArray(DEFAULT_IMG_RESULTS);
 	  
 	  // check to see if these are new results
 	  if ( (int) latestImgResults[0] != latestFrameNum) {

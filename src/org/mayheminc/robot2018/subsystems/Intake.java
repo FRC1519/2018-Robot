@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Intake extends Subsystem {
 	
-	public static final int LEFT_MOTER_SPEED = 200; //JUST A PLACE HOLDER!
-	public static final int RIGHT_MOTER_SPEED = 200; //JUST A PLACE HOLDER!
-	public static final int STOP_MOTOR_SPEED = 0;
+	public static final double INTAKE_SPEED = 0.5; //JUST A PLACE HOLDER!
+	public static final double OUTTAKE_SPEED = -0.5; //JUST A PLACE HOLDER!
+	public static final double STOP_SPEED = 0;
 	
 	MayhemTalonSRX m_intakeMoterRight = new MayhemTalonSRX(RobotMap.INTAKE_RIGHT_TALON);
 	MayhemTalonSRX m_intakeMoterLeft = new MayhemTalonSRX(RobotMap.INTAKE_LEFT_TALON);
@@ -23,18 +23,21 @@ public class Intake extends Subsystem {
     }
     
     public void takeInCube() {
-    	m_intakeMoterRight.set(ControlMode.Velocity, -RIGHT_MOTER_SPEED);
-    	m_intakeMoterLeft.set(ControlMode.Velocity, -LEFT_MOTER_SPEED);
+    	setMotors(INTAKE_SPEED);
+    }
+    
+    void setMotors(double speed)
+    {
+    	m_intakeMoterRight.set(ControlMode.PercentOutput, speed);
+    	m_intakeMoterLeft.set(ControlMode.PercentOutput, speed);
     }
     
     public void stop() {
-    	m_intakeMoterRight.set(ControlMode.Velocity, STOP_MOTOR_SPEED);
-    	m_intakeMoterLeft.set(ControlMode.Velocity, STOP_MOTOR_SPEED);
+    	setMotors(STOP_SPEED);
     }
     
     public void spitOutCube() {
-    	m_intakeMoterRight.set(ControlMode.Velocity, RIGHT_MOTER_SPEED);
-    	m_intakeMoterLeft.set(ControlMode.Velocity, LEFT_MOTER_SPEED);
+    	setMotors(OUTTAKE_SPEED);
     }
 }
 

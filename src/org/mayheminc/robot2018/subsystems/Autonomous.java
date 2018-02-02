@@ -66,9 +66,7 @@ public class Autonomous extends Subsystem {
 					
 	};
 
-	// set number of default program to run
 	private static int programNumber = 1;
-//	private static int defenseNumber = 0;
 	private static int delay = 0;
 
 	public Autonomous() {
@@ -77,17 +75,9 @@ public class Autonomous extends Subsystem {
 	public void initDefaultCommand() {
 	}
 
-//	public Command getSelectedDefense() {
-//		return autonomousDefenses[defenseNumber];
-//	}
-
 	public Command getSelectedProgram(){
 		return autonomousPrograms[programNumber];
 	}
-
-//	public int getSelectedSlot(){
-//		return slot;
-//	}
 
 	public int getDelay() {
 		return delay;
@@ -104,17 +94,6 @@ public class Autonomous extends Subsystem {
 		updateSmartDashboard();
 	}
 
-//	public void adjustDefenseNumber(int delta) {
-//		defenseNumber += delta;
-//		if (defenseNumber < 0) {
-//			defenseNumber = autonomousDefenses.length - 1;
-//		}
-//		else if (defenseNumber >= autonomousDefenses.length) {
-//			defenseNumber = 0;
-//		}
-//		updateSmartDashboard();
-//	}
-
 	private static final int MAX_DELAY = 9;
 
 	public void adjustDelay(int delta) {
@@ -126,16 +105,6 @@ public class Autonomous extends Subsystem {
 		}
 	}
 	
-//	private static final int MAX_SLOT = 6;
-//	public void adjustSlot(int delta) {
-//		slot += delta;
-//		if (slot < 1) {
-//			slot = MAX_SLOT;
-//		} else if (slot > MAX_SLOT) {
-//			slot = 1;
-//		}
-//	}
-
 	private static StringBuffer sb = new StringBuffer();
 
 	public static void updateSmartDashboard() {
@@ -143,13 +112,6 @@ public class Autonomous extends Subsystem {
 		sb.append(programNumber + " " + autonomousPrograms[programNumber].getName());
 		sb.append("         ");
 		SmartDashboard.putString("Auto Prog", sb.toString());
-//		SmartDashboard.putString("Auto Slot", slotNames[slot]);
-		
-//		sb.setLength(0);
-//		sb.append(defenseNumber + " " + autonomousDefenses[defenseNumber].getName());
-//		sb.append("         ");
-//		SmartDashboard.putString("Auto Defense", sb.toString());
-
 		SmartDashboard.putNumber("Auto Delay", delay);
 	}
 
