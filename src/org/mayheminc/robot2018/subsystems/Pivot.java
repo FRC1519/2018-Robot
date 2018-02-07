@@ -3,7 +3,7 @@ package org.mayheminc.robot2018.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.mayheminc.robot2018.RobotMap;
-import org.mayheminc.util.MayhemTalonSRX;
+//import org.mayheminc.util.MayhemTalonSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -18,7 +18,7 @@ public class Pivot extends Subsystem {
 	public static final int UPRIGHT_POSITION = 2000; //JUST PLACEHOLDER!
 	public static final int DOWNWARD_POSITION = 0; //JUST A PLACEHOLDER!
 	
-	MayhemTalonSRX m_pivotmoter = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
+	TalonSRX m_pivotmoter = new TalonSRX(RobotMap.PIVOT_TALON);
 
 	public Pivot()
 	{
@@ -38,7 +38,7 @@ public class Pivot extends Subsystem {
      * Set the current position of the pivot to be zero.
      */
     public void zeroPivot() {	
-    	m_pivotmoter.setPosition(0);	
+    	m_pivotmoter.setSelectedSensorPosition(0, 0, 1000);//
     }
     
     /**

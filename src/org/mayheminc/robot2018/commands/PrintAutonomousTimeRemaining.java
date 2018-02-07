@@ -9,15 +9,14 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PrintAutonomousTimeRemaining extends Command {
-	
-    public PrintAutonomousTimeRemaining() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+	String Mesage = ""; 
+    public PrintAutonomousTimeRemaining(String msg) {
+        this.Mesage = msg;
     }
     
     // Called just before this Command runs the first time
     protected void initialize() {
-		DriverStation.reportError("AutonomousTimeRemaining = " + Robot.autonomousTimeRemaining() + "\n", false);
+		DriverStation.reportError(Mesage+ " At: " + Robot.autonomousTimeRemaining() + "\n", false);
     }
 
     // Called repeatedly when this Command is scheduled to run

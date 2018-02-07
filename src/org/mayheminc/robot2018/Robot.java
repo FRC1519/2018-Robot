@@ -110,7 +110,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public void disabledPeriodic() {
 		// update sensors that need periodic update
-		updateImgResults();	
+//		updateImgResults();	
 		
 		Scheduler.getInstance().run();
 
@@ -190,7 +190,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		double timer = Timer.getFPGATimestamp();
 
 		//DriverStation.reportWarning("teleop: " + (timer-teleopTimer), false);
-		System.out.println("periodic: " + (timer-teleopTimer));
+		//System.out.println("periodic: " + (timer-teleopTimer));
 		teleopTimer = timer;		
 	}
 	
@@ -319,14 +319,14 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 //	  latestImgResults = entry.getDoubleArray(DEFAULT_IMG_RESULTS);
 	  
 //	  latestImgResults = table.getNumberArray("ImgResults", DEFAULT_IMG_RESULTS);
-	  latestImgResults = table.getEntry("ImgResults").getNumberArray(DEFAULT_IMG_RESULTS);
-	  
-	  // check to see if these are new results
-	  if ( (int) latestImgResults[0] != latestFrameNum) {
-		  latestFrameNum = (int) latestImgResults[0];
-		  latestCenterX = (int) latestImgResults[1];
-		  latestImageHeading = drive.getHeadingForCapturedImage();
-	  }
+//	  latestImgResults = table.getEntry("ImgResults").getNumberArray(DEFAULT_IMG_RESULTS);
+//	  
+//	  // check to see if these are new results
+//	  if ( (int) latestImgResults[0] != latestFrameNum) {
+//		  latestFrameNum = (int) latestImgResults[0];
+//		  latestCenterX = (int) latestImgResults[1];
+//		  latestImageHeading = drive.getHeadingForCapturedImage();
+//	  }
 	}
 	
 	public static int getFrameNum() {

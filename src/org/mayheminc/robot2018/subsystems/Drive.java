@@ -563,8 +563,10 @@ public class Drive extends Subsystem {
 
 //		SmartDashboard.putNumber("ultrasonicDistance", (ultrasonic.getDistance() * 0.393701));
 
-		SmartDashboard.putNumber("Left Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Right Encoder Counts", -rightFrontTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Left Front Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Front Encoder Counts", rightFrontTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Rear Encoder Counts", rightRearTalon.getSelectedSensorPosition(0));
 
 		// Note:  getSpeed() returns ticks per 0.1 seconds
 		SmartDashboard.putNumber("Left Encoder Speed", leftFrontTalon.getSelectedSensorVelocity(0));
@@ -776,16 +778,19 @@ public class Drive extends Subsystem {
 		return headingHistory.getAzForTime(indexTime);
 	}
 	
-	double [] initialWheelDistance = new double[4];
-	double [] calcWheelDistance = new double[4];
+//	double [] initialWheelDistance = new double[4];
+//	double [] calcWheelDistance = new double[4];
+	double initialWheelDistance;
 	/**
 	 * Start a distance travel
 	 */
 	public void saveInitialWheelDistance(){
-		initialWheelDistance[0] = rightFrontTalon.getSelectedSensorPosition(0);
-		initialWheelDistance[1] = rightRearTalon.getSelectedSensorPosition(0);
-		initialWheelDistance[2] = leftFrontTalon.getSelectedSensorPosition(0);
-		initialWheelDistance[3] = leftRearTalon.getSelectedSensorPosition(0);
+//		initialWheelDistance[0] = rightFrontTalon.getSelectedSensorPosition(0);
+//		initialWheelDistance[1] = rightRearTalon.getSelectedSensorPosition(0);
+//		initialWheelDistance[2] = leftFrontTalon.getSelectedSensorPosition(0);
+//		initialWheelDistance[3] = leftRearTalon.getSelectedSensorPosition(0);
+		initialWheelDistance = (leftFrontTalon.getSelectedSensorPosition(0) + -rightFrontTalon.getSelectedSensorPosition(0))/2;
+
 	}
 	/**
 	 * Calculate the distance travelled.  Return the second shortest distance.
@@ -794,12 +799,14 @@ public class Drive extends Subsystem {
 	 * @return
 	 */
 	public double getWheelDistance(){
-		calcWheelDistance[0] = Math.abs(rightFrontTalon.getSelectedSensorPosition(0) - initialWheelDistance[0]);
-		calcWheelDistance[1] = Math.abs(rightRearTalon.getSelectedSensorPosition(0) - initialWheelDistance[1]);
-		calcWheelDistance[2] = Math.abs(leftFrontTalon.getSelectedSensorPosition(0) - initialWheelDistance[2]);
-		calcWheelDistance[3] = Math.abs(leftRearTalon.getSelectedSensorPosition(0) - initialWheelDistance[3]);
-		Arrays.sort(calcWheelDistance);
-		return  calcWheelDistance[1];
+//		calcWheelDistance[0] = Math.abs(rightFrontTalon.getSelectedSensorPosition(0) - initialWheelDistance[0]);
+//		calcWheelDistance[1] = Math.abs(rightRearTalon.getSelectedSensorPosition(0) - initialWheelDistance[1]);
+//		calcWheelDistance[2] = Math.abs(leftFrontTalon.getSelectedSensorPosition(0) - initialWheelDistance[2]);
+//		calcWheelDistance[3] = Math.abs(leftRearTalon.getSelectedSensorPosition(0) - initialWheelDistance[3]);
+//		Arrays.sort(calcWheelDistance);
+//		return  calcWheelDistance[1];
+		double dist = (leftFrontTalon.getSelectedSensorPosition(0) + -rightFrontTalon.getSelectedSensorPosition(0))/2;
+		return dist - initialWheelDistance;
 	}
 	
 	//NOTE the difference between rotateToHeading(...) and goToHeading(...)

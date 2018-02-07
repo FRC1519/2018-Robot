@@ -1,9 +1,9 @@
 package org.mayheminc.robot2018.subsystems;
 
 import org.mayheminc.robot2018.RobotMap;
-import org.mayheminc.util.MayhemTalonSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -16,8 +16,8 @@ public class Intake extends Subsystem {
 	public static final double OUTTAKE_SPEED = -0.5; //JUST A PLACE HOLDER!
 	public static final double STOP_SPEED = 0;
 	
-	MayhemTalonSRX m_intakeMoterRight = new MayhemTalonSRX(RobotMap.INTAKE_RIGHT_TALON);
-	MayhemTalonSRX m_intakeMoterLeft = new MayhemTalonSRX(RobotMap.INTAKE_LEFT_TALON);
+	TalonSRX m_intakeMoterRight = new TalonSRX(RobotMap.INTAKE_RIGHT_TALON);
+	TalonSRX m_intakeMoterLeft = new TalonSRX(RobotMap.INTAKE_LEFT_TALON);
 
     public void initDefaultCommand() {
     }

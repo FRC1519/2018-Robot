@@ -47,6 +47,7 @@ public class DriveStraightOnHeading extends Command {
 		int displacement = (int)Robot.drive.getWheelDistance();
 		
 		displacement = Math.abs(displacement);
+		System.out.println("displacement" + displacement);
 		return (displacement >= m_desiredDisplacement);
 	}
 

@@ -41,7 +41,7 @@ public class Autonomous extends Subsystem {
 
 	private static Command autonomousPrograms[] = {
 			/* 0 */   new StayStill()  // do nothing	
-			/* 1a*/ , new auto1()
+			/* 1*/ , new auto1()
 			, new Auto2CubeFromRight()
 			, new Auto2CubeFromMid()
 			, new Auto2CubeFromLeft()
@@ -49,7 +49,6 @@ public class Autonomous extends Subsystem {
 			, new StartRightLeftSwitchLeftScale()
 			, new StartRightLeftSwitchLeftScale()
 			, new StartRightRightSwitchLeftScale()
-			, new StartRightRightSwitchRightScale()
 			, new StartRightRightSwitchRightScale()
 			
 			, new StartMidLeftSwitchLeftScale()
@@ -66,7 +65,7 @@ public class Autonomous extends Subsystem {
 					
 	};
 
-	private static int programNumber = 1;
+	private static int programNumber = 8;
 	private static int delay = 0;
 
 	public Autonomous() {
