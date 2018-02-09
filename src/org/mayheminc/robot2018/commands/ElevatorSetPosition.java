@@ -1,31 +1,38 @@
 package org.mayheminc.robot2018.commands;
 
-import org.mayheminc.robot2018.Robot;
+import javax.lang.model.element.ElementKind;
 
-import edu.wpi.first.wpilibj.DriverStation;
+import org.mayheminc.robot2018.Robot;
+import org.mayheminc.robot2018.subsystems.Elevator.ElevatorPositions;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class PrintAutonomousTimeRemaining extends Command {
-	String Mesage = ""; 
-    public PrintAutonomousTimeRemaining(String msg) {
-        this.Mesage = msg;
+public class ElevatorSetPosition extends Command {
+
+	ElevatorPositions m_position;
+	
+    public ElevatorSetPosition(ElevatorPositions position) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	m_position = position;
     }
-    
+
     // Called just before this Command runs the first time
     protected void initialize() {
-		DriverStation.reportError(Mesage + " At: " + Robot.autonomousTimeRemaining() + "\n", false);
+    	Robot.elevator.setElevatorPosition(m_position);
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {	
+    protected void execute() {
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return Robot.elevator.IsElevatorAtPosition();
     }
 
     // Called once after isFinished returns true

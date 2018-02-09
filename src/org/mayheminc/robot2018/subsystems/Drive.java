@@ -710,8 +710,8 @@ public class Drive extends Subsystem {
 	
 	public void autoTarget(double argPower) {
 		final double DEGREES_PER_PIXEL = (56.5 / 320.0); // Axis 206 - 56.5 degree FOV, 320 pixels
-		double correction = Robot.getCenterX() * DEGREES_PER_PIXEL;
-		double headingForImage = Robot.getImageHeading();
+		double correction = Robot.targeting.getCubeCenterOffset() * DEGREES_PER_PIXEL;
+		double headingForImage = Robot.targeting.getRobotHeading();
 		double targetHeading = (headingForImage + correction);
 		
 		SmartDashboard.putNumber("Auto Aim: Target Heading", targetHeading);
@@ -719,7 +719,7 @@ public class Drive extends Subsystem {
 //		SmartDashboard.putNumber("Auto Aim: Target Correction", correction);
 		
 		// if we can see a target, update the PID Controller with the desired heading
-		if (Robot.isTargetVisible()) {
+		if (Robot.targeting.isCubeVisible()) {
 			m_desiredHeading = targetHeading;
 		}
 		
@@ -751,7 +751,7 @@ public class Drive extends Subsystem {
 		m_loopsOnTarget = 0;
 	}
 	public boolean isAlignedToTarget(int requiredLoopsOnTarget) {
-		int diff = Math.abs(Robot.getCenterX());
+		int diff = Math.abs(Robot.targeting.getCubeCenterOffset());
 		if (diff <= AIM_PIXEL_TOLERANCE ) {
 			m_loopsOnTarget++;
 		} else {

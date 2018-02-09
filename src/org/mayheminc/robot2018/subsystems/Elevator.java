@@ -28,6 +28,7 @@ public class Elevator extends Subsystem {
 
     final int ELEVATOR_FLOOR = 0;
     final int ELEVATOR_CEILING = 1000;
+    final int POSITION_TOLERANCE = 20;
     
 	int m_motorSpeed;
 	boolean m_manualMode;
@@ -39,6 +40,7 @@ public class Elevator extends Subsystem {
 	{
 		super();
 		
+		// TODO: need to tune the PIDF parameters
 		m_motor.config_kP(0, 1, 0);
 		m_motor.config_kI(0, 0, 0);
 		m_motor.config_kD(0, 0, 0);
@@ -54,6 +56,20 @@ public class Elevator extends Subsystem {
     	m_SafetyOn = true; // turn on the safety checks
     	m_autoSetpoint = pos.getValue(); // get the desired setpoint
     	m_motor.set(ControlMode.Position, m_autoSetpoint); // tell the motor to get to the setpoint
+    }
+    
+    /**
+     * If the elevator is within the tolerance, then return true.
+     * @return
+     */
+    public boolean IsElevatorAtPosition()
+    {
+    	// if manual mode is enabled, always return true.
+    	if( m_manualMode ) return true;
+    	
+    	int position = m_motor.getSelectedSensorPosition(0);
+    	int diff = Math.abs(position - m_autoSetpoint);
+    	return (diff < POSITION_TOLERANCE);
     }
     
     /**
@@ -108,6 +124,10 @@ public class Elevator extends Subsystem {
         	}
     		
     		m_motor.set(ControlMode.Velocity,  m_motorSpeed);
+    	}
+    	else // this is auto mode
+    	{
+    		// the motors are set to the position in the auto calls.
     	}
     }
 }

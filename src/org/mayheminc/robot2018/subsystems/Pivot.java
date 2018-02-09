@@ -17,8 +17,10 @@ public class Pivot extends Subsystem {
 
 	public static final int UPRIGHT_POSITION = 2000; //JUST PLACEHOLDER!
 	public static final int DOWNWARD_POSITION = 0; //JUST A PLACEHOLDER!
+	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
 	TalonSRX m_pivotmoter = new TalonSRX(RobotMap.PIVOT_TALON);
+	int m_position;
 
 	public Pivot()
 	{
@@ -38,7 +40,7 @@ public class Pivot extends Subsystem {
      * Set the current position of the pivot to be zero.
      */
     public void zeroPivot() {	
-    	m_pivotmoter.setSelectedSensorPosition(0, 0, 1000);//
+    	m_pivotmoter.setSelectedSensorPosition(0, 0, 1000);
     }
     
     /**
@@ -58,5 +60,12 @@ public class Pivot extends Subsystem {
     void moveTo(int position)
     {
     	m_pivotmoter.set(ControlMode.Position, position);
+    	m_position = position;
+    }
+    
+    public boolean IsPivotInPosition()
+    {
+    	int diff = Math.abs(m_pivotmoter.getSelectedSensorPosition(0) - m_position);
+    	return diff < PIVOT_TOLERANCE;
     }
 }

@@ -42,6 +42,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static Pivot pivot = new Pivot();
 	public static Elevator elevator = new Elevator();
 	public static ElevatorArms elevatorArms = new ElevatorArms();
+	public static Targeting targeting = new Targeting();
 	
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()
@@ -110,7 +111,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public void disabledPeriodic() {
 		// update sensors that need periodic update
-//		updateImgResults();	
+		targeting.periodic();
 		
 		Scheduler.getInstance().run();
 
@@ -119,13 +120,9 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		Robot.drive.updateHistory();
 		
 		PrintPeriodicPeriod();
-		gameData.Read();
 	}
 
 	public void autonomousInit() {
-		// read the game data for the switch and scale positions.
-		gameData.Read();
-		
 		//force low gear
 		drive.setShifter(Drive.LOW_GEAR);
 		// turn off the compressor
@@ -154,7 +151,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 */
 	public void autonomousPeriodic() {
 		// update sensors that need periodic update
-		updateImgResults();	
+		targeting.periodic();
 		
 		Scheduler.getInstance().run();
 
@@ -203,7 +200,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		teleopOnce = true;
 		
 		// update sensors that need periodic update
-		updateImgResults();	
+		targeting.periodic();
 		
 		Scheduler.getInstance().run();
 
@@ -220,17 +217,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 		Robot.drive.updateAutoShift();
 		Robot.drive.updateHistory();
-	}
-
-	public void updateGRIP() {
-		Number[] defaultValue = new Number[0];
-		
-		Number[] areas = table.getEntry("area").getNumberArray(defaultValue);
-
-		for (Number area : areas) {
-			SmartDashboard.putNumber("grip_area", area.doubleValue());
-			DriverStation.reportError("GRIP Contour Report" + area, false);
-		}
 	}
 
 	public static boolean getBrownoutMode() {
@@ -258,29 +244,11 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 				SmartDashboard.putString("Game Data",  gameData.toString());
 				
-				// display mode information
-				// SmartDashboard.putBoolean("Is Teleop",
-				// DriverStation.getInstance().isOperatorControl());
-				// SmartDashboard.putBoolean("Is Autonomous",
-				// DriverStation.getInstance().isAutonomous());
-				// SmartDashboard.putBoolean("Is Enabled",
-				// DriverStation.getInstance().isEnabled());
-
-				// display interesting OI information
-				// SmartDashboard.putNumber("DriveX", oi.driveX());
-				// SmartDashboard.putNumber("DriveY", oi.driveY());
-				// SmartDashboard.putNumber("DriveRotation",
-				// oi.driveRotation());
-
 				drive.updateSmartDashboard();
-//				arm.updateSmartDashboard();
-//				launcher.updateSmartDashboard();
 
 				if (updateAutoFields) {
 					Autonomous.updateSmartDashboard();
 				}
-				SmartDashboard.putNumber("Frame Number", getFrameNum());
-				SmartDashboard.putNumber("Center of Target", getCenterX());
 
 				nextSmartDashboardUpdate += SMART_DASHBOARD_UPDATE_INTERVAL;
 			}
@@ -297,52 +265,4 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		return (pdp.getVoltage() > BROWNOUT_VOLTAGE_UPPER_THRESHOLD);
 
 	}
-	
-	/* 
-	 * Functions for camera image processing via network tables
-	 */
-	
-	// NOTE:  By convention, data in the "ImgResults" array is as follows:
-	//       imgResults[0] is frameNumber
-	//       imgResults[1] is centerX
-	//    (1000.0 is a "magic number" meaning no target found by image processing)
-	//    (1001.0 is a "magic number" meaning no info in network tables
-	
-	private static final Number[] DEFAULT_IMG_RESULTS = {0.0, 1001.0};
-	private static Number[] latestImgResults = {0.0, 1001.0};
-	private static int latestFrameNum = 0;
-	private static int latestCenterX = 1001;
-	private static double latestImageHeading = 0.0;
-	
-	private static void updateImgResults() {
-//	  NetworkTableEntry entry = table.getEntry("ImgResults");
-//	  latestImgResults = entry.getDoubleArray(DEFAULT_IMG_RESULTS);
-	  
-//	  latestImgResults = table.getNumberArray("ImgResults", DEFAULT_IMG_RESULTS);
-//	  latestImgResults = table.getEntry("ImgResults").getNumberArray(DEFAULT_IMG_RESULTS);
-//	  
-//	  // check to see if these are new results
-//	  if ( (int) latestImgResults[0] != latestFrameNum) {
-//		  latestFrameNum = (int) latestImgResults[0];
-//		  latestCenterX = (int) latestImgResults[1];
-//		  latestImageHeading = drive.getHeadingForCapturedImage();
-//	  }
-	}
-	
-	public static int getFrameNum() {
-		return latestFrameNum;	
-	}
-	
-	public static int getCenterX() {
-		return latestCenterX;
-	}
-	
-	public static double getImageHeading() {
-		return latestImageHeading;
-	}
-
-	public static boolean isTargetVisible() {
-		return (getCenterX() < 1000);
-	}
-
 }

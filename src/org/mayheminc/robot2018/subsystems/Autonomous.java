@@ -15,29 +15,6 @@ import org.mayheminc.robot2018.autonomousroutines.*;
  */
 public class Autonomous extends Subsystem {
 
-//	private static int slot = 1; // start with slot 1 selected
-	
-//	private static String [] slotNames = {
-//			"ERROR : 0",
-//			"Left-Most: 1",
-//			"Left-Center: 2",
-//			"Center: 3",
-//			"Right-Center: 4",
-//			"Right-Most: 5",
-//			"Left-Center to Center: 6"
-//	};
-	
-//	private static Command autonomousDefenses[] = {          
-//			/* 0 */ 
-////			/* 1 */  new AutoDefenseMoat()
-////			/* 2 */ , new AutoDefensePortcullis()
-////			/* 3 */ , new AutoDefenseRamparts()
-////			/* 4 */ , new AutoDefenseRockWall()
-////			/* 5 */ , new AutoDefenseRoughTerrain()
-////			/* ? */ , new AutoDefenseChevalDeFrise()
-////			/* ? */ , new AutoDefenseDrawbridge()
-////			/* ? */ , new AutoDefenseSallyPort()
-//	};
 
 	private static Command autonomousPrograms[] = {
 			/* 0 */   new StayStill()  // do nothing	

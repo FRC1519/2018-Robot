@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * This 2 Cube Auto starts on the left.  
+ * Based on the scale/switch randomization, it chooses the best path.
  */
 public class Auto2CubeFromLeft extends Auto2CubeBase {
     /**

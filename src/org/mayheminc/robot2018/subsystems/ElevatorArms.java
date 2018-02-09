@@ -18,12 +18,17 @@ public class ElevatorArms extends Subsystem {
 
 	public static boolean OPEN_ARM = true;
 	public static boolean CLOSE_ARM = !OPEN_ARM;
-	public enum JawPositions{
+	
+	public static final double MOTOR_STOP = 0.0;
+	public static final double MOTOR_OUT_SLOW = 0.2;
+	public static final double MOTOR_OUT_FAST = 1.0;
+	
+	public enum JawPosition{
 		OPEN(true),
 		CLOSE(false);
 		
 	    private final boolean id; // https://stackoverflow.com/questions/1067352/can-set-enum-start-value-in-java
-	    JawPositions(boolean id) { this.id = id; }
+	    JawPosition(boolean id) { this.id = id; }
 	    public boolean getValue() { return id; }
 	}
 	
@@ -32,8 +37,17 @@ public class ElevatorArms extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void setJaw(boolean b)
+    public void setJaw(JawPosition b)
     {
-    	m_arm.set(b);
+    	m_arm.set(b.getValue());
+    }
+    
+    /**
+     * Set the motor to a speed.
+     * @param d
+     */
+    public void setMotor(double d)
+    {
+    	m_motor.set(ControlMode.PercentOutput, d);
     }
 }

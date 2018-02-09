@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * This is the base class of all Auto 2 Cube routines.
+ * This gets an Auto routine from the subclass and runs it until it completes.
  */
 public abstract class Auto2CubeBase extends Command {
     boolean hasStarted = false;
