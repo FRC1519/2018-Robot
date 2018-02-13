@@ -112,11 +112,13 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void disabledPeriodic() {
 		// update sensors that need periodic update
 		targeting.periodic();
+		pivot.UpdateSmartDashboard();
 		
 		Scheduler.getInstance().run();
 
 		// update Smart Dashboard, including fields for setting up autonomous operation
 		updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
+//		System.out.println("disale P");
 		Robot.drive.updateHistory();
 		
 		PrintPeriodicPeriod();
@@ -201,6 +203,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		
 		// update sensors that need periodic update
 		targeting.periodic();
+		pivot.periodic();
 		
 		Scheduler.getInstance().run();
 
@@ -235,6 +238,9 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void updateSmartDashboard(boolean updateAutoFields) {
 		try {
 			if (System.currentTimeMillis() > nextSmartDashboardUpdate) {
+				
+//				System.out.println("update.");
+				
 				// display free memory for the JVM
 				double freeMemoryInKB = runtime.freeMemory() / 1024;
 				SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
@@ -245,6 +251,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				SmartDashboard.putString("Game Data",  gameData.toString());
 				
 				drive.updateSmartDashboard();
+				pivot.UpdateSmartDashboard();
 
 				if (updateAutoFields) {
 					Autonomous.updateSmartDashboard();

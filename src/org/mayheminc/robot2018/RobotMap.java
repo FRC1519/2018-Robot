@@ -10,22 +10,23 @@ public class RobotMap {
 	// Drive CAN Talons
 	public static final int FRONT_LEFT_TALON = 1;
 	public static final int BACK_LEFT_TALON = 2;
-	public static final int FRONT_RIGHT_TALON = 7;
-	public static final int BACK_RIGHT_TALON = 8;
-	
-	//Arm Talon
-	public static final int ARM_TALON = 3;
+	public static final int FRONT_RIGHT_TALON = 3;
+	public static final int BACK_RIGHT_TALON = 4;
 	
 	// Pivot Talon
-	public static final int PIVOT_TALON = 20;
+	public static final int PIVOT_TALON = 12;
 	
 	// Intake Talons
-	public static final int INTAKE_LEFT_TALON = 21;
-	public static final int INTAKE_RIGHT_TALON = 22;
+	public static final int INTAKE_LEFT_TALON = 7;
+	public static final int INTAKE_RIGHT_TALON = 11;
+	
+//	public static final int UNUSED_TALON = 8
+	public static final int CLIMBER_TALON = 10;
 	
 	// Elevator Talons
-	public static final int ELEVATOR_TALON = 23;
-	public static final int ELEVATOR_ARM_MOTOR = 24;
+	public static final int ELEVATOR_TALON = 9;
+	public static final int ELEVATOR_ARM_MOTOR = 6;
+	public static final int TURRET_TALON = 5;
 
 	// Joysticks
 	public static final int DRIVER_GAMEPAD = 0;
@@ -36,8 +37,9 @@ public class RobotMap {
 	public static final int WINCH_TALON = 25;
 	
 	//Solenoids:
-	public static final int SHIFTING_SOLENOID = 0;
-	public static final int ELEVATOR_ARM_SOLENOID = 1;
+	public static final int INTAKE_FINGERS_SOLENOID = 0;
+	public static final int ELEVATOR_ARM_SOLENOID = 2;
+	public static final int SHIFTING_SOLENOID = 4;
 	
 	// PDP Channels = 
 	// Visually checked on the Comp Robot 2/23/2016 - Robert Deml

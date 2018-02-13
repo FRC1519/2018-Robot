@@ -1,11 +1,7 @@
 package org.mayheminc.robot2018.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 import org.mayheminc.robot2018.RobotMap;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 

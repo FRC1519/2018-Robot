@@ -1,6 +1,6 @@
 package org.mayheminc.robot2018.subsystems;
 
-import org.mayheminc.robot2018.Robot;
+//import org.mayheminc.robot2018.Robot;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -48,11 +48,11 @@ public class Targeting extends Subsystem {
 		latestImgResults = table.getEntry("ImgResults").getNumberArray(DEFAULT_IMG_RESULTS);
 
 		// check to see if these are new results
-		if ( (int) latestImgResults[0] != latestFrameNum) {
+/*		if ( (int) latestImgResults[0] != latestFrameNum) {
 			latestFrameNum = (int) latestImgResults[NetworkTableData.FRAME_NUM.getValue()];
 			latestCenterX = (int) latestImgResults[NetworkTableData.CUBE_X.getValue()];
 			latestImageHeading = Robot.drive.getHeadingForCapturedImage();
-		}
+		}*/
 	}
 	
 	public double getRobotHeading() {return latestImageHeading;}

@@ -16,7 +16,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.util.Arrays;
+//import java.util.Arrays;
 
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
@@ -75,9 +75,12 @@ public class Drive extends Subsystem {
 			/* Communicate w/navX MXP via the MXP SPI Bus.                                     */
 			/* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
 			/* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
-			Navx = new AHRS(SPI.Port.kMXP); 
+			Navx = new AHRS(SPI.Port.kMXP);
+			Navx.reset();
+			System.out.println("NAVX LOADED.");
 		} catch (RuntimeException ex ) {
 			DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
+			System.out.println("Error oading navx.");
 		}
 
 		// create a PID Controller that reads the heading error and outputs the heading correction.
@@ -563,6 +566,12 @@ public class Drive extends Subsystem {
 
 //		SmartDashboard.putNumber("ultrasonicDistance", (ultrasonic.getDistance() * 0.393701));
 
+		SmartDashboard.putNumber("Current Heading",  getHeading());
+
+		SmartDashboard.putNumber("yaw",  Navx.getYaw());
+		SmartDashboard.putNumber("pitch",  Navx.getPitch());
+		SmartDashboard.putNumber("angle",  Navx.getAngle());
+		
 		SmartDashboard.putNumber("Left Front Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Front Encoder Counts", rightFrontTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));

@@ -183,8 +183,8 @@ public class OI {
     	//DRIVER_PAD_GREEN_BUTTON.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
     	
     	// adjust auto parameters
-     	DRIVER_STICK_BUTTON_SIX.whenPressed(new SelectAutonomousSlot(1));
-     	DRIVER_STICK_BUTTON_SEVEN.whenPressed(new SelectAutonomousSlot(-1));
+//     	DRIVER_STICK_BUTTON_SIX.whenPressed(new SelectAutonomousSlot(1));
+//     	DRIVER_STICK_BUTTON_SEVEN.whenPressed(new SelectAutonomousSlot(-1));
      	DRIVER_STICK_BUTTON_THREE.whenPressed(new SelectAutonomousProgram(1));
      	DRIVER_STICK_BUTTON_TWO.whenPressed(new SelectAutonomousProgram(-1));
      	DRIVER_STICK_BUTTON_FOUR.whenPressed(new SelectAutonomousDelay(-1));
@@ -196,18 +196,18 @@ public class OI {
      	
      	//*************************OPERATOR PAD*******************************
      	
-//     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new SetArmPosition(Robot.arm.LOW_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-//     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new SetArmPosition(Robot.arm.FLOOR_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-//     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new SetArmPosition(Robot.arm.FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
-//     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new SetArmPosition(Robot.arm.UPRIGHT_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));
+     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotManualModeOn());
+     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotToFloor());
+     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotPidMode());
+     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotToElevator());
 //     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
 //     	
 //     	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
-////     	OPERATOR_PAD_BUTTON_FIVE - RESERVED FOR "Permission to Fire"
-////     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
+     	OPERATOR_PAD_BUTTON_FIVE.whileHeld(new IntakeOpenJaw()); 
+//     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
 //     	
-//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new HarvesterRollersForward());
-//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new HarvesterRollersReverse());
+     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
+     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new IntakeOut());
 //     	
 //     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_TOGETHER));
 //     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_APART));
@@ -216,7 +216,7 @@ public class OI {
 //     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());
 //
 //     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-//     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new SetArmManualMode(Arm.REQUIRE_ARM_SUBSYSTEM));
+     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new PivotZeroEncoder());
 	}
 	
     public boolean quickTurn() {
@@ -237,6 +237,27 @@ public class OI {
 //            throttleVal = throttleVal / 2;
 //        }
         return(throttleVal);
+    }
+    
+    public double pivotArmPower()
+    {
+    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
+    	// if the power is less than 20%, make it 0
+    	if( value < 0.2 && value > -0.2)
+    	{
+    		value = 0.0;
+    	}
+    	else if( value > 0.2 )
+    	{
+    		// if it is above 20%, subtract the 20% to keep the linearness.
+    		value = value - 0.2;
+    	}
+    	else 
+    	{
+    		// if it is above 20%, subtract the 20% to keep the linearness.
+    		value = value + 0.2;
+    	}
+    	return value;
     }
     
     public double tankDriveLeft() {

@@ -7,26 +7,19 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class IntakeOut extends InstantCommand {
+public class PivotZeroEncoder extends InstantCommand {
 
-    public IntakeOut() {
+    public PivotZeroEncoder() {
         super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	setRunWhenDisabled(true);
+
     }
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.intake.spitOutCube();
+    	Robot.pivot.zeroPivot();
     }
-    protected boolean isFinished() {return false;}
 
-    protected void end()
-    {
-    	Robot.intake.stop();
-    }
-    protected void interrupt()
-    {
-    	Robot.intake.stop();
-    }
 }

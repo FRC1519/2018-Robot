@@ -1,7 +1,9 @@
 package org.mayheminc.robot2018.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
 //import org.mayheminc.util.MayhemTalonSRX;
 
@@ -15,23 +17,31 @@ import com.ctre.phoenix.motorcontrol.*;
  */
 public class Pivot extends Subsystem {
 
-	public static final int UPRIGHT_POSITION = 2000; //JUST PLACEHOLDER!
-	public static final int DOWNWARD_POSITION = 0; //JUST A PLACEHOLDER!
+	public static final int UPRIGHT_POSITION = 2800;//-2800; //JUST PLACEHOLDER!
+	public static final int DOWNWARD_POSITION = 0;//0; //JUST A PLACEHOLDER!
 	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
 	TalonSRX m_pivotmoter = new TalonSRX(RobotMap.PIVOT_TALON);
 	int m_position;
+	boolean m_manualMode = false;
 
 	public Pivot()
 	{
 		super();
 		
-		m_pivotmoter.config_kP(0, 1, 0);
+		m_pivotmoter.configNominalOutputForward(0.0,  0);
+		m_pivotmoter.configNominalOutputReverse(0.0, 0);
+		m_pivotmoter.configPeakOutputForward(0.3,  0);
+		m_pivotmoter.configPeakOutputReverse(-0.3,  0);
+		
+		m_pivotmoter.config_kP(0, 3, 0);
 		m_pivotmoter.config_kI(0, 0, 0);
 		m_pivotmoter.config_kD(0, 0, 0);
 		m_pivotmoter.config_kF(0, 0, 0);
 		
 		m_pivotmoter.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		m_pivotmoter.setInverted(false);
+		m_pivotmoter.setSensorPhase(true);
 	}
     protected void initDefaultCommand() {
 	}
@@ -42,6 +52,15 @@ public class Pivot extends Subsystem {
     public void zeroPivot() {	
     	m_pivotmoter.setSelectedSensorPosition(0, 0, 1000);
     }
+    public void ManualMode()
+    {
+    	m_manualMode = true;
+    }
+    public void PidMode()
+    {
+    	m_manualMode = false;
+    }
+    
     
     /**
      * Set the pivot to the up position.
@@ -67,5 +86,17 @@ public class Pivot extends Subsystem {
     {
     	int diff = Math.abs(m_pivotmoter.getSelectedSensorPosition(0) - m_position);
     	return diff < PIVOT_TOLERANCE;
+    }
+    public void periodic()
+    {
+    	if( m_manualMode )
+    	{
+    		double power = Robot.oi.pivotArmPower();
+    		m_pivotmoter.set(ControlMode.PercentOutput, power);
+    	}
+    }
+    public void UpdateSmartDashboard()
+    {
+    	SmartDashboard.putNumber("Pivot Encoder Pos", m_pivotmoter.getSelectedSensorPosition(0));
     }
 }

@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class IntakeOut extends InstantCommand {
+public class PivotPidMode extends InstantCommand {
 
-    public IntakeOut() {
+    public PivotPidMode() {
         super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -17,16 +17,7 @@ public class IntakeOut extends InstantCommand {
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.intake.spitOutCube();
+    	Robot.pivot.PidMode();
     }
-    protected boolean isFinished() {return false;}
 
-    protected void end()
-    {
-    	Robot.intake.stop();
-    }
-    protected void interrupt()
-    {
-    	Robot.intake.stop();
-    }
 }
