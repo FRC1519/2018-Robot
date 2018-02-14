@@ -7,16 +7,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class IntakeOpenJaw extends Command {
+public class IntakeCloseJaw extends Command {
 
-    public IntakeOpenJaw() {
+    public IntakeCloseJaw() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.intake.OpenJaws();
+    	Robot.intake.CloseJaws();
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -30,12 +31,10 @@ public class IntakeOpenJaw extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-//    	Robot.intake.CloseJaws();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-//    	Robot.intake.CloseJaws();
     }
 }

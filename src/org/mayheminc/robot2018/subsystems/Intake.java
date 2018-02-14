@@ -65,11 +65,11 @@ public class Intake extends Subsystem {
     {
     	count++;
     	
-    	m_intakeMoterLeft.set(ControlMode.PercentOutput, m_setSpeed);
-    	if( (count % 20) > 20/2 )
-    	{
-    		m_intakeMoterLeft.set(ControlMode.PercentOutput, -m_setSpeed);
-    	}
+    	m_intakeMoterLeft.set(ControlMode.PercentOutput, -m_setSpeed);
+//    	if( (count % 20) > 20/2 )
+//    	{
+//    		m_intakeMoterLeft.set(ControlMode.PercentOutput, -m_setSpeed);
+//    	}
     	m_intakeMoterRight.set(ControlMode.PercentOutput, m_setSpeed);
 
     }

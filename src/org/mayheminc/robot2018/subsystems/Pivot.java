@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.*;
 public class Pivot extends Subsystem {
 
 	public static final int UPRIGHT_POSITION = 2800;//-2800; //JUST PLACEHOLDER!
+	public static final int SPIT_POSITION = 1900;
 	public static final int DOWNWARD_POSITION = 0;//0; //JUST A PLACEHOLDER!
 	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
@@ -31,7 +32,7 @@ public class Pivot extends Subsystem {
 		
 		m_pivotmoter.configNominalOutputForward(0.0,  0);
 		m_pivotmoter.configNominalOutputReverse(0.0, 0);
-		m_pivotmoter.configPeakOutputForward(0.3,  0);
+		m_pivotmoter.configPeakOutputForward(0.5,  0);
 		m_pivotmoter.configPeakOutputReverse(-0.3,  0);
 		
 		m_pivotmoter.config_kP(0, 3, 0);
@@ -66,6 +67,7 @@ public class Pivot extends Subsystem {
      * Set the pivot to the up position.
      */
     public void pivotUp() {
+    	m_manualMode = false;
     	moveTo(UPRIGHT_POSITION );
     }
     
@@ -73,10 +75,11 @@ public class Pivot extends Subsystem {
      * Set the pivot to the down position.
      */
     public void pivotDown() {
+    	m_manualMode = false;
     	moveTo(DOWNWARD_POSITION);
     }
     
-    void moveTo(int position)
+    public void moveTo(int position)
     {
     	m_pivotmoter.set(ControlMode.Position, position);
     	m_position = position;
@@ -87,8 +90,15 @@ public class Pivot extends Subsystem {
     	int diff = Math.abs(m_pivotmoter.getSelectedSensorPosition(0) - m_position);
     	return diff < PIVOT_TOLERANCE;
     }
+    
     public void periodic()
     {
+    	if( Robot.oi.pivotArmPower() > 0.01 ||
+    		Robot.oi.pivotArmPower() < -0.01 )
+    	{
+    		m_manualMode = true;
+    	}
+    	
     	if( m_manualMode )
     	{
     		double power = Robot.oi.pivotArmPower();
