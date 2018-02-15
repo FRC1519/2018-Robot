@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class IntakeOut extends InstantCommand {
+public class IntakeOff extends InstantCommand {
 
-    public IntakeOut() {
+    public IntakeOff() {
         super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -17,6 +17,7 @@ public class IntakeOut extends InstantCommand {
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.intake.spitOutCube();
+    	Robot.intake.stop();
     }
+
 }

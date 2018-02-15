@@ -22,6 +22,8 @@ public class Autonomous extends Subsystem {
 			, new Auto2CubeFromRight()
 			, new Auto2CubeFromMid()
 			, new Auto2CubeFromLeft()
+			
+			, new Auto1CubeFromLeft()
 
 			, new StartRightLeftSwitchLeftScale()
 			, new StartRightLeftSwitchLeftScale()
@@ -40,6 +42,11 @@ public class Autonomous extends Subsystem {
 			, new StartLeftRightSwitchRightScale()
 			, new StartLeftRightSwitchRightScale()
 					
+			, new StartRightLeftSwitch()
+			, new StartRightRightSwitch()
+			, new StartLeftLeftSwitch()
+			, new StartLeftRightSwitch()
+			
 	};
 
 	private static int programNumber = 8;

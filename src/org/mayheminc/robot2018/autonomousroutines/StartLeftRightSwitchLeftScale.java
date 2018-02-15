@@ -27,13 +27,6 @@ public class StartLeftRightSwitchLeftScale extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 140.0, 0.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, -90.0));
-    	addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 20.0, 90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 100.0, 0.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20.0, -90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 300.0, 0.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 20, 90.0));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 50.0, 0.0));
+    	addSequential(new StartLeftLeftSwitch());
     }
 }

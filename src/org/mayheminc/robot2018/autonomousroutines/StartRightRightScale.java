@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class StartMidRightSwitchLeftScale extends CommandGroup {
+public class StartRightRightScale extends CommandGroup {
 
-    public StartMidRightSwitchLeftScale() {
-    	addSequential(new StartMidRightSwitch());
+    public StartRightRightScale() {
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 100.0, 0.0));
     }
 }

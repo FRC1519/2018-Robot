@@ -22,6 +22,9 @@ public class Intake extends Subsystem {
 	Solenoid m_solenoid = new Solenoid(RobotMap.INTAKE_FINGERS_SOLENOID);
 
 	double m_setSpeed;
+	
+	boolean m_reverseLeftSide;
+	
 //	public Intake()
 //	{
 //		m_intakeMoterLeft.configPeakOutputForward(1.0,  0);
@@ -52,24 +55,24 @@ public class Intake extends Subsystem {
     
     public void OpenJaws()
     {
-    	m_solenoid.set(true);
+    	m_solenoid.set(false);
     }
     public void CloseJaws()
     {
-    	m_solenoid.set(false);
+    	m_solenoid.set(true);
    
     }
     
-    int count;
+    public void Reverse(boolean b)
+    {
+    	m_reverseLeftSide = b;
+    }
+    
     public void periodic()
     {
-    	count++;
+    	double reverse = (m_reverseLeftSide) ? -1.0 : 1.0;
     	
-    	m_intakeMoterLeft.set(ControlMode.PercentOutput, -m_setSpeed);
-//    	if( (count % 20) > 20/2 )
-//    	{
-//    		m_intakeMoterLeft.set(ControlMode.PercentOutput, -m_setSpeed);
-//    	}
+    	m_intakeMoterLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverse);
     	m_intakeMoterRight.set(ControlMode.PercentOutput, m_setSpeed);
 
     }

@@ -10,7 +10,12 @@ public class MayhemTalonSRX extends TalonSRX{
 	
 	public MayhemTalonSRX(int deviceNumber) {
 		super(deviceNumber);
+		
 		// TODO Auto-generated constructor stub
+		this.configNominalOutputForward(0.0,  1000);
+		this.configNominalOutputReverse(0.0,  1000);
+		this.configPeakOutputForward(1.0,  1000);
+		this.configPeakOutputReverse(-1.0, 1000);
 	}
 
 	public void changeControlMode(ControlMode mode)

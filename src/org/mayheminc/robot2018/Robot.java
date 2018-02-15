@@ -127,8 +127,12 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void autonomousInit() {
 		//force low gear
 		drive.setShifter(Drive.LOW_GEAR);
+		
 		// turn off the compressor
 		compressor.stop();
+
+		// where ever the pivot is, lock it there.
+		pivot.LockCurrentPosition();
 
 		drive.zeroHeadingGyro();
 		
@@ -165,6 +169,9 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// turn off the compressor
 		compressor.start();
 
+		// where ever the pivot is, lock it there.
+		pivot.LockCurrentPosition();
+		
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove

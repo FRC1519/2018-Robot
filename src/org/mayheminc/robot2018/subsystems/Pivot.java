@@ -22,7 +22,7 @@ public class Pivot extends Subsystem {
 	public static final int DOWNWARD_POSITION = 0;//0; //JUST A PLACEHOLDER!
 	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
-	TalonSRX m_pivotmoter = new TalonSRX(RobotMap.PIVOT_TALON);
+	TalonSRX m_pivotmotor = new TalonSRX(RobotMap.PIVOT_TALON);
 	int m_position;
 	boolean m_manualMode = false;
 
@@ -30,19 +30,19 @@ public class Pivot extends Subsystem {
 	{
 		super();
 		
-		m_pivotmoter.configNominalOutputForward(0.0,  0);
-		m_pivotmoter.configNominalOutputReverse(0.0, 0);
-		m_pivotmoter.configPeakOutputForward(0.5,  0);
-		m_pivotmoter.configPeakOutputReverse(-0.3,  0);
+		m_pivotmotor.configNominalOutputForward(0.0,  0);
+		m_pivotmotor.configNominalOutputReverse(0.0, 0);
+		m_pivotmotor.configPeakOutputForward(0.5,  0);
+		m_pivotmotor.configPeakOutputReverse(-0.3,  0);
 		
-		m_pivotmoter.config_kP(0, 3, 0);
-		m_pivotmoter.config_kI(0, 0, 0);
-		m_pivotmoter.config_kD(0, 0, 0);
-		m_pivotmoter.config_kF(0, 0, 0);
+		m_pivotmotor.config_kP(0, 3, 0);
+		m_pivotmotor.config_kI(0, 0, 0);
+		m_pivotmotor.config_kD(0, 0, 0);
+		m_pivotmotor.config_kF(0, 0, 0);
 		
-		m_pivotmoter.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		m_pivotmoter.setInverted(false);
-		m_pivotmoter.setSensorPhase(true);
+		m_pivotmotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		m_pivotmotor.setInverted(false);
+		m_pivotmotor.setSensorPhase(true);
 	}
     protected void initDefaultCommand() {
 	}
@@ -51,7 +51,11 @@ public class Pivot extends Subsystem {
      * Set the current position of the pivot to be zero.
      */
     public void zeroPivot() {	
-    	m_pivotmoter.setSelectedSensorPosition(0, 0, 1000);
+    	m_pivotmotor.setSelectedSensorPosition(0, 0, 1000);
+    }
+    public void LockCurrentPosition()
+    {
+    	m_pivotmotor.set(ControlMode.Position, m_pivotmotor.getSelectedSensorPosition(0));
     }
     public void ManualMode()
     {
@@ -81,13 +85,13 @@ public class Pivot extends Subsystem {
     
     public void moveTo(int position)
     {
-    	m_pivotmoter.set(ControlMode.Position, position);
+    	m_pivotmotor.set(ControlMode.Position, position);
     	m_position = position;
     }
     
     public boolean IsPivotInPosition()
     {
-    	int diff = Math.abs(m_pivotmoter.getSelectedSensorPosition(0) - m_position);
+    	int diff = Math.abs(m_pivotmotor.getSelectedSensorPosition(0) - m_position);
     	return diff < PIVOT_TOLERANCE;
     }
     
@@ -102,11 +106,11 @@ public class Pivot extends Subsystem {
     	if( m_manualMode )
     	{
     		double power = Robot.oi.pivotArmPower();
-    		m_pivotmoter.set(ControlMode.PercentOutput, power);
+    		m_pivotmotor.set(ControlMode.PercentOutput, power);
     	}
     }
     public void UpdateSmartDashboard()
     {
-    	SmartDashboard.putNumber("Pivot Encoder Pos", m_pivotmoter.getSelectedSensorPosition(0));
+    	SmartDashboard.putNumber("Pivot Encoder Pos", m_pivotmotor.getSelectedSensorPosition(0));
     }
 }

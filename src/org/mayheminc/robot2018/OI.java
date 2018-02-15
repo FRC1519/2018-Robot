@@ -192,15 +192,16 @@ public class OI {
      	
     	// zero elements that require zeroing
      	DRIVER_STICK_BUTTON_EIGHT.whenPressed(new ZeroGyro());
-     	DRIVER_STICK_BUTTON_NINE.whenPressed(new ZeroArmEncoder());
+     	DRIVER_STICK_BUTTON_NINE.whenPressed(new PivotZeroEncoder());
      	
      	//*************************OPERATOR PAD*******************************
      	
-     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
+     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new IntakeEscapeDeathGrip());
      	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotToFloor());
-     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotPidMode());
+     	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
      	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotToElevator());
-//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
+
+     	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
 //     	
 //     	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
      	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeOpenJaw()); 
@@ -217,7 +218,7 @@ public class OI {
 //     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());
 //
 //     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new PivotZeroEncoder());
+//     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new PivotZeroEncoder());
 	}
 	
     public boolean quickTurn() {
