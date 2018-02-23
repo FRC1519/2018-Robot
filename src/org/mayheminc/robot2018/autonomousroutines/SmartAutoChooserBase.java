@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
  * This is the base class of all Auto 2 Cube routines.
  * This gets an Auto routine from the subclass and runs it until it completes.
  */
-public abstract class Auto2CubeBase extends Command {
+public abstract class SmartAutoChooserBase extends Command {
     boolean hasStarted = false;
     Command autoRoutine;
     	
 
-    public Auto2CubeBase() {
+    public SmartAutoChooserBase() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

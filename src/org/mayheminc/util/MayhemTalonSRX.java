@@ -2,6 +2,9 @@ package org.mayheminc.util;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 public class MayhemTalonSRX extends TalonSRX{
@@ -16,6 +19,14 @@ public class MayhemTalonSRX extends TalonSRX{
 		this.configNominalOutputReverse(0.0,  1000);
 		this.configPeakOutputForward(1.0,  1000);
 		this.configPeakOutputReverse(-1.0, 1000);
+		
+		this.setNeutralMode(NeutralMode.Coast);
+
+		this.configContinuousCurrentLimit(0,  0);
+		this.configPeakCurrentLimit(0,  0);
+		this.configPeakCurrentDuration(0,  0);
+		this.configForwardLimitSwitchSource(RemoteLimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled, 0, 0);
+		this.configForwardSoftLimitEnable(false,  0);
 	}
 
 	public void changeControlMode(ControlMode mode)

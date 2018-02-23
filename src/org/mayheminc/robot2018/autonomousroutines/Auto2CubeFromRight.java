@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Auto2CubeFromRight extends Auto2CubeBase {
+public class Auto2CubeFromRight extends SmartAutoChooserBase {
     /**
      * Based on the game data, get the auto routine to run to score on the switch first, then the scale.
      * @return

@@ -12,6 +12,6 @@ public class CrossBaseline extends CommandGroup {
 
     public CrossBaseline() {
     	// drive forward for ~100 inches, nice and slow.
-    	addSequential(new DriveStraightOnHeading(0.3, DistanceUnits.INCHES, 100.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 100.0, 0.0));
     }
 }

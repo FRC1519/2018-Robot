@@ -7,30 +7,43 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The intake sucks in cubes and holds them.
  */
 public class Intake extends Subsystem {
 	
-	public static final double INTAKE_SPEED = 0.5; //JUST A PLACE HOLDER!
-	public static final double OUTTAKE_SPEED = -1.0; //JUST A PLACE HOLDER!
+	public static final double INTAKE_SPEED = 0.75; //JUST A PLACE HOLDER! changed from 0.5 for testing the transition
+	public static final double OUTTAKE_SPEED = -1.0; //JUST A PLACE HOLDER! changed from -1.0 for testing the transition
 	public static final double STOP_SPEED = 0;
 	
-	TalonSRX m_intakeMoterRight = new TalonSRX(RobotMap.INTAKE_RIGHT_TALON);
-	TalonSRX m_intakeMoterLeft = new TalonSRX(RobotMap.INTAKE_LEFT_TALON);
+	TalonSRX m_intakeMotorRight = new TalonSRX(RobotMap.INTAKE_RIGHT_TALON);
+	TalonSRX m_intakeMotorLeft = new TalonSRX(RobotMap.INTAKE_LEFT_TALON);
 	Solenoid m_solenoid = new Solenoid(RobotMap.INTAKE_FINGERS_SOLENOID);
 
 	double m_setSpeed;
 	
 	boolean m_reverseLeftSide;
 	
-//	public Intake()
-//	{
-//		m_intakeMoterLeft.configPeakOutputForward(1.0,  0);
-//		m_intakeMoterLeft.configPeakOutputReverse(-1.0,  0);
-//		
-//	}
+	public Intake()
+	{
+		configTalon(m_intakeMotorRight);
+		configTalon(m_intakeMotorLeft);
+	}
+	
+	void configTalon(TalonSRX talon)
+	{
+		talon.configNominalOutputForward(0,  0);
+		talon.configNominalOutputReverse(0.0,  0);
+		talon.configPeakOutputForward(1.0,  0);
+		talon.configPeakOutputReverse(-1.0,  0);
+
+		talon.configContinuousCurrentLimit(1, 0);
+		talon.configPeakCurrentLimit(2,  0);
+		talon.configPeakCurrentDuration(500,  0);
+	}
+	
     public void initDefaultCommand() {
     }
     
@@ -55,11 +68,11 @@ public class Intake extends Subsystem {
     
     public void OpenJaws()
     {
-    	m_solenoid.set(false);
+    	m_solenoid.set(true);
     }
     public void CloseJaws()
     {
-    	m_solenoid.set(true);
+    	m_solenoid.set(false);
    
     }
     
@@ -72,9 +85,14 @@ public class Intake extends Subsystem {
     {
     	double reverse = (m_reverseLeftSide) ? -1.0 : 1.0;
     	
-    	m_intakeMoterLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverse);
-    	m_intakeMoterRight.set(ControlMode.PercentOutput, m_setSpeed);
+    	m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverse);
+    	m_intakeMotorRight.set(ControlMode.PercentOutput, m_setSpeed);
 
+    }
+    public void UpdateSmartDashboard()
+    {
+    	SmartDashboard.putNumber("Intake Left Current",  m_intakeMotorLeft.getOutputCurrent());
+    	SmartDashboard.putNumber("Intake Right Current",  m_intakeMotorRight.getOutputCurrent());
     }
 }
 

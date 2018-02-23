@@ -2,12 +2,13 @@ package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.Robot;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class IntakeOut extends InstantCommand {
+public class IntakeOut extends Command {
 
     public IntakeOut() {
         super();
@@ -19,4 +20,15 @@ public class IntakeOut extends InstantCommand {
     protected void initialize() {
     	Robot.intake.spitOutCube();
     }
+    protected boolean isFinished() {return false;}
+    protected void end()
+    {
+    	Robot.intake.stop();
+    }
+    
+    protected void interrupt()
+    {
+    	Robot.intake.stop();
+    }
+
 }

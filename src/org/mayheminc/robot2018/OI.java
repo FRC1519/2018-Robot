@@ -168,16 +168,16 @@ public class OI {
     	DriverStation.reportError("OI constructor.\n", false);
 
     	// Mode initialization
-        TOGGLE_CLOSED_LOOP_MODE_BUTTON.whenPressed(new ToggleClosedLoopMode()); 
+//        TOGGLE_CLOSED_LOOP_MODE_BUTTON.whenPressed(new ToggleClosedLoopMode()); 
 //     	DRIVER_STICK_BUTTON_ONE.whenPressed(new ToggleDriveMode());
-        DRIVER_STICK_BUTTON_ONE.whenPressed(new CheckInWithFieldManagement());
+//        DRIVER_STICK_BUTTON_ONE.whenPressed(new CheckInWithFieldManagement());
      	
      	//*******************************DRIVER PAD**************************************8
     	
         DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new SetShifter(Drive.HIGH_GEAR));
         DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new SetShifter(Drive.LOW_GEAR));
   
-    	DRIVER_PAD_BLUE_BUTTON.whenPressed(new CheckInWithFieldManagement());
+//    	DRIVER_PAD_BLUE_BUTTON.whenPressed(new CheckInWithFieldManagement());
     	//DRIVER_PAD_RED_BUTTON.whileHeld(new CrossDefenseChevalDeFrise(Arm.REQUIRE_ARM_SUBSYSTEM)); //see autoInTeleop()
     	//DRIVER_PAD_YELLOW_BUTTON.whenPressed(new DeployLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
     	//DRIVER_PAD_GREEN_BUTTON.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
@@ -196,7 +196,7 @@ public class OI {
      	
      	//*************************OPERATOR PAD*******************************
      	
-     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new IntakeEscapeDeathGrip());
+     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotMove(Pivot.EXCHANGE_POSITION));
      	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotToFloor());
      	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
      	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotToElevator());
@@ -204,8 +204,8 @@ public class OI {
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
 //     	
 //     	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
-     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeOpenJaw()); 
-     	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeCloseJaw()); 
+     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeCloseJaw()); 
+     	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeOpenJaw()); 
 //     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
 //     	
      	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
@@ -214,11 +214,11 @@ public class OI {
 //     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_TOGETHER));
 //     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_APART));
 //     	
-//     	OPERATOR_PAD_D_PAD_UP.whenPressed(new OpenClaw());
+//     	OPERATOR_PAD_D_PAD_UP.whenPressed(new TransitionCubeToElevator());
 //     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());
 //
 //     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-//     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new PivotZeroEncoder());
+     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new IntakeEscapeDeathGrip());
 	}
 	
     public boolean quickTurn() {
@@ -235,9 +235,11 @@ public class OI {
          	throttleVal = 0.0;
          }
          
-//         if (DRIVER_PAD.getRawButton(OI.GAMEPAD_F310_LEFT_BUTTON)) {
-//            throttleVal = throttleVal / 2;
-//        }
+//         if (DRIVER_PAD.getRawButton(OI.DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON)) {
+         // if the slow button is pressing, half the throttle value.
+         if( DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
+            throttleVal = throttleVal / 2.0;
+        }
         return(throttleVal);
     }
     
@@ -286,6 +288,10 @@ public class OI {
         if(Math.abs(value) < 0.05){
         	value = 0.0;
         }
+        
+        if( DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
+            value = value / 2.0;
+        }
         return value;
     }
     
@@ -299,10 +305,10 @@ public class OI {
         return DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.get();
     }
     
-    public void rumbleOperatorGamePad() {
-    	DRIVER_PAD.setRumble(Joystick.RumbleType.kLeftRumble, 0);
-    	DRIVER_PAD.setRumble(Joystick.RumbleType.kRightRumble, 0);
-    }
+//    public void rumbleOperatorGamePad() {
+//    	DRIVER_PAD.setRumble(Joystick.RumbleType.kLeftRumble, 0);
+//    	DRIVER_PAD.setRumble(Joystick.RumbleType.kRightRumble, 0);
+//    }
         
     /**
      * This method will return a positive value when the left joystick is pushed up, 
@@ -310,48 +316,48 @@ public class OI {
      * @return
      */
     
-    public double getArmManualControl(){
-    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
-    	if(Math.abs(value) <= 0.05){
-    		value = 0.0;
-    	}
-    	return value;
-    }
-    public double getWinchControl(){
-    	//return OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS) * -1;
-    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS)) * -1;
-    	if(Math.abs(value) <= 0.05){
-    		value = 0.0;
-    	}
-    	return value;
-    }
+//    public double getArmManualControl(){
+//    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
+//    	if(Math.abs(value) <= 0.05){
+//    		value = 0.0;
+//    	}
+//    	return value;
+//    }
+//    public double getWinchControl(){
+//    	//return OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS) * -1;
+//    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS)) * -1;
+//    	if(Math.abs(value) <= 0.05){
+//    		value = 0.0;
+//    	}
+//    	return value;
+//    }
 
 //    public boolean getBrownoutMode(){
 //    	return crawlForward();
 //    }
     
-	public boolean permissionToLaunch() {
-		//return(OPERATOR_PAD.getRawButton(OPERATOR_PAD_BUTTON_FIVE));
-		return OPERATOR_PAD_BUTTON_FIVE.get();
-	}
-  
-	public boolean forceLaunch() {
-		return FORCE_FIRE_BUTTON.get();
-	}
-    
-	
+//	public boolean permissionToLaunch() {
+//		//return(OPERATOR_PAD.getRawButton(OPERATOR_PAD_BUTTON_FIVE));
+//		return OPERATOR_PAD_BUTTON_FIVE.get();
+//	}
+//  
+//	public boolean forceLaunch() {
+//		return FORCE_FIRE_BUTTON.get();
+//	}
+//    
+//	
 	public boolean autoTarget() {
-		return DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get();
+		return false;//DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get();
 	}
     
-	public void CheckInWithFieldManagement() {
-		m_CheckedInWithFieldManagement = true;
-//		FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramStarting();
-	}
+//	public void CheckInWithFieldManagement() {
+//		m_CheckedInWithFieldManagement = true;
+////		FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramStarting();
+//	}
 	
-	public boolean IsCheckedInWithFieldManagement() {
-		return m_CheckedInWithFieldManagement;
-	}
+//	public boolean IsCheckedInWithFieldManagement() {
+//		return m_CheckedInWithFieldManagement;
+//	}
 
 	// returns true if any of the autoInTeleop buttons are held
 	public boolean autoInTeleop() {

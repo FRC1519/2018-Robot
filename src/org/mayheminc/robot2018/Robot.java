@@ -131,6 +131,9 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// turn off the compressor
 		compressor.stop();
 
+		// set the current position to the upright position
+		pivot.zeroPivot();
+		
 		// where ever the pivot is, lock it there.
 		pivot.LockCurrentPosition();
 
@@ -253,7 +256,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
 
 				SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
-				SmartDashboard.putBoolean("FRC Comm Checked In", oi.IsCheckedInWithFieldManagement());
+//				SmartDashboard.putBoolean("FRC Comm Checked In", oi.IsCheckedInWithFieldManagement());
 
 				SmartDashboard.putString("Game Data",  gameData.toString());
 				

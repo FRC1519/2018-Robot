@@ -11,6 +11,7 @@ public class TransitionCubeToElevator extends CommandGroup {
 
 	/**
 	 * Open the elevator hands. Move the Elevator to the low scale position.
+	 * Close the intake jaws
 	 * Pivot up the cube.
 	 * Move the elevator to the pick up position.
 	 * Spit the cube up.
@@ -19,12 +20,15 @@ public class TransitionCubeToElevator extends CommandGroup {
 	 */
     public TransitionCubeToElevator() {
     	addSequential(new ElevatorArmOpen());
-    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.SCALE_LOW));
+//    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.SCALE_LOW));
+    	addSequential(new IntakeCloseJaw());
+    	addSequential(new Wait(100));
     	addSequential(new PivotToElevator());
-    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.PICK_UP_CUBE));
+//    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.PICK_UP_CUBE));
     	addSequential(new IntakeOut());
     	addSequential(new Wait(400));
     	addSequential(new ElevatorArmClose());
-    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.SWITCH_HIGH));
+    	addSequential(new IntakeOff());
+//    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.SWITCH_HIGH));
     }
 }

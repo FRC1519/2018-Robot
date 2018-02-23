@@ -5,7 +5,7 @@ import org.mayheminc.robot2018.Robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Auto1CubeFromRight extends Auto2CubeBase {
+public class Auto1CubeFromRight extends SmartAutoChooserBase {
 
 	@Override
 	protected Command GetAutoroutine() {

@@ -1,25 +1,33 @@
 package org.mayheminc.robot2018.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+
 import org.mayheminc.robot2018.Robot;
+
+import edu.wpi.first.wpilibj.Timer;
+
 /**
  *
  */
-public class CheckInWithFieldManagement extends Command {
+public class IntakeOutForTime extends Command {
 
-    public CheckInWithFieldManagement() {
+	Timer m_timer;
+	double m_timeout;
+	
+	/**
+	 * Set the intake to out for a number of seconds.
+	 */
+    public IntakeOutForTime(double t) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        setRunWhenDisabled(true);
+    	m_timeout = t;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
-    	// when a joystick button is triggered, tell the FRC 
-    	// Field Management system that we are ready.
-    	
-    	Robot.oi.CheckInWithFieldManagement();
+    	m_timer = new Timer();
+    	Robot.intake.spitOutCube();
+    	m_timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -28,15 +36,18 @@ public class CheckInWithFieldManagement extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return m_timer.hasPeriodPassed(m_timeout);
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.intake.stop();
     }
+    
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.intake.stop();
     }
 }

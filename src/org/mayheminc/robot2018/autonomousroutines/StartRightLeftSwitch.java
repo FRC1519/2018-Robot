@@ -4,6 +4,7 @@ import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.IntakeCloseJaw;
 import org.mayheminc.robot2018.commands.IntakeOff;
 import org.mayheminc.robot2018.commands.IntakeOut;
+import org.mayheminc.robot2018.commands.IntakeOutForTime;
 import org.mayheminc.robot2018.commands.PivotMove;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.Wait;
@@ -27,7 +28,7 @@ public class StartRightLeftSwitch extends CommandGroup {
 
     	addSequential(new PrintAutonomousTimeRemaining("Dropping Cube"));
     	
-    	addParallel(new IntakeOut());
+    	addParallel(new IntakeOutForTime(1.0));
     	addSequential(new Wait(0.2));
     	
     	addSequential(new DriveStraightOnHeading(-0.80, DistanceUnits.INCHES, 45.0, 0.0));

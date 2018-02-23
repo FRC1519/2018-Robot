@@ -19,6 +19,7 @@ public class Pivot extends Subsystem {
 
 	public static final int UPRIGHT_POSITION = 2800;//-2800; //JUST PLACEHOLDER!
 	public static final int SPIT_POSITION = 1900;
+	public static final int EXCHANGE_POSITION = 400;
 	public static final int DOWNWARD_POSITION = 0;//0; //JUST A PLACEHOLDER!
 	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
@@ -32,8 +33,8 @@ public class Pivot extends Subsystem {
 		
 		m_pivotmotor.configNominalOutputForward(0.0,  0);
 		m_pivotmotor.configNominalOutputReverse(0.0, 0);
-		m_pivotmotor.configPeakOutputForward(0.5,  0);
-		m_pivotmotor.configPeakOutputReverse(-0.3,  0);
+		m_pivotmotor.configPeakOutputForward(0.8,  0);  // was 0.5 before bag day; for going up
+		m_pivotmotor.configPeakOutputReverse(-0.6,  0);    // was -0.3 before bag day; for going down
 		
 		m_pivotmotor.config_kP(0, 3, 0);
 		m_pivotmotor.config_kI(0, 0, 0);
@@ -48,15 +49,17 @@ public class Pivot extends Subsystem {
 	}
     
     /**
-     * Set the current position of the pivot to be zero.
+     * Set the current position of the pivot to be the uprighth position
      */
     public void zeroPivot() {	
-    	m_pivotmotor.setSelectedSensorPosition(0, 0, 1000);
+    	m_pivotmotor.setSelectedSensorPosition(Pivot.UPRIGHT_POSITION, 0, 1000);
     }
+    
     public void LockCurrentPosition()
     {
     	m_pivotmotor.set(ControlMode.Position, m_pivotmotor.getSelectedSensorPosition(0));
     }
+    
     public void ManualMode()
     {
     	m_manualMode = true;

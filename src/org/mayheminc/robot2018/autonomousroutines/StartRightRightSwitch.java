@@ -12,14 +12,24 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class StartRightRightSwitch extends CommandGroup {
 
     public StartRightRightSwitch() {
-    	addParallel(new IntakeCloseJaw());
-    	addParallel(new PivotMove(Pivot.SPIT_POSITION));
-    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 90.0, 0.0));
+//    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 100.0, 0.0)); // 141 = inches to switch corner
+//    	addSequential(new DriveStraightOnHeading(0.70, DistanceUnits.INCHES, 250.0, -90.0));
+//    	
+//    	addSequential(new Wait(5.0));
+
+    	
+    	
+//    	addParallel(new IntakeCloseJaw());
+//    	addParallel(new PivotMove(Pivot.SPIT_POSITION));
+    	addSequential(new IntakeCloseJaw());
+    	addSequential(new PivotMove(Pivot.SPIT_POSITION));
+    	
+    	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 110.0, 0.0)); // 141 = inches to switch corner
     	addSequential(new DriveStraightOnHeading(0.70, DistanceUnits.INCHES, 45.0, -90.0));
     	
     	addSequential(new PrintAutonomousTimeRemaining("Dropping Cube"));
     	
-    	addParallel(new IntakeOut());
+    	addParallel(new IntakeOutForTime(1.0));
     	addSequential(new Wait(0.2));
     	
     	addSequential(new DriveStraightOnHeading(-0.80, DistanceUnits.INCHES, 45.0, 0.0));

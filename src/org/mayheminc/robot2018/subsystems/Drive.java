@@ -36,6 +36,7 @@ public class Drive extends Subsystem {
 	private PIDController m_HeadingPid;
 	private PIDHeadingError m_HeadingError;
 	private PIDHeadingCorrection m_HeadingCorrection;
+	private boolean m_HeadingPidPreventWindup = false;
 
 	// Talons
 	private final MayhemTalonSRX leftFrontTalon = new MayhemTalonSRX(RobotMap.FRONT_LEFT_TALON);
@@ -60,7 +61,8 @@ public class Drive extends Subsystem {
 
 	// Drive parameters
 	// Todo: check gear ratio and final wheel size
-	public static final double DISTANCE_PER_PULSE = 3.14 * 7.60 * 36 / 42 / (360*4); // pi * diameter * (gear ratio) / (counts per rev) 
+	// RJD : the numbers have not been checked for 2018.
+	public static final double DISTANCE_PER_PULSE = 3.14 * 6.42 * 36 / 42 / (250*4); // pi * diameter * (gear ratio) / (counts per rev) 
 	private boolean m_closedLoopMode = false;
 	private double m_maxWheelSpeed = 130;
 	private double m_voltageRampRate = 48.0;
@@ -87,13 +89,22 @@ public class Drive extends Subsystem {
 		m_HeadingError = new PIDHeadingError();
 		m_HeadingCorrection = new PIDHeadingCorrection();
 //		m_HeadingPid = new PIDController(0.015, 0.001, 0.05, m_HeadingError, m_HeadingCorrection);  // values from Week Zero tournament
-		m_HeadingPid = new PIDController(0.015, 0.001, 0.04, m_HeadingError, m_HeadingCorrection);  // vales from NECMP and Pine Tree
+//RJD		m_HeadingPid = new PIDController(0.015, 0.001, 0.04, m_HeadingError, m_HeadingCorrection);  // vales from NECMP and Pine Tree
 //		m_HeadingPid = new PIDController(0.02, 0.0015, 0.05, m_HeadingError, m_HeadingCorrection);
+
+		
+		m_HeadingPid = new PIDController(0.015, 0.000, 0.04, m_HeadingError, m_HeadingCorrection);  // vales from NECMP and Pine Tree
 		m_HeadingPid.setInputRange(-180.0f, 180.0f);
 		m_HeadingPid.setContinuous(true);             // treats the input range as "continous" with wrap-around
 		m_HeadingPid.setOutputRange(-.50, .50); // set the maximum power to correct twist
 		m_HeadingPid.setAbsoluteTolerance(kToleranceDegreesPIDControl);
 
+		// confirm all four drive talons are in brake mode
+		leftFrontTalon.setNeutralMode(NeutralMode.Brake);
+		leftRearTalon.setNeutralMode(NeutralMode.Brake);
+		rightFrontTalon.setNeutralMode(NeutralMode.Brake);
+		rightRearTalon.setNeutralMode(NeutralMode.Brake);
+		
 		// set rear talons to follow their respective front talons
 		leftRearTalon.changeControlMode(ControlMode.Follower);
 		leftRearTalon.set(leftFrontTalon.getDeviceID());
@@ -519,6 +530,21 @@ public class Drive extends Subsystem {
 			headingCorrection = -m_HeadingCorrection.HeadingCorrection;
 		} else {
 			headingCorrection = 0.0;
+		}
+		
+		if( Math.abs(m_HeadingError.m_Error) > 10.0 )
+		{
+			if (!m_HeadingPidPreventWindup) {
+				m_HeadingPid.setI(0.0);		
+				m_HeadingPid.reset(); // clear the wind-up.
+				m_HeadingPid.enable(); // the reset turns it off.  Turn it on.
+				m_HeadingPidPreventWindup = true;
+			}
+		}
+		else
+		{
+			m_HeadingPidPreventWindup = false;
+			m_HeadingPid.setI(0.001);
 		}
 
 		return headingCorrection;
