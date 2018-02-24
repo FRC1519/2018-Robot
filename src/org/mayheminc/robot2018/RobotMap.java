@@ -41,8 +41,12 @@ public class RobotMap {
 	public static final int ELEVATOR_ARM_SOLENOID = 2;
 	public static final int SHIFTING_SOLENOID = 4;
 	
+	// Analog Inputs
+	public static final int LEFT_IR = 1;
+	public static final int CENTER_IR = 2;
+	public static final int RIGHT_IR = 3;
+	
 	// PDP Channels = 
-	// Visually checked on the Comp Robot 2/23/2016 - Robert Deml
 	public static final int DRIVE_FRONT_LEFT_PDP = 15;
 	public static final int DRIVE_BACK_LEFT_PDP = 14;
 	public static final int DRIVE_FRONT_RIGHT_PDP = 0;

@@ -1,28 +1,26 @@
 package org.mayheminc.robot2018.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 import org.mayheminc.robot2018.RobotMap;
+import org.mayheminc.util.MayhemTalonSRX;
+import org.mayheminc.util.PidTunerObject;
 
 /**
  *
  */
-public class Elevator extends Subsystem {
+public class Elevator extends Subsystem implements PidTunerObject {
 
-	public enum ElevatorPositions{
-		PICK_UP_CUBE(0),
-		SWITCH_LOW(100),
-		SWITCH_HIGH(300),
-		SCALE_LOW(400),
-		SCALE_MID(500),
-		SCLAE_HIGH(600),
-		CEILING(750);
-		
-	    private final int id; // https://stackoverflow.com/questions/1067352/can-set-enum-start-value-in-java
-	    ElevatorPositions(int id) { this.id = id; }
-	    public int getValue() { return id; }
-	}
+	public static final int PICK_UP_CUBE = 0;
+	public static final int SWITCH_LOW = 100;
+	public static final int SWITCH_HIGH = 200;
+	public static final int SCALE_LOW = 300;
+	public static final int SCALE_MID = 400;
+	public static final int SCLAE_HIGH = 500;
+	public static final int CEILING = 600;
 	
 	boolean m_SafetyOn = true;
 
@@ -34,7 +32,7 @@ public class Elevator extends Subsystem {
 	boolean m_manualMode;
 	int m_autoSetpoint;
 	
-	TalonSRX m_motor = new TalonSRX(RobotMap.ELEVATOR_TALON);
+	MayhemTalonSRX m_motor = new MayhemTalonSRX(RobotMap.ELEVATOR_TALON);
 	
 	public Elevator()
 	{
@@ -47,14 +45,13 @@ public class Elevator extends Subsystem {
 		m_motor.config_kF(0, 0, 0);
 	}
 	
-    public void initDefaultCommand() {
-    }
+    public void initDefaultCommand() {}
     
-    public void setElevatorPosition(ElevatorPositions pos)
+    public void setElevatorPosition(int pos)
     {
     	m_manualMode = false; // set to auto mode
     	m_SafetyOn = true; // turn on the safety checks
-    	m_autoSetpoint = pos.getValue(); // get the desired setpoint
+    	m_autoSetpoint = pos; // get the desired setpoint
     	m_motor.set(ControlMode.Position, m_autoSetpoint); // tell the motor to get to the setpoint
     }
     
@@ -130,5 +127,40 @@ public class Elevator extends Subsystem {
     		// the motors are set to the position in the auto calls.
     	}
     }
+    
+    public void updateSmartDashboard()
+    {
+    	SmartDashboard.putNumber("Elevator Pos", m_motor.getPosition());
+    }
+
+	@Override
+	public double getP() {
+		return m_motor.getP();
+	}
+
+	@Override
+	public double getI() {
+		return m_motor.getI();
+	}
+
+	@Override
+	public double getD() {
+		return m_motor.getD();
+	}
+
+	@Override
+	public void setP(double d) {
+		m_motor.config_kP(0, d, 0);
+	}
+
+	@Override
+	public void setI(double d) {
+		m_motor.config_kI(0, d, 0);
+	}
+
+	@Override
+	public void setD(double d) {
+		m_motor.config_kD(0, d, 0);
+	}
 }
 

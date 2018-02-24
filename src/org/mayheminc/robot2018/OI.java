@@ -164,7 +164,12 @@ public class OI {
     // variable to maintain state of whether or not we've "checked in" with the field
 	private boolean m_CheckedInWithFieldManagement = false;
 	
+	public static PidTuner pidTuner;
 	public OI() {
+		
+		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
+				DRIVER_STICK_BUTTON_TEN, DRIVER_STICK_BUTTON_ELEVEN, Robot.turret);
+		
     	DriverStation.reportError("OI constructor.\n", false);
 
     	// Mode initialization
@@ -208,7 +213,8 @@ public class OI {
      	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeOpenJaw()); 
 //     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
 //     	
-     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
+//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
+     	OPERATOR_PAD_BUTTON_SIX.whenPressed(new IntakeAutoHarvestCube());
      	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new IntakeOut());
 //     	
 //     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_TOGETHER));
@@ -363,8 +369,25 @@ public class OI {
 	public boolean autoInTeleop() {
 		return DRIVER_PAD_RED_BUTTON.get();
 	}
-	
 
-  
+	public double getTurretPower() {
+    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS)) * -1;
+    	// if the power is less than 20%, make it 0
+    	if( value < 0.2 && value > -0.2)
+    	{
+    		value = 0.0;
+    	}
+    	else if( value > 0.2 )
+    	{
+    		// if it is above 20%, subtract the 20% to keep the linearness.
+    		value = value - 0.2;
+    	}
+    	else 
+    	{
+    		// if it is below -20%, add the 20% to keep the linearness.
+    		value = value + 0.2;
+    	}
+    	return value;	
+    }
 }
 

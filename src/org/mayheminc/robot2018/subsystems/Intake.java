@@ -89,7 +89,7 @@ public class Intake extends Subsystem {
     	m_intakeMotorRight.set(ControlMode.PercentOutput, m_setSpeed);
 
     }
-    public void UpdateSmartDashboard()
+    public void updateSmartDashboard()
     {
     	SmartDashboard.putNumber("Intake Left Current",  m_intakeMotorLeft.getOutputCurrent());
     	SmartDashboard.putNumber("Intake Right Current",  m_intakeMotorRight.getOutputCurrent());

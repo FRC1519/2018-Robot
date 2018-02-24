@@ -23,6 +23,9 @@ public class Pivot extends Subsystem {
 	public static final int DOWNWARD_POSITION = 0;//0; //JUST A PLACEHOLDER!
 	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
+	public static final int DOWN_TOLERANCE = 50;
+	public static final double DOWN_MOTOR_POWER = 0.15;
+	
 	TalonSRX m_pivotmotor = new TalonSRX(RobotMap.PIVOT_TALON);
 	int m_position;
 	boolean m_manualMode = false;
@@ -100,16 +103,33 @@ public class Pivot extends Subsystem {
     
     public void periodic()
     {
-    	if( Robot.oi.pivotArmPower() > 0.01 ||
-    		Robot.oi.pivotArmPower() < -0.01 )
+    	double power = Robot.oi.pivotArmPower();
+    	// if the joystick is commanding a movement, go to manual mode.,
+    	if( power > 0.01 ||
+    		power < -0.01 )
     	{
     		m_manualMode = true;
     	}
     	
     	if( m_manualMode )
     	{
-    		double power = Robot.oi.pivotArmPower();
     		m_pivotmotor.set(ControlMode.PercentOutput, power);
+    	}
+    	else // auto mode
+    	{
+    		switch(m_position)
+    		{
+	    		case DOWNWARD_POSITION:
+	    			// if we wanted the DOWN position...
+	    			int pos = m_pivotmotor.getSelectedSensorPosition(0);
+	    			// and we are within a tolerance of being down...
+	    			if( pos < DOWNWARD_POSITION + DOWN_TOLERANCE)
+	    			{
+	    				// set the motor to press down lightly.
+	    				m_pivotmotor.set(ControlMode.PercentOutput,  DOWN_MOTOR_POWER);;
+	    			}
+	    			break;
+    		}
     	}
     }
     public void UpdateSmartDashboard()

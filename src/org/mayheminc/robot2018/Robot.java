@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.*;
 
 import org.mayheminc.robot2018.commands.RunAutonomous;
 import org.mayheminc.robot2018.subsystems.*;
+import org.mayheminc.util.PidTuner;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,6 +44,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static Elevator elevator = new Elevator();
 	public static ElevatorArms elevatorArms = new ElevatorArms();
 	public static Targeting targeting = new Targeting();
+	public static CubeDetector cubeDetector = new CubeDetector();
+	public static Turret turret = new Turret();
 	
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()
@@ -112,6 +115,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void disabledPeriodic() {
 		// update sensors that need periodic update
 		targeting.periodic();
+		cubeDetector.periodic();
 		pivot.UpdateSmartDashboard();
 		
 		Scheduler.getInstance().run();
@@ -161,6 +165,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void autonomousPeriodic() {
 		// update sensors that need periodic update
 		targeting.periodic();
+		cubeDetector.periodic();
 		
 		Scheduler.getInstance().run();
 
@@ -214,6 +219,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// update sensors that need periodic update
 		targeting.periodic();
 		pivot.periodic();
+		cubeDetector.periodic();
 		
 		Scheduler.getInstance().run();
 
@@ -260,9 +266,16 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 				SmartDashboard.putString("Game Data",  gameData.toString());
 				
+				cubeDetector.updateSmartDashboard();
 				drive.updateSmartDashboard();
+				elevator.updateSmartDashboard();
+				elevatorArms.updateSmartDashboard();
+				intake.updateSmartDashboard();
 				pivot.UpdateSmartDashboard();
+				turret.updateSmartDashboard();
 
+				OI.pidTuner.updateSmartDashboard();
+				
 				if (updateAutoFields) {
 					Autonomous.updateSmartDashboard();
 				}

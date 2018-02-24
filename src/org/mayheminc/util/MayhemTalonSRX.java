@@ -1,5 +1,6 @@
 package org.mayheminc.util;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -10,6 +11,9 @@ import com.ctre.phoenix.motorcontrol.can.*;
 public class MayhemTalonSRX extends TalonSRX{
 
 	ControlMode controlMode;
+	double p;
+	double i;
+	double d;
 	
 	public MayhemTalonSRX(int deviceNumber) {
 		super(deviceNumber);
@@ -28,6 +32,28 @@ public class MayhemTalonSRX extends TalonSRX{
 		this.configForwardLimitSwitchSource(RemoteLimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled, 0, 0);
 		this.configForwardSoftLimitEnable(false,  0);
 	}
+
+	public ErrorCode config_kP(int slot, double value, int timeout)
+	{
+		p = value;
+		return super.config_kP(slot, value, timeout);
+	}
+	
+	public ErrorCode config_kI(int slot, double value, int timeout)
+	{
+		i = value;
+		return super.config_kP(slot, value, timeout);
+	}
+	
+	public ErrorCode config_kD(int slot, double value, int timeout)
+	{
+		d = value;
+		return super.config_kP(slot, value, timeout);
+	}
+	
+	public double getP() {return p;}
+	public double getI() {return i;}
+	public double getD() {return d;}
 
 	public void changeControlMode(ControlMode mode)
 	{

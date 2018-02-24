@@ -594,14 +594,14 @@ public class Drive extends Subsystem {
 
 		SmartDashboard.putNumber("Current Heading",  getHeading());
 
-		SmartDashboard.putNumber("yaw",  Navx.getYaw());
-		SmartDashboard.putNumber("pitch",  Navx.getPitch());
-		SmartDashboard.putNumber("angle",  Navx.getAngle());
+//		SmartDashboard.putNumber("yaw",  Navx.getYaw());
+//		SmartDashboard.putNumber("pitch",  Navx.getPitch());
+//		SmartDashboard.putNumber("angle",  Navx.getAngle());
 		
 		SmartDashboard.putNumber("Left Front Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Front Encoder Counts", rightFrontTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Right Rear Encoder Counts", rightRearTalon.getSelectedSensorPosition(0));
+//		SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));
+//		SmartDashboard.putNumber("Right Rear Encoder Counts", rightRearTalon.getSelectedSensorPosition(0));
 
 		// Note:  getSpeed() returns ticks per 0.1 seconds
 		SmartDashboard.putNumber("Left Encoder Speed", leftFrontTalon.getSelectedSensorVelocity(0));
@@ -614,8 +614,8 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Left Speed (fps)", leftFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
 		SmartDashboard.putNumber("Right Speed (fps)", -rightFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
 
-		SmartDashboard.putNumber("Left Talon Setpoint", leftFrontTalon.getSetpoint());
-		SmartDashboard.putNumber("Right Talon Setpoint", -rightFrontTalon.getSetpoint());
+//		SmartDashboard.putNumber("Left Talon Setpoint", leftFrontTalon.getSetpoint());
+//		SmartDashboard.putNumber("Right Talon Setpoint", -rightFrontTalon.getSetpoint());
 
 		SmartDashboard.putNumber("Left Talon Error", leftFrontTalon.getError());
 		SmartDashboard.putNumber("Right Talon Error", -rightFrontTalon.getError());
@@ -624,7 +624,7 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Right Talon Output Voltage", rightFrontTalon.getOutputVoltage());
 
 		SmartDashboard.putBoolean("Closed Loop Mode", m_closedLoopMode);
-		SmartDashboard.putBoolean("Speed Racer Drive Mode", m_speedRacerDriveMode);
+//		SmartDashboard.putBoolean("Speed Racer Drive Mode", m_speedRacerDriveMode);
 		SmartDashboard.putBoolean("Auto Shift Mode", m_autoShift);
 
 		SmartDashboard.putBoolean("Heading Correction Mode", m_useHeadingCorrection);
@@ -639,7 +639,7 @@ public class Drive extends Subsystem {
 
 		SmartDashboard.putBoolean("Low Gear", !m_highGear);
 
-		SmartDashboard.putNumber("Tilt", getTilt());
+//		SmartDashboard.putNumber("Tilt", getTilt());
 	}
 
 	//**********************************ULTRASONICS***********************************************

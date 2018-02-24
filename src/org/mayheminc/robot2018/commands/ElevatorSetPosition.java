@@ -3,7 +3,6 @@ package org.mayheminc.robot2018.commands;
 //import javax.lang.model.element.ElementKind;
 
 import org.mayheminc.robot2018.Robot;
-import org.mayheminc.robot2018.subsystems.Elevator.ElevatorPositions;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -12,9 +11,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ElevatorSetPosition extends Command {
 
-	ElevatorPositions m_position;
+	int m_position;
 	
-    public ElevatorSetPosition(ElevatorPositions position) {
+    public ElevatorSetPosition(int position) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	m_position = position;
