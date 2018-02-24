@@ -1,6 +1,7 @@
 package org.mayheminc.robot2018.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
 import org.mayheminc.robot2018.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -49,5 +50,11 @@ public class ElevatorArms extends Subsystem {
     public void setMotor(double d)
     {
     	m_motor.set(ControlMode.PercentOutput, d);
+    }
+    
+    public void updateSmartDashboard()
+    {
+    	SmartDashboard.putBoolean("T-Rex Arms",  m_arm.get());
+    	SmartDashboard.putNumber("T-Rex Motor",  m_motor.getMotorOutputPercent());
     }
 }
