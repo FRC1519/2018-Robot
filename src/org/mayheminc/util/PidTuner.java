@@ -24,7 +24,7 @@ public class PidTuner extends InstantCommand{
 	Button m_ValueCycle;
 	PidTunerObject m_pidObj;
 	
-	enum PidCycle {P, I, D};
+	enum PidCycle {P, I, D, F};
 	int m_cycle;
 	int m_position;
 	
@@ -32,20 +32,22 @@ public class PidTuner extends InstantCommand{
 	// remember the PID Object so we can get/set the PID values.
 	public PidTuner(Button b1, Button b2, Button b3, Button b4, PidTunerObject obj)
 	{
+		setRunWhenDisabled(true);
+		
 		b1.whenPressed(this);
 		b2.whenPressed(this);
 		b3.whenPressed(this);
 		b4.whenPressed(this);
 		
 		m_PidCycle = b1;
-		m_Inc = b2;
-		m_Dec = b3;
-		m_ValueCycle = b4;
+		m_ValueCycle = b2;
+		m_Inc = b3;
+		m_Dec = b4;
 		
 		m_pidObj = obj;	
 	}
 	
-	// Run the 'command'
+	// Run the 'instant command'.  Determine which command was pressed.
     protected void initialize() {
     	if( m_PidCycle.get())
     	{
@@ -68,13 +70,14 @@ public class PidTuner extends InstantCommand{
     // set the P, I, or D that we are changing
 	public void RunCycle()
 	{
+//		System.out.println("PID Tuner: RunCycle");
 		m_cycle++;
-		m_cycle = m_cycle % 3;
+		m_cycle = m_cycle % 4;
 	}
 
 	String getCycleStr()
 	{
-		String str[] = {"P", "I", "D"};
+		String str[] = {"P", "I", "D", "F"};
 		
 		return str[m_cycle];
 	}
@@ -82,6 +85,7 @@ public class PidTuner extends InstantCommand{
 	// calculate the amount to increment, get the value, apply the amount, set the new value
 	public void RunInc()
 	{
+//		System.out.println("PID Tuner: RunInc");
 		double amount = calculateAmount();
 		
 		double value = getValue();
@@ -92,7 +96,11 @@ public class PidTuner extends InstantCommand{
 	// if m_position is 1, return 10, 0 returns 1, -1 returns 0.1, etc.
 	double calculateAmount()
 	{
-		return Math.pow(10,  m_position);
+		double retval = Math.pow(10,  m_position);
+		
+//		System.out.println("Position = " + m_position);
+
+		return retval;
 	}
 	
 	// based on the cycle, get the P, I, or D.
@@ -106,6 +114,8 @@ public class PidTuner extends InstantCommand{
 			return m_pidObj.getI();
 		case 2:
 			return m_pidObj.getD();
+		case 3:
+			return m_pidObj.getF();
 		}
 		return 0.0;
 	}
@@ -124,12 +134,16 @@ public class PidTuner extends InstantCommand{
 		case 2:
 			m_pidObj.setD(d);
 			break;
+		case 3:
+			m_pidObj.setF(d);
+			break;
 		}
 	}
 	
 	// calculate the amount to decrement, get the value, apply the amount, set the new value
 	public void RunDec()
 	{
+//		System.out.println("PID Tuner: RunDec");
 		double amount = calculateAmount();
 		
 		double value = getValue();
@@ -140,10 +154,12 @@ public class PidTuner extends InstantCommand{
 	// Change the amount we are decrementing or incrementing
 	public void RunValue()
 	{
-		m_position++;
-		if( m_position > 1)
+//		System.out.println("PID Tuner: RunValue");
+
+		m_position--;
+		if( m_position < -4)
 		{
-			m_position = -4; // 10.1234
+			m_position = 1; // 10.1234
 		}
 	}
 	

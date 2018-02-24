@@ -1,6 +1,7 @@
 package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.subsystems.Elevator;
+import org.mayheminc.robot2018.subsystems.Turret;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -21,6 +22,7 @@ public class TransitionCubeToElevator extends CommandGroup {
     public TransitionCubeToElevator() {
     	addSequential(new ElevatorArmOpen());
 //    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.SCALE_LOW));
+    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new IntakeCloseJaw());
     	addSequential(new Wait(100));
     	addSequential(new PivotToElevator());

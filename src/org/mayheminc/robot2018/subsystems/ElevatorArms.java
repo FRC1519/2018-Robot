@@ -12,8 +12,6 @@ import com.ctre.phoenix.motorcontrol.can.*;
  */
 public class ElevatorArms extends Subsystem {
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 	Solenoid m_arm = new Solenoid(RobotMap.ELEVATOR_ARM_SOLENOID);
 	TalonSRX m_motor = new TalonSRX(RobotMap.ELEVATOR_ARM_MOTOR);
 
@@ -33,10 +31,7 @@ public class ElevatorArms extends Subsystem {
 	    public boolean getValue() { return id; }
 	}
 	
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
+    public void initDefaultCommand() { }
     
     public void setJaw(JawPosition b)
     {

@@ -7,7 +7,7 @@ import org.mayheminc.robot2018.Robot;
 /**
  *
  */
-public class RotateDegrees extends Command {
+public class DriveRotateDegrees extends Command {
 	final static double DEFAULT_TIME_LIMIT_SEC = 2.0;
 	final static double FINAL_HEADING_TOLERANCE = 2.0;
 	double timeLimit = 0;
@@ -15,14 +15,11 @@ public class RotateDegrees extends Command {
 	Timer timer = new Timer();
 	
 	
-    public RotateDegrees(double arg) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public DriveRotateDegrees(double arg) {
     	this(arg, DEFAULT_TIME_LIMIT_SEC);
     }
     
-    public RotateDegrees(double arg, double limitForTime){
-//    	requires(Robot.drive);
+    public DriveRotateDegrees(double arg, double limitForTime){
     	degrees = arg;
     	timeLimit = limitForTime;
     }

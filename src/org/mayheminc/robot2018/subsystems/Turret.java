@@ -92,6 +92,10 @@ public class Turret extends Subsystem implements PidTunerObject {
 	{
 		return m_motor.getD();
 	}
+	public double getF()
+	{
+		return m_motor.getF();
+	}
 	public void setP(double d)
 	{
 		m_motor.config_kP(0,  d,  0);
@@ -103,6 +107,10 @@ public class Turret extends Subsystem implements PidTunerObject {
 	public void setD(double d)
 	{
 		m_motor.config_kD(0,  d,  0);
+	}
+	public void setF(double d)
+	{
+		m_motor.config_kF(0,  d,  0);
 	}
 }
 

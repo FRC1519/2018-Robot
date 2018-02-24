@@ -8,7 +8,7 @@ import org.mayheminc.robot2018.Robot;
 /**
  *
  */
-public class Rotate extends Command {
+public class DriveRotate extends Command {
 	
 	final static double DEFAULT_TIME_LIMIT_SEC = 2.5;
 	final static double FINAL_HEADING_TOLERANCE = 8.0;
@@ -19,13 +19,13 @@ public class Rotate extends Command {
 	public enum DesiredHeadingForm { ABSOLUTE, RELATIVE };
 	private boolean isAbsolute;
 	
-    public Rotate(double arg, DesiredHeadingForm form) {
+    public DriveRotate(double arg, DesiredHeadingForm form) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this(arg, form, DEFAULT_TIME_LIMIT_SEC);
     }
     
-    public Rotate(double arg, DesiredHeadingForm form, double limitForTime){
+    public DriveRotate(double arg, DesiredHeadingForm form, double limitForTime){
 //    	requires(Robot.drive);
     	
     	if (form == DesiredHeadingForm.ABSOLUTE) {

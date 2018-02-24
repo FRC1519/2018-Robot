@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
+import org.mayheminc.util.MayhemTalonSRX;
 //import org.mayheminc.util.MayhemTalonSRX;
+import org.mayheminc.util.PidTunerObject;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -15,21 +17,23 @@ import com.ctre.phoenix.motorcontrol.*;
  * The Pivot lifts the intake to the upright position so the elevator can
  * take the cube.
  */
-public class Pivot extends Subsystem {
+public class Pivot extends Subsystem implements PidTunerObject {
 
-	public static final int UPRIGHT_POSITION = 2800;//-2800; //JUST PLACEHOLDER!
+	public static final int UPRIGHT_POSITION = 2800; //JUST PLACEHOLDER!
 	public static final int SPIT_POSITION = 1900;
 	public static final int EXCHANGE_POSITION = 400;
-	public static final int DOWNWARD_POSITION = 0;//0; //JUST A PLACEHOLDER!
+	public static final int DOWNWARD_POSITION = 0;
 	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
 	public static final int DOWN_TOLERANCE = 50;
 	public static final double DOWN_MOTOR_POWER = 0.15;
+	public static final double ZERO_MAX_CURRENT = 0.2;
 	
-	TalonSRX m_pivotmotor = new TalonSRX(RobotMap.PIVOT_TALON);
+	MayhemTalonSRX m_pivotmotor = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
 	int m_position;
 	boolean m_manualMode = false;
-
+	boolean m_zero;
+	
 	public Pivot()
 	{
 		super();
@@ -55,7 +59,10 @@ public class Pivot extends Subsystem {
      * Set the current position of the pivot to be the uprighth position
      */
     public void zeroPivot() {	
-    	m_pivotmotor.setSelectedSensorPosition(Pivot.UPRIGHT_POSITION, 0, 1000);
+//    	m_pivotmotor.setSelectedSensorPosition(Pivot.UPRIGHT_POSITION, 0, 1000);
+    	m_pivotmotor.set(ControlMode.PercentOutput, 0.1);
+    	m_zero = true;
+    	
     }
     
     public void LockCurrentPosition()
@@ -111,6 +118,21 @@ public class Pivot extends Subsystem {
     		m_manualMode = true;
     	}
     	
+    	// if we are zeroing the pivot...
+    	if( m_zero )
+    	{
+    		// if the current goes up...
+    		if( m_pivotmotor.getOutputCurrent() > ZERO_MAX_CURRENT)
+    		{
+    			// we found the hard stop.  Set the encoder position.
+    			m_pivotmotor.setSelectedSensorPosition(UPRIGHT_POSITION, 0, 0);
+    			// stop zeroing.
+    			m_zero = false;
+    			// stop the motor
+    			m_pivotmotor.set(ControlMode.Position, UPRIGHT_POSITION);
+    		}
+    	}
+    	
     	if( m_manualMode )
     	{
     		m_pivotmotor.set(ControlMode.PercentOutput, power);
@@ -136,4 +158,24 @@ public class Pivot extends Subsystem {
     {
     	SmartDashboard.putNumber("Pivot Encoder Pos", m_pivotmotor.getSelectedSensorPosition(0));
     }
+    
+    ////////////////////////////////////////////////////////
+    // PidTunerObject
+    ////////////////////////////////////////////////////////
+	@Override
+	public double getP() { return m_pivotmotor.getP();}
+	@Override
+	public double getI() { return m_pivotmotor.getI();}
+	@Override
+	public double getD() { return m_pivotmotor.getD();}
+	@Override
+	public double getF() { return m_pivotmotor.getF();}
+	@Override
+	public void setP(double d) {m_pivotmotor.config_kP(0,  d,  0); }
+	@Override
+	public void setI(double d) {m_pivotmotor.config_kI(0,  d,  0); }
+	@Override
+	public void setD(double d) {m_pivotmotor.config_kD(0,  d,  0); }
+	@Override
+	public void setF(double d) {m_pivotmotor.config_kF(0,  d,  0); }
 }

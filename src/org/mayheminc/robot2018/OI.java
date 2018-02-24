@@ -168,7 +168,7 @@ public class OI {
 	public OI() {
 		
 		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
-				DRIVER_STICK_BUTTON_TEN, DRIVER_STICK_BUTTON_ELEVEN, Robot.turret);
+				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.pivot);
 		
     	DriverStation.reportError("OI constructor.\n", false);
 
@@ -179,8 +179,8 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************8
     	
-        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new SetShifter(Drive.HIGH_GEAR));
-        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new SetShifter(Drive.LOW_GEAR));
+        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new DriveSetShifter(Drive.HIGH_GEAR));
+        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new DriveSetShifter(Drive.LOW_GEAR));
   
 //    	DRIVER_PAD_BLUE_BUTTON.whenPressed(new CheckInWithFieldManagement());
     	//DRIVER_PAD_RED_BUTTON.whileHeld(new CrossDefenseChevalDeFrise(Arm.REQUIRE_ARM_SUBSYSTEM)); //see autoInTeleop()
@@ -188,15 +188,13 @@ public class OI {
     	//DRIVER_PAD_GREEN_BUTTON.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
     	
     	// adjust auto parameters
-//     	DRIVER_STICK_BUTTON_SIX.whenPressed(new SelectAutonomousSlot(1));
-//     	DRIVER_STICK_BUTTON_SEVEN.whenPressed(new SelectAutonomousSlot(-1));
      	DRIVER_STICK_BUTTON_THREE.whenPressed(new SelectAutonomousProgram(1));
      	DRIVER_STICK_BUTTON_TWO.whenPressed(new SelectAutonomousProgram(-1));
      	DRIVER_STICK_BUTTON_FOUR.whenPressed(new SelectAutonomousDelay(-1));
      	DRIVER_STICK_BUTTON_FIVE.whenPressed(new SelectAutonomousDelay(1));
      	
     	// zero elements that require zeroing
-     	DRIVER_STICK_BUTTON_EIGHT.whenPressed(new ZeroGyro());
+     	DRIVER_STICK_BUTTON_EIGHT.whenPressed(new DriveZeroGyro());
      	DRIVER_STICK_BUTTON_NINE.whenPressed(new PivotZeroEncoder());
      	
      	//*************************OPERATOR PAD*******************************

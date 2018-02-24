@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class RecordEncoderPosition extends Command {
+public class DriveRecordEncoderPosition extends Command {
 
-    public RecordEncoderPosition() {  	
+    public DriveRecordEncoderPosition() {  	
     }
     protected void initialize() {
     	Robot.drive.setUnwindStartPosition(Robot.drive.getRightEncoder());

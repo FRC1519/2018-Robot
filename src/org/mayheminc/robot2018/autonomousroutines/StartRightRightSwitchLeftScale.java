@@ -1,7 +1,7 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
-import org.mayheminc.robot2018.commands.Rotate;
+import org.mayheminc.robot2018.commands.DriveRotate;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -31,9 +31,9 @@ public class StartRightRightSwitchLeftScale extends CommandGroup {
     	addSequential(new StartRightRightSwitch());
 
     	addSequential(new DriveStraightOnHeading(1.0, DistanceUnits.INCHES, 80.0, 0.0));
-    	addSequential(new Rotate(-120, Rotate.DesiredHeadingForm.ABSOLUTE, 5.0));
+    	addSequential(new DriveRotate(-120, DriveRotate.DesiredHeadingForm.ABSOLUTE, 5.0));
     	addSequential(new DriveStraightOnHeading(0.75, DistanceUnits.INCHES, 20.0, -120.0));
-    	addSequential(new Rotate(-90, Rotate.DesiredHeadingForm.ABSOLUTE, 5.0));
+    	addSequential(new DriveRotate(-90, DriveRotate.DesiredHeadingForm.ABSOLUTE, 5.0));
     	addSequential(new DriveStraightOnHeading(0.75, DistanceUnits.INCHES, 100, -90.0));
     }
 }

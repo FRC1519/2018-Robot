@@ -149,6 +149,11 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	}
 
 	@Override
+	public double getF() {
+		return m_motor.getF();
+	}
+
+	@Override
 	public void setP(double d) {
 		m_motor.config_kP(0, d, 0);
 	}
@@ -161,6 +166,10 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	@Override
 	public void setD(double d) {
 		m_motor.config_kD(0, d, 0);
+	}
+	@Override
+	public void setF(double d) {
+		m_motor.config_kF(0, d, 0);
 	}
 }
 

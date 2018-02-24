@@ -17,7 +17,7 @@ public class StayStill extends CommandGroup {
     public StayStill() {
         
         // Perform needed initialization
-        addSequential(new ZeroGyro());
+        addSequential(new DriveZeroGyro());
 
        // ALL DONE!
     }

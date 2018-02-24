@@ -14,6 +14,7 @@ public class MayhemTalonSRX extends TalonSRX{
 	double p;
 	double i;
 	double d;
+	double f;
 	
 	public MayhemTalonSRX(int deviceNumber) {
 		super(deviceNumber);
@@ -50,10 +51,16 @@ public class MayhemTalonSRX extends TalonSRX{
 		d = value;
 		return super.config_kP(slot, value, timeout);
 	}
+	public ErrorCode config_kF(int slot, double value, int timeout)
+	{
+		f = value;
+		return super.config_kF(slot, value, timeout);
+	}
 	
 	public double getP() {return p;}
 	public double getI() {return i;}
 	public double getD() {return d;}
+	public double getF() {return f;}
 
 	public void changeControlMode(ControlMode mode)
 	{
