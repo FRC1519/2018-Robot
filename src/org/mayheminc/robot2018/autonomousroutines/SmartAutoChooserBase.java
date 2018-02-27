@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public abstract class SmartAutoChooserBase extends Command {
     boolean hasStarted = false;
     Command autoRoutine;
-    	
 
     public SmartAutoChooserBase() {
         // Use requires() here to declare subsystem dependencies

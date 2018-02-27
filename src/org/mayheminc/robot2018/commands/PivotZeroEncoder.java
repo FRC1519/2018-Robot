@@ -13,12 +13,13 @@ public class PivotZeroEncoder extends InstantCommand {
         super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	setRunWhenDisabled(true);
+//    	setRunWhenDisabled(true);
 
     }
 
     // Called once when the command executes
     protected void initialize() {
+    	System.out.println("Pivot Zero Encoder");
     	Robot.pivot.zeroPivot();
     }
 

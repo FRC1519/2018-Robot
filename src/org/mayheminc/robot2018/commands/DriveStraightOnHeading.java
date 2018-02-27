@@ -15,6 +15,9 @@ public class DriveStraightOnHeading extends Command {
 	double m_desiredHeading;
 	public enum DistanceUnits { ENCODER_TICKS, INCHES };
 
+	public DriveStraightOnHeading(double arg_targetSpeed, double arg_distance, double heading) {
+		this(arg_targetSpeed, DistanceUnits.INCHES, arg_distance, heading);
+	}
 	/**
 	 * 
 	 * @param arg_targetPower +/- motor power [-1.0, +1.0]

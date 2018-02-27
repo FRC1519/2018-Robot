@@ -58,7 +58,7 @@ public class OI {
 	private static final Button DRIVER_STICK_BUTTON_SIX = new DisabledOnlyJoystickButton(DRIVER_STICK, 6);
 	private static final Button DRIVER_STICK_BUTTON_SEVEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 7);	
 	private static final Button DRIVER_STICK_BUTTON_EIGHT= new DisabledOnlyJoystickButton(DRIVER_STICK, 8);
-	private static final Button DRIVER_STICK_BUTTON_NINE = new DisabledOnlyJoystickButton(DRIVER_STICK, 9);
+	private static final Button DRIVER_STICK_BUTTON_NINE = new JoystickButton(DRIVER_STICK, 9);
 	private static final Button DRIVER_STICK_BUTTON_TEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 10);
 	private static final Button DRIVER_STICK_BUTTON_ELEVEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 11);
 	
@@ -202,7 +202,9 @@ public class OI {
      	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotMove(Pivot.EXCHANGE_POSITION));
      	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotToFloor());
      	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
-     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotToElevator());
+     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotToUpright());
+//     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new TransitionCubeToElevator());
+     	
 
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
 //     	
@@ -211,16 +213,18 @@ public class OI {
      	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeOpenJaw()); 
 //     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
 //     	
-//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
-     	OPERATOR_PAD_BUTTON_SIX.whenPressed(new IntakeAutoHarvestCube());
+     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
+//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new ElevatorArmClose());
+//     	OPERATOR_PAD_BUTTON_SIX.whenPressed(new IntakeAutoHarvestCube());
      	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new IntakeOut());
-//     	
-//     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_TOGETHER));
-//     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new SetCenteringPistons(Robot.claw.CENTERING_PISTONS_APART));
-//     	
-//     	OPERATOR_PAD_D_PAD_UP.whenPressed(new TransitionCubeToElevator());
-//     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new CloseClaw());
-//
+//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new ElevatorArmOpen());
+     	
+     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HIGH));
+     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
+     	
+     	OPERATOR_PAD_D_PAD_UP.whenPressed(new ElevatorSetPosition(Elevator.CEILING));
+     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
+
 //     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new IntakeEscapeDeathGrip());
 	}
@@ -251,16 +255,16 @@ public class OI {
     {
     	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
     	// if the power is less than 20%, make it 0
-    	if( value < 0.2 && value > -0.2)
+    	if ( -0.2 < value && value < 0.2)
     	{
     		value = 0.0;
     	}
-    	else if( value > 0.2 )
+    	else if ( value > 0.2 )
     	{
     		// if it is above 20%, subtract the 20% to keep the linearness.
     		value = value - 0.2;
     	}
-    	else 
+    	else // (this means value < -0.2)
     	{
     		// if it is above 20%, subtract the 20% to keep the linearness.
     		value = value + 0.2;
@@ -387,5 +391,25 @@ public class OI {
     	}
     	return value;	
     }
+
+	public double getElevatorPower() {
+    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS) * -1);
+    	// if the power is less than 20%, make it 0
+    	if( value < 0.2 && value > -0.2)
+    	{
+    		value = 0.0;
+    	}
+    	else if( value > 0.2 )
+    	{
+    		// if it is above 20%, subtract the 20% to keep the linearness.
+    		value = value - 0.2;
+    	}
+    	else 
+    	{
+    		// if it is below -20%, add the 20% to keep the linearness.
+    		value = value + 0.2;
+    	}
+    	return value;	
+	}
 }
 

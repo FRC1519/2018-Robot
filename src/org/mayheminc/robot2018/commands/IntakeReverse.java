@@ -24,7 +24,7 @@ public class IntakeReverse extends Command {
     protected void initialize() {
     	// when this command starts, start a timer, reverse the intake motors, and take in the cube.
     	m_Timer = new Timer();
-    	Robot.intake.Reverse(true);
+    	Robot.intake.Reverse(true);  // setting this to true makes the two intake wheels go opposite directions
     	Robot.intake.takeInCube();
     	
     	m_Timer.start();

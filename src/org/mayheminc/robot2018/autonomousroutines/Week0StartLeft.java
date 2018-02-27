@@ -12,12 +12,12 @@ public class Week0StartLeft extends SmartAutoChooserBase {
    
 	@Override
 	protected Command GetAutoroutine() {
-    	boolean ourswitch = Robot.gameData.GetOurSwitch();
+    	boolean ourswitch = Robot.gameData.GetNearSwitch();
     	
     	// switch on left...
     	if( !ourswitch )
     	{
-    		return new StartLeftLeftSwitch();
+    		return new ZZ_StartLeftLeftSwitch();
     	}
     	// switch on right...
     	else

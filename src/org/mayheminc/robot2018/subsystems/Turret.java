@@ -38,6 +38,7 @@ public class Turret extends Subsystem implements PidTunerObject {
     	
     	m_motor.setNeutralMode(NeutralMode.Brake);
     }
+    
     public int getPosition()
     {
     	return m_motor.getSelectedSensorPosition(0);
@@ -48,18 +49,20 @@ public class Turret extends Subsystem implements PidTunerObject {
     	m_motor.set(ControlMode.Position, position);
     	m_manualmode = false;
     }
+    
     public void zeroEncoder()
     {
     	m_motor.setEncPosition(FRONT_POSITION);
     }
+    
     public void periodic()
     {
     	double power = Robot.oi.getTurretPower();
+    	
     	// if the joystick is being commanded...
     	if(Math.abs(power) > 0.0)
     	{
     		m_manualmode = true;
-
     	}
     	
     	if( m_manualmode )

@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public static final boolean DEBUG = true;
 	public static final boolean PRACTICE_BOT = false;
-	
+
 	// create commands to be invoked for autonomous and teleop
 	private Command autonomousCommand;
 	private Runtime runtime = Runtime.getRuntime();
@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static Targeting targeting = new Targeting();
 	public static CubeDetector cubeDetector = new CubeDetector();
 	public static Turret turret = new Turret();
-	
+
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()
 	public static Autonomous autonomous;
@@ -117,32 +117,35 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		targeting.periodic();
 		cubeDetector.periodic();
 		pivot.UpdateSmartDashboard();
-		
+
 		Scheduler.getInstance().run();
 
 		// update Smart Dashboard, including fields for setting up autonomous operation
 		updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
-//		System.out.println("disale P");
+		//		System.out.println("disale P");
 		Robot.drive.updateHistory();
-		
+
 		PrintPeriodicPeriod();
 	}
 
 	public void autonomousInit() {
 		//force low gear
 		drive.setShifter(Drive.LOW_GEAR);
-		
+
 		// turn off the compressor
 		compressor.stop();
 
 		// set the current position to the upright position
 		pivot.zeroPivot();
-		
+
 		// where ever the pivot is, lock it there.
 		pivot.LockCurrentPosition();
+		
+		// zero the elevator
+		elevator.Zero();
 
 		drive.zeroHeadingGyro();
-		
+
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
@@ -166,7 +169,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// update sensors that need periodic update
 		targeting.periodic();
 		cubeDetector.periodic();
-		
+
 		Scheduler.getInstance().run();
 
 		updateSmartDashboard(DONT_UPDATE_AUTO_SETUP_FIELDS);
@@ -179,7 +182,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 		// where ever the pivot is, lock it there.
 		pivot.LockCurrentPosition();
-		
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -207,20 +210,24 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		//System.out.println("periodic: " + (timer-teleopTimer));
 		teleopTimer = timer;		
 	}
-	
+
 	public void teleopPeriodic() {
 		PrintPeriodicPeriod();
-		
+
 		if (!teleopOnce) {
 			DriverStation.reportError("Teleop Periodic is running!", false);
 		}
 		teleopOnce = true;
-		
+
 		// update sensors that need periodic update
-		targeting.periodic();
-		pivot.periodic();
 		cubeDetector.periodic();
-		
+		elevator.periodic();
+		elevatorArms.periodic();
+		intake.periodic();
+		pivot.periodic();
+		targeting.periodic();
+		turret.periodic();
+
 		Scheduler.getInstance().run();
 
 		if (!oi.autoInTeleop()) {
@@ -254,18 +261,9 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void updateSmartDashboard(boolean updateAutoFields) {
 		try {
 			if (System.currentTimeMillis() > nextSmartDashboardUpdate) {
-				
-//				System.out.println("update.");
-				
-				// display free memory for the JVM
-				double freeMemoryInKB = runtime.freeMemory() / 1024;
-				SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
 
-				SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
-//				SmartDashboard.putBoolean("FRC Comm Checked In", oi.IsCheckedInWithFieldManagement());
+				this.updateSmartDashboard();
 
-				SmartDashboard.putString("Game Data",  gameData.toString());
-				
 				cubeDetector.updateSmartDashboard();
 				drive.updateSmartDashboard();
 				elevator.updateSmartDashboard();
@@ -273,9 +271,10 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				intake.updateSmartDashboard();
 				pivot.UpdateSmartDashboard();
 				turret.updateSmartDashboard();
+				targeting.updateSmartDashboard();
 
 				OI.pidTuner.updateSmartDashboard();
-				
+
 				if (updateAutoFields) {
 					Autonomous.updateSmartDashboard();
 				}
@@ -286,6 +285,19 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 			return;
 		}
 	}
+
+	void updateSmartDashboard() {
+		// display free memory for the JVM
+		double freeMemoryInKB = runtime.freeMemory() / 1024;
+		SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
+
+		SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
+		//			SmartDashboard.putBoolean("FRC Comm Checked In", oi.IsCheckedInWithFieldManagement());
+
+		SmartDashboard.putString("Game Data",  gameData.toString());
+
+	}
+
 
 	public static boolean getBrownoutLowerThreshold() {
 		return (pdp.getVoltage() < BROWNOUT_VOLTAGE_LOWER_THRESHOLD);

@@ -20,19 +20,22 @@ import com.ctre.phoenix.motorcontrol.*;
 public class Pivot extends Subsystem implements PidTunerObject {
 
 	public static final int UPRIGHT_POSITION = 2800; //JUST PLACEHOLDER!
-	public static final int SPIT_POSITION = 1900;
-	public static final int EXCHANGE_POSITION = 400;
+	public static final int SPIT_POSITION = 2100; //Was 1900 02-02-2018
+	public static final int EXCHANGE_POSITION = 700;//was 500 02-02-2018
 	public static final int DOWNWARD_POSITION = 0;
 	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
 	
 	public static final int DOWN_TOLERANCE = 50;
-	public static final double DOWN_MOTOR_POWER = 0.15;
-	public static final double ZERO_MAX_CURRENT = 0.2;
+	public static final double DOWN_MOTOR_POWER = -0.15;
+	public static final double ZERO_MAX_CURRENT = 1.0; // Amps
 	
 	MayhemTalonSRX m_pivotmotor = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
 	int m_position;
 	boolean m_manualMode = false;
-	boolean m_zero;
+	boolean m_zero = false;
+	int m_zeroWaitToMove;
+	int m_zeroWaitForSame;
+	int m_zeroEncoderCount;
 	
 	public Pivot()
 	{
@@ -52,54 +55,31 @@ public class Pivot extends Subsystem implements PidTunerObject {
 		m_pivotmotor.setInverted(false);
 		m_pivotmotor.setSensorPhase(true);
 	}
-    protected void initDefaultCommand() {
-	}
+    protected void initDefaultCommand() { }
     
     /**
-     * Set the current position of the pivot to be the uprighth position
+     * Set the zero flag. Set the counters.  Let periodic run the zero routine. 
      */
     public void zeroPivot() {	
-//    	m_pivotmotor.setSelectedSensorPosition(Pivot.UPRIGHT_POSITION, 0, 1000);
-    	m_pivotmotor.set(ControlMode.PercentOutput, 0.1);
+    	m_pivotmotor.set(ControlMode.PercentOutput, 0.2);
     	m_zero = true;
-    	
+    	m_zeroWaitToMove = 10;
+    	m_zeroWaitForSame = 5;
     }
     
+    /**
+     * Where ever the pivot is, hold that position.
+     */
     public void LockCurrentPosition()
     {
     	m_pivotmotor.set(ControlMode.Position, m_pivotmotor.getSelectedSensorPosition(0));
-    }
-    
-    public void ManualMode()
-    {
-    	m_manualMode = true;
-    }
-    public void PidMode()
-    {
-    	m_manualMode = false;
-    }
-    
-    
-    /**
-     * Set the pivot to the up position.
-     */
-    public void pivotUp() {
-    	m_manualMode = false;
-    	moveTo(UPRIGHT_POSITION );
-    }
-    
-    /**
-     * Set the pivot to the down position.
-     */
-    public void pivotDown() {
-    	m_manualMode = false;
-    	moveTo(DOWNWARD_POSITION);
     }
     
     public void moveTo(int position)
     {
     	m_pivotmotor.set(ControlMode.Position, position);
     	m_position = position;
+    	m_manualMode = false;
     }
     
     public boolean IsPivotInPosition()
@@ -119,44 +99,73 @@ public class Pivot extends Subsystem implements PidTunerObject {
     	}
     	
     	// if we are zeroing the pivot...
-    	if( m_zero )
+    	if ( m_zero )
     	{
-    		// if the current goes up...
-    		if( m_pivotmotor.getOutputCurrent() > ZERO_MAX_CURRENT)
+//    		System.out.println("Zero Pivot");
+    		
+    		// if the wait to move has expired...
+    		if( m_zeroWaitToMove == 0 )
     		{
-    			// we found the hard stop.  Set the encoder position.
-    			m_pivotmotor.setSelectedSensorPosition(UPRIGHT_POSITION, 0, 0);
-    			// stop zeroing.
-    			m_zero = false;
-    			// stop the motor
-    			m_pivotmotor.set(ControlMode.Position, UPRIGHT_POSITION);
+    			int encoder = m_pivotmotor.getSelectedSensorPosition(0);
+//    			System.out.println("Zero Wait Expired: " + encoder + " " + m_zeroEncoderCount);
+    			// if the encoder has not moved...
+    			if( encoder == m_zeroEncoderCount )
+    			{
+    				// count down the same encoder counts.
+    				m_zeroWaitForSame--;
+    				if( m_zeroWaitForSame == 0 )
+    				{
+    					// zero is done.
+//    	    			System.out.println("ZeroDone");
+    					m_zero = false;
+    					m_pivotmotor.setSelectedSensorPosition(UPRIGHT_POSITION, 0, 0);
+    				}
+    			}
+    			else
+    			{
+    				// reset the wait for same counter
+    				m_zeroWaitForSame = 5;
+    				// reset the encoder count we are looking for.
+    				m_zeroEncoderCount = encoder;
+    			}
     		}
-    	}
+    		else
+    		{
+    			m_zeroWaitToMove--;
+    		}
+    	} 
+    	else // not zeroing
+    	{
+    		// control the arm pivot normally if not zeroing
+
+    		if( m_manualMode )
+    		{
+    			m_pivotmotor.set(ControlMode.PercentOutput, power);
+    		}
+    		else // positioning mode
+    		{
+    			switch(m_position)
+    			{
+    			case DOWNWARD_POSITION:
+    				// if we wanted the DOWN position...
+    				int pos = m_pivotmotor.getSelectedSensorPosition(0);
+    				// and we are within a tolerance of being down...
+    				if( pos < DOWNWARD_POSITION + DOWN_TOLERANCE)
+    				{
+    					// set the motor to press down lightly.
+    					m_pivotmotor.set(ControlMode.PercentOutput,  DOWN_MOTOR_POWER);;
+    				}
+    				break;
+    			}
+    		}
     	
-    	if( m_manualMode )
-    	{
-    		m_pivotmotor.set(ControlMode.PercentOutput, power);
-    	}
-    	else // auto mode
-    	{
-    		switch(m_position)
-    		{
-	    		case DOWNWARD_POSITION:
-	    			// if we wanted the DOWN position...
-	    			int pos = m_pivotmotor.getSelectedSensorPosition(0);
-	    			// and we are within a tolerance of being down...
-	    			if( pos < DOWNWARD_POSITION + DOWN_TOLERANCE)
-	    			{
-	    				// set the motor to press down lightly.
-	    				m_pivotmotor.set(ControlMode.PercentOutput,  DOWN_MOTOR_POWER);;
-	    			}
-	    			break;
-    		}
-    	}
+     	}
     }
+    
     public void UpdateSmartDashboard()
     {
     	SmartDashboard.putNumber("Pivot Encoder Pos", m_pivotmotor.getSelectedSensorPosition(0));
+    	SmartDashboard.putBoolean("Pivot Manual Mode", m_manualMode);
     }
     
     ////////////////////////////////////////////////////////
