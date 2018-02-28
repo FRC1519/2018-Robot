@@ -61,7 +61,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
      * Set the zero flag. Set the counters.  Let periodic run the zero routine. 
      */
     public void zeroPivot() {	
-    	m_pivotmotor.set(ControlMode.PercentOutput, 0.2);
+    	m_pivotmotor.set(ControlMode.PercentOutput, 0.25);
     	m_zero = true;
     	m_zeroWaitToMove = 10;
     	m_zeroWaitForSame = 5;

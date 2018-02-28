@@ -133,19 +133,43 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		drive.setShifter(Drive.LOW_GEAR);
 
 		// turn off the compressor
+		// KBS:  Not sure we really want to do this -- we did this in 2016 to ensure the compressor
+		//       didn't affect the operation of the autonomous programs.  Not sure we really want this.
+		//       At the least, we can take advantage of the last few seconds in autonomous by turning
+		//       on the compressor at the end of our autonomous programs instead of waiting for the
+		//       teleopInit to be called at the start of teleop.
 		compressor.stop();
 
-		// set the current position to the upright position
-		pivot.zeroPivot();
-
-		// where ever the pivot is, lock it there.
-		pivot.LockCurrentPosition();
 		
-		// zero the elevator
+		// "Zero" the robot subsystems which have position encoders in this section.
+		// Overall strategy for zeroing subsystems is as follows:
+		// Every time autonomous starts:
+		//    "Zero" the heading gyro using the drive subsystem
+		//    "Zero" the elevator, presuming it is down due to gravity
+		//    "Zero" the turret, presuming it is pointing straight forward
+		//    "Zero" the arm/pivot, which will initiate finding zero by using hard stop
+
+		// zero the drive base gyro at current position
+		drive.zeroHeadingGyro();		
+		
+		// zero the elevator at current position
+		// this presumes the elevator is down due to gravity
 		elevator.Zero();
 
-		drive.zeroHeadingGyro();
+		// zero the turret at current position
+		turret.zeroEncoder();
 
+		// set the current arm/pivot position to the upright position
+		pivot.zeroPivot();   // Note:  this will initiate a sequence to move the arm/pivot to vertical
+
+		
+		// where ever the pivot is, lock it there.
+		// KBS:  think we don't want to do this before zeroing the pivot, which will
+        //       require some time in the future.  Commenting out til RJD and KBS discuss
+		// pivot.LockCurrentPosition();
+
+		
+		
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
@@ -167,6 +191,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 */
 	public void autonomousPeriodic() {
 		// update sensors that need periodic update
+		// KBS:  Why isn't this list the same as the list in teleop?  Should a function be called to
+		//       share this code?
 		targeting.periodic();
 		cubeDetector.periodic();
 
@@ -177,9 +203,20 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	}
 
 	public void teleopInit() {
-		// turn off the compressor
+		// turn on the compressor
 		compressor.start();
 
+		// Safety measures:
+		// KBS: When commencing teleop, we want to make sure "position-controlled" subsystems don't
+		//      try to move immediately upon enabling the robot.  Currently think the best way to do
+		//      this is to put all "position-controlled" subsystems into a mode that relaxes the motor
+		//      for each.  However, we want to be sure this doesn't "break things" during matches
+		//      when transitioning from autonomous to teleop.
+		
+		// elevator.relaxForSafety();
+		// turret.relaxForSafety();
+		// pivot.relaxForSafety();
+		
 		// where ever the pivot is, lock it there.
 		pivot.LockCurrentPosition();
 
@@ -192,8 +229,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		}
 
 		DriverStation.reportError("Entering Teleop.\n", false);
-
-		drive.zeroHeadingGyro();
 	}
 
 	/**
@@ -270,8 +305,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				elevatorArms.updateSmartDashboard();
 				intake.updateSmartDashboard();
 				pivot.UpdateSmartDashboard();
-				turret.updateSmartDashboard();
 				targeting.updateSmartDashboard();
+				turret.updateSmartDashboard();
 
 				OI.pidTuner.updateSmartDashboard();
 

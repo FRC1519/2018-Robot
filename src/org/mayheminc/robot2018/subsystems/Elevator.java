@@ -96,7 +96,8 @@ public class Elevator extends Subsystem implements PidTunerObject {
     }
     
     /**
-     * Set the current position of the elevator to the zero point.
+     * Set the "zero point" of the elevator by telling the TalonSRX to set
+	 * the selectedSensorPosition to zero.
      */
     public void Zero()
     {

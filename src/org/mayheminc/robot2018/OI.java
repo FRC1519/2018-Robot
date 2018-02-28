@@ -174,25 +174,26 @@ public class OI {
 
     	// Mode initialization
 //        TOGGLE_CLOSED_LOOP_MODE_BUTTON.whenPressed(new ToggleClosedLoopMode()); 
-     	DRIVER_STICK_BUTTON_ONE.whenPressed(new TurretZero());
-//        DRIVER_STICK_BUTTON_ONE.whenPressed(new CheckInWithFieldManagement());
      	
-     	//*******************************DRIVER PAD**************************************8
+     	//*******************************DRIVER PAD**************************************
     	
         DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new DriveSetShifter(Drive.HIGH_GEAR));
         DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new DriveSetShifter(Drive.LOW_GEAR));
-  
-//    	DRIVER_PAD_BLUE_BUTTON.whenPressed(new CheckInWithFieldManagement());
-    	//DRIVER_PAD_RED_BUTTON.whileHeld(new CrossDefenseChevalDeFrise(Arm.REQUIRE_ARM_SUBSYSTEM)); //see autoInTeleop()
-    	//DRIVER_PAD_YELLOW_BUTTON.whenPressed(new DeployLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-    	//DRIVER_PAD_GREEN_BUTTON.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-    	
+
+		
+     	//******************************* DRIVER STICK ****************************************************************************
+		
+     	DRIVER_STICK_BUTTON_ONE.whenPressed(new TurretZero());
+//        DRIVER_STICK_BUTTON_ONE.whenPressed(new CheckInWithFieldManagement());
+
     	// adjust auto parameters
      	DRIVER_STICK_BUTTON_THREE.whenPressed(new SelectAutonomousProgram(1));
      	DRIVER_STICK_BUTTON_TWO.whenPressed(new SelectAutonomousProgram(-1));
      	DRIVER_STICK_BUTTON_FOUR.whenPressed(new SelectAutonomousDelay(-1));
      	DRIVER_STICK_BUTTON_FIVE.whenPressed(new SelectAutonomousDelay(1));
      	
+		// Note:  buttons SIX, SEVEN, TEN, ELEVEN are reserved for PidTuner
+		
     	// zero elements that require zeroing
      	DRIVER_STICK_BUTTON_EIGHT.whenPressed(new DriveZeroGyro());
      	DRIVER_STICK_BUTTON_NINE.whenPressed(new PivotZeroEncoder());
@@ -206,8 +207,8 @@ public class OI {
      	
 
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
-//     	
-//     	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
+     	
+     	//BUTTONS FIVE AND SEVEN ARE For Operating pneumatics
      	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose()); 
      	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new AllJawsOpen()); 
 //     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeCloseJaw()); 
@@ -215,9 +216,8 @@ public class OI {
 //     	OPERATOR_PAD_BUTTON_FIVE.whileHeld(new ElevatorArmClose());
 //     	OPERATOR_PAD_BUTTON_SEVEN.whileHeld(new ElevatorArmOpen());
      	
-     	//     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
-//     	
-     	// Button Six and Eight currently control either intake or elevator
+     	
+     	// Button Six and Eight currently control rollers of intake or elevator
 //     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
 //     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new IntakeOut());
      	OPERATOR_PAD_BUTTON_SIX.whileHeld(new AllRollersIn());
@@ -225,11 +225,12 @@ public class OI {
 //     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new ElevatorArmSetMotorOld(0.5));
 //     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new ElevatorArmSetMotorOld(-0.5));
      	
-     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HIGH));
-     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
-     	
      	OPERATOR_PAD_D_PAD_UP.whenPressed(new ElevatorSetPosition(Elevator.CEILING));
      	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
+		
+     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HIGH));
+     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
+ 	
 
 //     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
      	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
@@ -259,8 +260,18 @@ public class OI {
         return(throttleVal);
     }
     
+	
+	// KBS:  Note that there is a piece of code within pivotArmPower which is shared with other joystick features.
+	//       I'm inclined to put that code in a shared function for "linearizeStickWithDeadZone(double percentage)"
+	//       but also want to do some joystick testing to determine an appropriate size for the deadzone.  20%
+	//       seems a bit too large.  The linearization could also be improved.  A side-effect of the current algorithm
+	//       is that the "maximum" power available from the joystick is 100% - DEAD_ZONE_PERCENT.  While probably okay
+	//       for the specific cases here, this might not be the right thing to do in general.  However, in here would
+	//       be a good place to enforce "operator-controlled" restrictions on maximum power to be applied for manual
+	//       control of the robot mechanisms.
     public double pivotArmPower()
     {
+		// NOTE:  Joystick has "up" be negative and "down" be positive.  Reverse this by multiplying by -1.
     	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
     	// if the power is less than 20%, make it 0
     	if ( -0.2 < value && value < 0.2)
@@ -301,11 +312,11 @@ public class OI {
     public double steeringX() {
         // SteeringX is the "X" axis of the right stick on the Driver Gamepad.
         double value = DRIVER_PAD.getRawAxis(OI.GAMEPAD_F310_RIGHT_X_AXIS);
-        if(Math.abs(value) < 0.05){
+        if (Math.abs(value) < 0.05) {
         	value = 0.0;
         }
         
-        if( DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
+        if (DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
             value = value / 2.0;
         }
         return value;
@@ -381,6 +392,11 @@ public class OI {
 	}
 
 	public double getTurretPower() {
+		
+		// KBS:  Note that right axis should be positive when clockwise;  I don't think we really want this
+		//       reversed for the turret.  Looks like a copy/paste error from pivotArmPower.  For ease of
+		//       thinking about the turret operation, I think we want clockwise to be "forward" and ascending
+		//       sensor values.
     	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS)) * -1;
     	// if the power is less than 20%, make it 0
     	if( value < 0.2 && value > -0.2)
@@ -401,6 +417,7 @@ public class OI {
     }
 
 	public double getElevatorPower() {
+		// NOTE:  Joystick has "up" be negative and "down" be positive.  Reverse this by multiplying by -1.
     	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS) * -1);
     	// if the power is less than 20%, make it 0
     	if( value < 0.2 && value > -0.2)

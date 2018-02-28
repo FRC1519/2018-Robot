@@ -34,8 +34,6 @@ public class RobotMap {
 	public static final int OPERATOR_GAMEPAD = 2;
 	public static final int OPERATOR_JOYSTICK = 3;
 	
-	public static final int WINCH_TALON = 25;
-	
 	//Solenoids:
 	public static final int INTAKE_FINGERS_SOLENOID = 0;
 	public static final int ELEVATOR_ARM_SOLENOID = 1;
