@@ -72,22 +72,34 @@ public class Targeting extends Subsystem {
 			latestImageHeading = Robot.drive.getHeadingForCapturedImage();
 		}*/
 		
-//		// get the list of objects from the listener
-//		List<ObjectLocation> objects = listener.getObjectList();
-//		
-//		// loop through the objects.  This may be an empty list.
-//		for(ObjectLocation obj : objects)
-//		{
-//			// if there is a cube...
-//			if( obj.type == ObjectTypes.OBJ_CUBE)
-//			{
-//				m_probability = obj.probability;
-//				// get its center
-//				latestCenterX = (int) obj.x;
-//				latestFrameNum++;
-//				return;
-//			}
-//		}
+		// get the list of objects from the listener
+		List<ObjectLocation> objects = listener.getObjectList();
+		
+		if( objects != null )
+		{
+//			System.out.println("Targeting: Received non-null list");
+			// loop through the objects.  This may be an empty list.
+			for(ObjectLocation obj : objects)
+			{
+//				System.out.println("Target: " + obj.toString());
+
+				// if there is a cube...
+				if( obj.type == ObjectTypes.OBJ_CUBE)
+				{
+					m_probability = obj.probability;
+					// get its center
+					latestCenterX = (int) obj.x;
+					latestFrameNum++;
+					
+					return;
+				}
+			}
+		}
+		else
+		{
+//			System.out.println("Targeting: objects is null");
+		}
+		
 		latestCenterX = 1000; // no cube visible
 	}
 	

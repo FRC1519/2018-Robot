@@ -20,10 +20,10 @@ public class MayhemTalonSRX extends TalonSRX{
 		super(deviceNumber);
 		
 		// TODO Auto-generated constructor stub
-		this.configNominalOutputForward(0.0,  1000);
-		this.configNominalOutputReverse(0.0,  1000);
-		this.configPeakOutputForward(1.0,  1000);
-		this.configPeakOutputReverse(-1.0, 1000);
+		this.configNominalOutputForward(0.0,  0);
+		this.configNominalOutputReverse(0.0,  0);
+		this.configPeakOutputForward(1.0,  0);
+		this.configPeakOutputReverse(-1.0, 0);
 		
 		this.setNeutralMode(NeutralMode.Coast);
 
@@ -32,6 +32,13 @@ public class MayhemTalonSRX extends TalonSRX{
 //		this.configPeakCurrentDuration(0,  0);
 //		this.configForwardLimitSwitchSource(RemoteLimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled, 0, 0);
 //		this.configForwardSoftLimitEnable(false,  0);
+
+		// copied from CTRE Example: https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/Current%20Limit/src/org/usfirst/frc/team217/robot/Robot.java#L37
+//		this.configPeakCurrentLimit(80, 10);
+//		this.configPeakCurrentDuration(60000, 10); /* this is a necessary call to avoid errata. */
+//		this.configContinuousCurrentLimit(40, 10);
+//		this.enableCurrentLimit(true); /* honor initial setting */
+
 	}
 
 	public ErrorCode config_kP(int slot, double value, int timeout)

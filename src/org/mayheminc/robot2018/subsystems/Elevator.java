@@ -18,18 +18,18 @@ import org.mayheminc.util.PidTunerObject;
 public class Elevator extends Subsystem implements PidTunerObject {
 
 	public static final int PICK_UP_CUBE = 0;
-	public static final int SWITCH_LOW = 100;
-	public static final int SWITCH_HIGH = 200;
-	public static final int SCALE_LOW = 300;
-	public static final int SCALE_MID = 400;
-	public static final int SCALE_HIGH = 500;
-	public static final int CEILING = 5000;
+	public static final int SWITCH_LOW = 500;
+	public static final int SWITCH_HIGH = 2000;
+	public static final int SCALE_LOW = 4000;
+	public static final int SCALE_MID = 18700;
+	public static final int SCALE_HIGH = 6000;
+	public static final int CEILING = 24100; // hihg scale is 24100
 	
 	boolean m_SafetyOn = true;
 
 //    final int ELEVATOR_FLOOR = 0;
 //    final int ELEVATOR_CEILING = 1000;
-    final int POSITION_TOLERANCE = 20;
+    final int POSITION_TOLERANCE = 500;
     
 	int m_motorSpeed;
 	boolean m_manualMode = true;
@@ -47,9 +47,9 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		m_motor.configPeakOutputReverse(-1.0,  0);
 
 		// TODO: need to tune the PIDF parameters
-		m_motor.config_kP(0, 0.1, 0);
+		m_motor.config_kP(0, 0.3, 0);
 		m_motor.config_kI(0, 0.0, 0);
-		m_motor.config_kD(0, 0.0, 0);
+		m_motor.config_kD(0, 0.01, 0);
 		m_motor.config_kF(0, 0.0, 0);
 		
 		m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
@@ -57,6 +57,11 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		
 		m_motor.setInverted(true);
 		m_motor.setSensorPhase(true);
+		
+		m_motor.configClosedloopRamp(0.25, 0);
+		m_motor.configOpenloopRamp(0.25,  0);
+		
+		m_motor.setSelectedSensorPosition(m_motor.getSelectedSensorPosition(0), 0, 0);
 	}
 	
     public void initDefaultCommand() {}
@@ -121,7 +126,17 @@ public class Elevator extends Subsystem implements PidTunerObject {
     	{
     		m_manualMode = true;
     	}
+    	else
+    	{
+	    	if( m_manualMode)
+	    	{
+	//    		m_manualMode = false;
+	//    		m_autoSetpoint = m_motor.getSelectedSensorPosition(0);
+	    	}
+    	}
+    	
 //    	System.out.println("Elevator Manual Mode: " + m_manualMode);
+//    	System.out.println("Elevator Safety Mode: " + m_SafetyOn);
     	
     	// if this is manual mode...
     	if( m_manualMode )

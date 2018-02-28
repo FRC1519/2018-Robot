@@ -1,7 +1,7 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
-import org.mayheminc.robot2018.commands.ElevatorArmSetMotor;
+import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.Wait;
@@ -36,6 +36,6 @@ public class StartRightBackSwitchLeft extends CommandGroup {
 		addSequential(new Wait(0.5));
 
 		// spit the cube 
-		addParallel(new ElevatorArmSetMotor(0.4));
+		addParallel(new ElevatorArmSetMotorAuto(0.4));
 	}
 }

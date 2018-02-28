@@ -3,12 +3,13 @@ package org.mayheminc.robot2018.commands;
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.subsystems.Turret;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class TurretMoveTo extends InstantCommand {
+public class TurretMoveTo extends Command {
 
 	int m_position;
     public TurretMoveTo(int position) {
@@ -30,7 +31,18 @@ public class TurretMoveTo extends InstantCommand {
     		else
     			m_position = Turret.LEFT_REAR;
     	}
-    	
+    	System.out.println("TurretMoveTo: setPosition" + m_position);
     	Robot.turret.setPosition(m_position);
+    }
+    
+    protected boolean isFinished() {return Robot.turret.isAtPosition();}
+    
+    protected void end()
+    {
+    	
+    }
+    protected void interrupt()
+    {
+    	
     }
 }

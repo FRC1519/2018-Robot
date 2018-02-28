@@ -23,10 +23,10 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	public static final int SPIT_POSITION = 2100; //Was 1900 02-02-2018
 	public static final int EXCHANGE_POSITION = 700;//was 500 02-02-2018
 	public static final int DOWNWARD_POSITION = 0;
-	public static final int PIVOT_TOLERANCE = 20; // PLACEHOLDER!
+	public static final int PIVOT_TOLERANCE = 75; // PLACEHOLDER!
 	
 	public static final int DOWN_TOLERANCE = 50;
-	public static final double DOWN_MOTOR_POWER = -0.15;
+	public static final double DOWN_MOTOR_POWER = 0.15;
 	public static final double ZERO_MAX_CURRENT = 1.0; // Amps
 	
 	MayhemTalonSRX m_pivotmotor = new MayhemTalonSRX(RobotMap.PIVOT_TALON);

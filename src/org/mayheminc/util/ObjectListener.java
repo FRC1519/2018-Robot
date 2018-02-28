@@ -35,6 +35,8 @@ public class ObjectListener extends Thread {
         byte[] byteBuffer = new byte[MAX_BUFFER];
         packet = new DatagramPacket(byteBuffer, byteBuffer.length);
         buffer = ByteBuffer.wrap(byteBuffer);
+        
+        objList = new ArrayList<ObjectLocation>();
     }
 
     public int getLastFrame() {

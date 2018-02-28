@@ -6,6 +6,7 @@ import org.mayheminc.util.MayhemTalonSRX;
 import org.mayheminc.util.PidTunerObject;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,6 +25,7 @@ public class Turret extends Subsystem implements PidTunerObject {
 
 	MayhemTalonSRX m_motor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
 	boolean m_manualmode = false;
+	int m_autoSetpoint;
 	
     public void initDefaultCommand() { }
     
@@ -32,11 +34,31 @@ public class Turret extends Subsystem implements PidTunerObject {
     	super();
     	
     	// initialize the PID controller
-    	m_motor.config_kP(0,  1.0,  0);
+    	m_motor.config_kP(0,  0.4,  0);
     	m_motor.config_kI(0,  0.0,  0);
     	m_motor.config_kD(0,  0.0,  0);
+    	m_motor.config_kF(0,  0.0, 0);
     	
-    	m_motor.setNeutralMode(NeutralMode.Brake);
+    	m_motor.selectProfileSlot(0,  0);
+    	
+    	m_motor.setNeutralMode(NeutralMode.Coast);
+    	m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+    	
+		m_motor.setInverted(false);
+		m_motor.setSensorPhase(false);
+		
+		m_motor.configClosedloopRamp(0.25, 0);
+		m_motor.configOpenloopRamp(0.25,  0);
+		
+
+		m_motor.setSelectedSensorPosition(m_motor.getSelectedSensorPosition(0), 0, 0);
+		m_motor.configMotionAcceleration(1000,  0);
+    	m_motor.enableControl();
+    }
+    
+    public boolean isAtPosition()
+    {
+    	return ( Math.abs(getPosition() - m_autoSetpoint) < 250);
     }
     
     public int getPosition()
@@ -46,7 +68,8 @@ public class Turret extends Subsystem implements PidTunerObject {
     
     public void setPosition(int position)
     {
-    	m_motor.set(ControlMode.Position, position);
+    	System.out.println("Turret: setPosition" + position);
+    	m_autoSetpoint = position;
     	m_manualmode = false;
     }
     
@@ -62,6 +85,7 @@ public class Turret extends Subsystem implements PidTunerObject {
     	// if the joystick is being commanded...
     	if(Math.abs(power) > 0.0)
     	{
+    		System.out.println("Turret: periodic: Power: " + power);
     		m_manualmode = true;
     	}
     	
@@ -71,12 +95,15 @@ public class Turret extends Subsystem implements PidTunerObject {
     	}
 		else // PID mode is set in setPosition()
     	{
+			m_motor.set(ControlMode.Position, m_autoSetpoint);
     	}
     }
     
     public void updateSmartDashboard()
     {
     	SmartDashboard.putNumber("Turret Pos", m_motor.getPosition());
+    	SmartDashboard.putNumber("Turret Power", m_motor.getMotorOutputPercent());
+    	SmartDashboard.putBoolean("Turret Manual Mode",  m_manualmode);
     }
     
     /////////////////////////////////////////////////////////

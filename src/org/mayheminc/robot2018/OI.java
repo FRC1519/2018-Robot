@@ -174,7 +174,7 @@ public class OI {
 
     	// Mode initialization
 //        TOGGLE_CLOSED_LOOP_MODE_BUTTON.whenPressed(new ToggleClosedLoopMode()); 
-//     	DRIVER_STICK_BUTTON_ONE.whenPressed(new ToggleDriveMode());
+     	DRIVER_STICK_BUTTON_ONE.whenPressed(new TurretZero());
 //        DRIVER_STICK_BUTTON_ONE.whenPressed(new CheckInWithFieldManagement());
      	
      	//*******************************DRIVER PAD**************************************8
@@ -203,21 +203,27 @@ public class OI {
      	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotToFloor());
      	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
      	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotToUpright());
-//     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new TransitionCubeToElevator());
      	
 
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
 //     	
 //     	//BUTTONS FIVE AND SEVEN ARE RESERVED FOR FIRING
-     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeCloseJaw()); 
-     	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeOpenJaw()); 
-//     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
+     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose()); 
+     	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new AllJawsOpen()); 
+//     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeCloseJaw()); 
+//     	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeOpenJaw()); 
+//     	OPERATOR_PAD_BUTTON_FIVE.whileHeld(new ElevatorArmClose());
+//     	OPERATOR_PAD_BUTTON_SEVEN.whileHeld(new ElevatorArmOpen());
+     	
+     	//     	OPERATOR_PAD_BUTTON_SEVEN - RESERVED FOR "Force Fire"
 //     	
-     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
-//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new ElevatorArmClose());
-//     	OPERATOR_PAD_BUTTON_SIX.whenPressed(new IntakeAutoHarvestCube());
-     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new IntakeOut());
-//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new ElevatorArmOpen());
+     	// Button Six and Eight currently control either intake or elevator
+//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
+//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new IntakeOut());
+     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new AllRollersIn());
+     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new AllRollersOut());
+//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new ElevatorArmSetMotorOld(0.5));
+//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new ElevatorArmSetMotorOld(-0.5));
      	
      	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HIGH));
      	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
@@ -225,8 +231,10 @@ public class OI {
      	OPERATOR_PAD_D_PAD_UP.whenPressed(new ElevatorSetPosition(Elevator.CEILING));
      	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
 
-//     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new RetractLifter(Arm.REQUIRE_ARM_SUBSYSTEM));
-     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new IntakeEscapeDeathGrip());
+//     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
+     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
+     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator());
+     	
 	}
 	
     public boolean quickTurn() {
@@ -246,7 +254,7 @@ public class OI {
 //         if (DRIVER_PAD.getRawButton(OI.DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON)) {
          // if the slow button is pressing, half the throttle value.
          if( DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
-            throttleVal = throttleVal / 2.0;
+            throttleVal = throttleVal / 3.0;
         }
         return(throttleVal);
     }

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class TransitionCubeToElevator extends CommandGroup {
+public class HandoffCubeToElevator extends CommandGroup {
 
 	/**
 	 * Open the elevator hands. Move the Elevator to the low scale position.
@@ -19,24 +19,22 @@ public class TransitionCubeToElevator extends CommandGroup {
 	 * Catch the cube in the elevator hands.
 	 * Move the elevator up.
 	 */
-    public TransitionCubeToElevator() {
+    public HandoffCubeToElevator() {
     	addSequential(new ElevatorArmOpen());
-    	addSequential(new Wait(1));
-//    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.SCALE_LOW));
-//    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
+    	addSequential(new ElevatorSetPosition(Elevator.SCALE_LOW));
+    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
+    	addSequential(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
     	addSequential(new IntakeCloseJaw());
-    	addSequential(new Wait(1));
-//    	addSequential(new PivotToElevator());
-//    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.PICK_UP_CUBE));
-    	addSequential(new ElevatorArmSetMotor(.5));
+    	addSequential(new PivotToUpright());
+    	addSequential(new ElevatorArmSetMotorAuto(.5));
     	addSequential(new IntakeOutInstant());
     	addSequential(new Wait(0.1));
     	addSequential(new ElevatorArmClose());
     	addSequential(new Wait(0.2));
     	addSequential(new IntakeOff());
     	addSequential(new Wait(0.5));
-    	addSequential(new ElevatorArmSetMotor(0.0));
+    	addSequential(new ElevatorArmSetMotorAuto(0.1));
     	addSequential(new IntakeOpenJaw());
-//    	addSequential(new ElevatorSetPosition(Elevator.ElevatorPositions.SWITCH_HIGH));
+    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HIGH));
     }
 }
