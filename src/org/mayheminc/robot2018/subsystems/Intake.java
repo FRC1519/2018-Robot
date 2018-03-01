@@ -1,6 +1,7 @@
 package org.mayheminc.robot2018.subsystems;
 
 import org.mayheminc.robot2018.RobotMap;
+import org.mayheminc.robot2018.commands.IntakeOpenJaw;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -18,13 +19,17 @@ public class Intake extends Subsystem {
 	public static final double OUTTAKE_SPEED = -1.0; //JUST A PLACE HOLDER! changed from -1.0 for testing the transition
 	public static final double STOP_SPEED = 0;
 	
+	public static final boolean ESCAPE_DEATH_GRIP_RIGHT = true;
+	public static final boolean ESCAPE_DEATH_GRIP_LEFT = !ESCAPE_DEATH_GRIP_RIGHT;
+	
 	TalonSRX m_intakeMotorRight = new TalonSRX(RobotMap.INTAKE_RIGHT_TALON);
 	TalonSRX m_intakeMotorLeft = new TalonSRX(RobotMap.INTAKE_LEFT_TALON);
 	Solenoid m_solenoid = new Solenoid(RobotMap.INTAKE_FINGERS_SOLENOID);
 
 	double m_setSpeed;
 	
-	boolean m_reverseLeftSide;
+	boolean m_reverseLeftSide = false;
+	boolean m_reverseRightSide = false;
 	
 	public Intake()
 	{
@@ -73,20 +78,20 @@ public class Intake extends Subsystem {
     public void CloseJaws()
     {
     	m_solenoid.set(false);
-   
     }
     
-    public void Reverse(boolean b)
+    public void reverseLeft(boolean b)
     {
     	m_reverseLeftSide = b;
     }
     
     public void periodic()
     {
-    	double reverse = (m_reverseLeftSide) ? -1.0 : 1.0;
+    	double reverseLeft = (m_reverseLeftSide) ? -1.0 : 1.0;
+    	double reverseRight = (m_reverseRightSide) ? -1.0 : 1.0;
     	
-    	m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverse);
-    	m_intakeMotorRight.set(ControlMode.PercentOutput, m_setSpeed);
+    	m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverseLeft);
+    	m_intakeMotorRight.set(ControlMode.PercentOutput, m_setSpeed * reverseRight);
 
     }
     public void updateSmartDashboard()

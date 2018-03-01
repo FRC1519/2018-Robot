@@ -25,12 +25,12 @@ public class GameData extends Subsystem {
 		OpposingSwitch = (gameData.charAt(2) == 'R');
 	}
 
-	public boolean GetNearSwitch() 
+	public boolean getNearSwitchOnRight() 
 	{
 		Read();
 		return OurSwitch;
 	}
-	public boolean GetScale()
+	public boolean getScaleOnRight()
 	{
 		Read();
 		return Scale;
@@ -46,9 +46,9 @@ public class GameData extends Subsystem {
 		StringBuilder str = new StringBuilder();
 		str.append(gameData);
 		str.append(" ");
-		str.append( (GetNearSwitch()?"Right":"Left"));
+		str.append( (getNearSwitchOnRight()?"Right":"Left"));
 		str.append(" ");
-		str.append( (GetScale()?"Right":"Left"));
+		str.append( (getScaleOnRight()?"Right":"Left"));
 //		str.append(" ");
 //		str.append( (GetFarSwitch()?"Right":"Left"));
 		return str.toString();

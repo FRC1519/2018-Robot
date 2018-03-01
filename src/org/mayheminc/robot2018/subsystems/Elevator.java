@@ -18,18 +18,17 @@ import org.mayheminc.util.PidTunerObject;
 public class Elevator extends Subsystem implements PidTunerObject {
 
 	public static final int PICK_UP_CUBE = 0;
-	public static final int SWITCH_LOW = 500;
-	public static final int SWITCH_HIGH = 2000;
-	public static final int SCALE_LOW = 4000;
+	public static final int REST_NEAR_BOTTOM = 1000;
+	public static final int HANDOFF_HEIGHT = 3000;
+	public static final int SWITCH_HEIGHT = 3000;
+	public static final int SCALE_LOW = 15000;
 	public static final int SCALE_MID = 18700;
-	public static final int SCALE_HIGH = 6000;
-	public static final int CEILING = 24100; // hihg scale is 24100
+	public static final int SCALE_HIGH = 20000;
+	public static final int CEILING = 24100; // high scale is 24100
 	
 	boolean m_SafetyOn = true;
 
-//    final int ELEVATOR_FLOOR = 0;
-//    final int ELEVATOR_CEILING = 1000;
-    final int POSITION_TOLERANCE = 500;
+    final int POSITION_TOLERANCE = 750;
     
 	int m_motorSpeed;
 	boolean m_manualMode = true;
@@ -44,7 +43,7 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		m_motor.configNominalOutputForward(0.0,  0);
 		m_motor.configNominalOutputReverse(0.0, 0);
 		m_motor.configPeakOutputForward(1.0,  0);
-		m_motor.configPeakOutputReverse(-1.0,  0);
+		m_motor.configPeakOutputReverse(-0.6,  0);  // full speed of -1.0 going down was too fast
 
 		// TODO: need to tune the PIDF parameters
 		m_motor.config_kP(0, 0.3, 0);
@@ -55,8 +54,8 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		// RJD !@!#@!#12
 		
-		m_motor.setInverted(true);
-		m_motor.setSensorPhase(true);
+		m_motor.setInverted(true); // PRAC has this true
+		m_motor.setSensorPhase(false); // PRAC has this true
 		
 		m_motor.configClosedloopRamp(0.25, 0);
 		m_motor.configOpenloopRamp(0.25,  0);
@@ -75,6 +74,11 @@ public class Elevator extends Subsystem implements PidTunerObject {
     	m_autoSetpoint = pos; // get the desired setpoint
     	m_motor.set(ControlMode.Position, m_autoSetpoint); // tell the motor to get to the setpoint
     	m_motor.configMotionAcceleration(1000,  0);
+    }
+    
+    
+    public void changeSetpointToCurrentPosition() {
+    	m_autoSetpoint = m_motor.getSelectedSensorPosition(0);
     }
     
     /**
@@ -122,48 +126,27 @@ public class Elevator extends Subsystem implements PidTunerObject {
     {
     	double power = Robot.oi.getElevatorPower();
 
-    	if( power > 0.01 ||
-        	power < -0.01 )
-    	{
-    		m_manualMode = true;
-    	}
-    	else
-    	{
-	    	if( m_manualMode)
-	    	{
-	//    		m_manualMode = false;
-	//    		m_autoSetpoint = m_motor.getSelectedSensorPosition(0);
-	    	}
-    	}
-    	
 //    	System.out.println("Elevator Manual Mode: " + m_manualMode);
-//    	System.out.println("Elevator Safety Mode: " + m_SafetyOn);
+//		System.out.println("Elevator Auto: " + m_autoSetpoint);
     	
-    	// if this is manual mode...
-    	if( m_manualMode )
-    	{
-    		// if the safety is on...
-    		if( m_SafetyOn )
-        	{
-        		// check the encoder limits.
-        		int position = m_motor.getSelectedSensorPosition(0);
-
-        		// if the position is above the ceiling or below the floor, turn off the motor.
-        		if( position < PICK_UP_CUBE ||
-        			position > CEILING )
-        		{
-        			m_motorSpeed = 0;
-        		}
-        	}
-    		
+    	if ( power > 0.01 || power < -0.01 ) {
+    		m_manualMode = true;
     		m_motor.set(ControlMode.PercentOutput,  power);
-    	}
-    	else // this is auto mode
-    	{
-//    		System.out.println("Elevator Auto: " + m_autoSetpoint);
-        	
-    		// the motors are set to the position in the auto calls.
-    		m_motor.set(ControlMode.Position, m_autoSetpoint);
+    	} else {    			// this is position control (not just manual mode)
+    		if (m_manualMode) { // we must have just previously been in manual mode, set to "hold position"
+    			m_manualMode = false;
+    			m_autoSetpoint = m_motor.getSelectedSensorPosition(0);
+    		}
+    		
+    		// if our desired position is near the bottom, and our current position is also near the bottom,
+    		// give the motor a chance to rest for a while
+    		if ((m_autoSetpoint < REST_NEAR_BOTTOM) && (m_motor.getSelectedSensorPosition(0) < REST_NEAR_BOTTOM)) {
+        		m_motor.set(ControlMode.PercentOutput,  0.0);
+    		} else {
+    			// actively hold position
+        		m_motor.set(ControlMode.Position, m_autoSetpoint);	
+    		}
+    		
     	}
     }
     

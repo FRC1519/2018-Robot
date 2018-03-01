@@ -23,9 +23,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class StartRightBackScaleLeft extends CommandGroup {
+public class StartRightBackLLL extends CommandGroup {
 
-	public StartRightBackScaleLeft() {
+	public StartRightBackLLL() {
 		
 	 	
     	// presume that the robot is starting out backwards

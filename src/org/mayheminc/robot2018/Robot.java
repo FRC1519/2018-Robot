@@ -105,11 +105,16 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 * to reset subsystems before shutting down.
 	 */
 	public void disabledInit() {
+		
+		// for safety reasons, change the elevator and cturret setpoints to the current position
+		turret.setPosition(turret.getPosition());
+		elevator.changeSetpointToCurrentPosition();
+		
 		if (printAutoElapsedTime) {
 			double autonomousTimeElapsed = (double) (System.currentTimeMillis() - autonomousStartTime) / 1000.0;
 			DriverStation.reportError("Autonomous Time Elapsed: " + autonomousTimeElapsed + "\n", false);
 			printAutoElapsedTime = false;
-		}
+		}	    
 	}
 
 	public void disabledPeriodic() {
@@ -129,6 +134,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	}
 
 	public void autonomousInit() {
+		
 		//force low gear
 		drive.setShifter(Drive.LOW_GEAR);
 
@@ -203,6 +209,11 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	}
 
 	public void teleopInit() {
+	
+		// Don't move the turret or elevator
+		turret.setPosition(turret.getPosition());
+		elevator.changeSetpointToCurrentPosition();
+		
 		// turn on the compressor
 		compressor.start();
 

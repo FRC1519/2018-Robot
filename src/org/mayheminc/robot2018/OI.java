@@ -176,7 +176,12 @@ public class OI {
 //        TOGGLE_CLOSED_LOOP_MODE_BUTTON.whenPressed(new ToggleClosedLoopMode()); 
      	
      	//*******************************DRIVER PAD**************************************
-    	
+
+        DRIVER_PAD_RED_BUTTON.whenPressed(new IntakeEscapeDeathGrip());
+        DRIVER_PAD_BLUE_BUTTON.whenPressed(new IntakeEscapeDeathGrip());
+        
+//     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
+        
         DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new DriveSetShifter(Drive.HIGH_GEAR));
         DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whenPressed(new DriveSetShifter(Drive.LOW_GEAR));
 
@@ -228,12 +233,12 @@ public class OI {
      	OPERATOR_PAD_D_PAD_UP.whenPressed(new ElevatorSetPosition(Elevator.CEILING));
      	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
 		
-     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HIGH));
+     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
      	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
  	
 
-//     	//OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
-     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
+//     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
+//     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator());
      	
 	}
@@ -393,11 +398,12 @@ public class OI {
 
 	public double getTurretPower() {
 		
+		// Positive turret power should give clockwise rotation.
 		// KBS:  Note that right axis should be positive when clockwise;  I don't think we really want this
 		//       reversed for the turret.  Looks like a copy/paste error from pivotArmPower.  For ease of
 		//       thinking about the turret operation, I think we want clockwise to be "forward" and ascending
 		//       sensor values.
-    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS)) * -1;
+    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS));
     	// if the power is less than 20%, make it 0
     	if( value < 0.2 && value > -0.2)
     	{

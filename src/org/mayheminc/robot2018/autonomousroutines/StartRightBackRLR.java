@@ -23,9 +23,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class StartRightBackScaleLeft extends CommandGroup {
+public class StartRightBackRLR extends CommandGroup {
 
-	public StartRightBackScaleLeft() {
+	public StartRightBackRLR() {
 		
 	 	
     	// presume that the robot is starting out backwards
@@ -71,48 +71,14 @@ public class StartRightBackScaleLeft extends CommandGroup {
     	addSequential(new ElevatorArmSetMotorAuto(0.0));
     	addSequential(new PivotToFloor());
     	
-    	// engage the cube and lift it up.
+    	// engage the cube and grab it.
     	addParallel(new ElevatorSetPosition(Elevator.HANDOFF_HEIGHT));
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 15.0, 180.0));
     	addSequential(new IntakeInForTime(1.0));
-    	addSequential(new PivotMove(Pivot.SPIT_POSITION));
-    	
-    	// drive a little closer and spit it out
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 10.0, 180.0));
-    	addSequential(new IntakeOutForTime(1.0));
-    	
-    	addSequential(new Wait(10.0));
-    	
-    	
-    	// back away and handoff to elevator
+
+    	// to prepare for teleop, back away and handoff to elevator
     	addSequential(new DriveStraightOnHeading(-0.6, DistanceUnits.INCHES, 5.0, 180.0)); // was .5
     	addSequential(new HandoffCubeToElevator());
-
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 30.0, 200.0)); // was .3
-
-    	// spit out the the cube
-    	addSequential(new ElevatorArmSetMotorAuto(-1.0));
-
-//		// start the turret to shift to the rear
-//		addSequential(new TurretMoveTo(Turret.RIGHT_REAR));
-//		addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-//
-//		// drive backwards
-//		addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 150.0, 180.0));
-//
-//		// make the turn slower than full speed
-//		addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 75.0, 90.0));
-//		// drive down the alley.
-//		addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 200.0, 90.0));
-//
-//		addSequential(new ElevatorSetPosition(Elevator.SCALE_HIGH));
-//		// drive to the scale
-//		addSequential(new DriveStraightOnHeading(-0.3, DistanceUnits.INCHES, 50.0, 180.0));
-//
-//		// wait for the robot to stop swaying
-//		addSequential(new Wait(0.5));
-//
-//		// spit the cube 
-//		addParallel(new ElevatorArmSetMotorAuto(0.4));
+    	
 	}
 }

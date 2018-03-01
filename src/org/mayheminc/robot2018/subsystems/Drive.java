@@ -62,7 +62,7 @@ public class Drive extends Subsystem {
 	// Drive parameters
 	// Todo: check gear ratio and final wheel size
 	// RJD : the numbers have not been checked for 2018.
-	public static final double DISTANCE_PER_PULSE = 3.14 * 6.42 * 36 / 42 / (250*4); // pi * diameter * (gear ratio) / (counts per rev) 
+	public static final double DISTANCE_PER_PULSE = 3.14 * 6.26 * 36 / 42 / (250*4); // pi * diameter * (gear ratio) / (counts per rev) 
 	private boolean m_closedLoopMode = false;
 	private double m_maxWheelSpeed = 130;
 	private double m_voltageRampRate = 48.0;
@@ -99,11 +99,11 @@ public class Drive extends Subsystem {
 		m_HeadingPid.setOutputRange(-.50, .50); // set the maximum power to correct twist
 		m_HeadingPid.setAbsoluteTolerance(kToleranceDegreesPIDControl);
 
-		// confirm all four drive talons are in brake mode
-		leftFrontTalon.setNeutralMode(NeutralMode.Brake);
-		leftRearTalon.setNeutralMode(NeutralMode.Brake);
-		rightFrontTalon.setNeutralMode(NeutralMode.Brake);
-		rightRearTalon.setNeutralMode(NeutralMode.Brake);
+		// confirm all four drive talons are in coast mode
+		leftFrontTalon.setNeutralMode(NeutralMode.Coast);
+		leftRearTalon.setNeutralMode(NeutralMode.Coast);
+		rightFrontTalon.setNeutralMode(NeutralMode.Coast);
+		rightRearTalon.setNeutralMode(NeutralMode.Coast);
 		
 		// set rear talons to follow their respective front talons
 		leftRearTalon.changeControlMode(ControlMode.Follower);

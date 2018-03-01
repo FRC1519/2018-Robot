@@ -17,15 +17,29 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Turret extends Subsystem implements PidTunerObject {
 
+	// Turret Positions:
+	//   Driven by a VersaPlanetary with BAG motor on a 63:1 gearbox and a VP Encoder (4096 cpr) on the output shaft.
+	//   Experiment on 28 Feb 2018 shows approx 17000 counts per full 360-degree rotation.
+	//   Desired range of rotation is -225 degrees to +225 degrees, which is approx 10000 counts
+	//   180 degrees is approximately 8500 counts.
+	
+	//   Encoder is set up so that + rotation is clockwise (right) when "forward" motor power applied.
+	
 	public static final int FRONT_POSITION = 0;
-	public static final int LEFT_POSITION = -1000;
-	public static final int RIGHT_POSITION = 1000;
-	public static final int LEFT_REAR = -2000;
-	public static final int RIGHT_REAR = 2000;
+	public static final int RIGHT_POSITION = 4250;
+	public static final int LEFT_POSITION = -RIGHT_POSITION;
+
+	public static final int RIGHT_ANGLED_BACK_POSITION = 8000;
+	public static final int LEFT_ANGLED_BACK_POSITION = -RIGHT_ANGLED_BACK_POSITION;
+	
+	public static final int RIGHT_REAR = 8500;
+	public static final int LEFT_REAR = -RIGHT_REAR;
+
+	public static final int POSITION_TOLERANCE = 250;  		// 250 units is "close enough" to be at a position
 
 	MayhemTalonSRX m_motor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
-	boolean m_manualmode = false;
-	int m_autoSetpoint;
+	boolean m_manualmode = true;
+	int m_autoSetpoint = 0;
 	
     public void initDefaultCommand() { }
     
@@ -44,13 +58,12 @@ public class Turret extends Subsystem implements PidTunerObject {
     	m_motor.setNeutralMode(NeutralMode.Coast);
     	m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
     	
-		m_motor.setInverted(false);
+		m_motor.setInverted(true);
 		m_motor.setSensorPhase(false);
 		
 		m_motor.configClosedloopRamp(0.25, 0);
 		m_motor.configOpenloopRamp(0.25,  0);
 		
-
 		m_motor.setSelectedSensorPosition(m_motor.getSelectedSensorPosition(0), 0, 0);
 		m_motor.configMotionAcceleration(1000,  0);
     	m_motor.enableControl();

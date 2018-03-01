@@ -19,7 +19,7 @@ public class StartLeftBackSwitchRight extends CommandGroup {
     public StartLeftBackSwitchRight() {
 		// start the turret to shift to the rear
 		addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
-		addSequential(new ElevatorSetPosition(Elevator.SWITCH_LOW));
+		addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
 
 		// drive backwards
 		addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 150.0, 180.0));

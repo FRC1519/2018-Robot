@@ -26,8 +26,10 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	public static final int PIVOT_TOLERANCE = 75; // PLACEHOLDER!
 	
 	public static final int DOWN_TOLERANCE = 50;
-	public static final double DOWN_MOTOR_POWER = 0.15;
+	
 	public static final double ZERO_MAX_CURRENT = 1.0; // Amps
+	public static final double ZERO_MOTOR_POWER = 0.25;
+	public static final double DOWN_MOTOR_POWER = -0.15;
 	
 	MayhemTalonSRX m_pivotmotor = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
 	int m_position;
@@ -61,7 +63,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
      * Set the zero flag. Set the counters.  Let periodic run the zero routine. 
      */
     public void zeroPivot() {	
-    	m_pivotmotor.set(ControlMode.PercentOutput, 0.25);
+    	m_pivotmotor.set(ControlMode.PercentOutput, ZERO_MOTOR_POWER);
     	m_zero = true;
     	m_zeroWaitToMove = 10;
     	m_zeroWaitForSame = 5;

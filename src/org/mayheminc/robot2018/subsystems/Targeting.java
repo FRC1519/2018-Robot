@@ -39,6 +39,8 @@ public class Targeting extends Subsystem {
 	private int latestFrameNum = 0;
 	private int latestCenterX = 1001;
 	private double latestImageHeading = 0.0;
+	public double cubeDrive = 0.5;
+	public double cubepercentage = 0.5;
 
 	private double m_probability;
 	
@@ -73,11 +75,13 @@ public class Targeting extends Subsystem {
 		}*/
 		
 		// get the list of objects from the listener
+		int frame = listener.getLastFrame();
+		System.out.println("Frame == " + frame);
 		List<ObjectLocation> objects = listener.getObjectList();
 		
 		if( objects != null )
 		{
-//			System.out.println("Targeting: Received non-null list");
+			System.out.println("Targeting: Received non-null list");
 			// loop through the objects.  This may be an empty list.
 			for(ObjectLocation obj : objects)
 			{
@@ -90,14 +94,19 @@ public class Targeting extends Subsystem {
 					// get its center
 					latestCenterX = (int) obj.x;
 					latestFrameNum++;
-					
+					SmartDashboard.putNumber("Target X",  obj.x);
+					SmartDashboard.putNumber("Target Y",  obj.y);
+					SmartDashboard.putNumber("Target width",  obj.width);
+					SmartDashboard.putNumber("Target height",  obj.height);
+					cubeDrive = Math.abs((obj.x * 2) + 1 / 4);
+					cubepercentage = obj.x;
 					return;
 				}
 			}
 		}
 		else
 		{
-//			System.out.println("Targeting: objects is null");
+			System.out.println("Targeting: objects is null");
 		}
 		
 		latestCenterX = 1000; // no cube visible
@@ -105,7 +114,7 @@ public class Targeting extends Subsystem {
 	
 	public void updateSmartDashboard()
 	{
-		SmartDashboard.putNumber("Target X",  latestCenterX);
+		//SmartDashboard.putNumber("Target X",  latestCenterX);
 		SmartDashboard.putNumber("Target Frame", latestFrameNum);
 		SmartDashboard.putNumber("Target Prob", m_probability);
 	}

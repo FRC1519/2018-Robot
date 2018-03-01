@@ -18,12 +18,13 @@ public class Autonomous extends Subsystem {
 
 	private static Command autonomousPrograms[] = {
 			/* 0 */   new StayStill()  // do nothing	
-			, new CrossBaseline()
-			, new StartRightBackSwitchRight()
-			, new ZZ_StartRightRightSwitch()
-//			, new Week0StartLeft()
-//			, new Week0StartMid()
-//			, new Week0StartRight()
+			, new CrossBaselineBackwards()
+			, new Week1StartRight()
+			, new StartRightBackRRR()
+			, new StartRightBackRLR()
+			, new StartRightBackLRL()
+			, new StartRightBackLLL()
+
 /*			
 			, new Auto2CubeFromRight()
 			, new Auto2CubeFromMid()
@@ -55,7 +56,7 @@ public class Autonomous extends Subsystem {
 */			
 	};
 
-	private static int programNumber = 1; // 1 = cross baseline
+	private static int programNumber = 1; // 1 = cross baseline backwards
 	private static int delay = 0;
 
 	public Autonomous() {

@@ -29,11 +29,11 @@ public class IntakeAutoHarvestCube extends TimedCommand {
     protected void execute() {
     	if(Robot.cubeDetector.isDeathGrip())
     	{
-    		Robot.intake.Reverse(true);
+    		Robot.intake.reverseLeft(true);
     	}
     	else
     	{
-    		Robot.intake.Reverse(false);
+    		Robot.intake.reverseLeft(false);
     	}
     }
 

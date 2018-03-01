@@ -24,7 +24,7 @@ public class IntakeReverse extends Command {
     protected void initialize() {
     	// when this command starts, start a timer, reverse the intake motors, and take in the cube.
     	m_Timer = new Timer();
-    	Robot.intake.Reverse(true);  // setting this to true makes the two intake wheels go opposite directions
+    	Robot.intake.reverseLeft(true);  // setting this to true makes the two intake wheels go opposite directions
     	Robot.intake.takeInCube();
     	
     	m_Timer.start();
@@ -43,14 +43,14 @@ public class IntakeReverse extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	// unreverse the intake and stop the motors.
-    	Robot.intake.Reverse(false);
+    	Robot.intake.reverseLeft(false);
     	Robot.intake.takeInCube();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.intake.Reverse(false);
+    	Robot.intake.reverseLeft(false);
     	Robot.intake.takeInCube();
     }
 }

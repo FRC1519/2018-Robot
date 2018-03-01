@@ -18,7 +18,7 @@ public class StartMidBackSwitchLeft extends CommandGroup {
     public StartMidBackSwitchLeft() {
     	addSequential(new TurretMoveTo(Turret.LEFT_POSITION));
     	
-    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_LOW));
+    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	
     	// drive backwards
     	addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 200.0, 110.0));

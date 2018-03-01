@@ -21,7 +21,7 @@ public class HandoffCubeToElevator extends CommandGroup {
 	 */
     public HandoffCubeToElevator() {
     	addSequential(new ElevatorArmOpen());
-    	addSequential(new ElevatorSetPosition(Elevator.SCALE_LOW));
+    	addSequential(new ElevatorSetPosition(Elevator.HANDOFF_HEIGHT));
     	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
     	addSequential(new IntakeCloseJaw());
@@ -33,8 +33,9 @@ public class HandoffCubeToElevator extends CommandGroup {
     	addSequential(new Wait(0.2));
     	addSequential(new IntakeOff());
     	addSequential(new Wait(0.5));
-    	addSequential(new ElevatorArmSetMotorAuto(0.1));
+    	addSequential(new ElevatorArmSetMotorAuto(0.2));
     	addSequential(new IntakeOpenJaw());
-    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HIGH));
+    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
+    	addSequential(new IntakeCloseJaw());
     }
 }
