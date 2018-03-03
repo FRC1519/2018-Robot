@@ -54,25 +54,27 @@ public class StartRightBackLRL extends CommandGroup {
     	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 85.0, 150.0)); // was 90.0
     	
     	// straighten out again to be perpendicular to side of scale
-    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 40.0, 180.0)); // was 35.0
+    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 50.0, 180.0)); // was 35.0
+    	//  note:  above was 40 for Q48 at end of day 1; want to go a little further...
+    	
+    	addSequential (new Wait(1.0));  // pause briefly before placing cube
     	
     	// spit out the the cube
-//    	addSequential(new ElevatorArmSetMotorAuto(-0.3));
-    	addSequential(new ElevatorArmOpen());
+    	addSequential(new ElevatorArmSetMotorAuto(-0.3));
+//    	addSequential(new ElevatorArmOpen());
     	
     	// wait for the robot to fully stop before we back up (don't fall over)
-    	addSequential(new Wait(0.5)); 
+//    	addSequential(new Wait(0.5)); 
     	
     	// back away from the scale a bit and head towards the cube for the switch
+    	addParallel(new PivotToFloor());
     	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0, 180.0)); // was .5
 
-    	
     	// drive to get the cube
     	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
     	// put the turret to the front position
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new ElevatorArmSetMotorAuto(0.0));
-    	addSequential(new PivotToFloor());
     	
     	// engage the cube
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 15.0, 180.0));

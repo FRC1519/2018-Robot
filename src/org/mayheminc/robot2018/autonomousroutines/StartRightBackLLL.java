@@ -46,31 +46,36 @@ public class StartRightBackLLL extends CommandGroup {
     	addParallel(new TurretMoveTo(Turret.LEFT_ANGLED_BACK_POSITION));
    	
     	// driving down the alley
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 120.0, 90.0)); // was -0.5
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 125.0, 90.0)); // was -0.5
     	
     	// raise elevator to scoring height on normal scale
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 105.0, 90.0)); // was -0.5
 
     	// turn towards the scale
-    	addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 53.0, 180.0)); // was -0.5
-  	  
+    	addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0, 180.0)); // was -0.5
+  	    // Note:  above was 53 inches as of Q48
+    	
+    	addSequential (new Wait(1.0));  // pause briefly before placing cube
+    	
     	// spit out the the cube
-//    	addSequential(new ElevatorArmSetMotorAuto(-0.3));
-    	addSequential(new ElevatorArmOpen());
+    	addSequential(new ElevatorArmSetMotorAuto(-0.3));
+//    	addSequential(new ElevatorArmOpen());
 
     	// wait for the robot to fully stop before we back up (don't fall over)
-    	addSequential(new Wait(0.5)); 
+//    	addSequential(new Wait(0.5)); 
     	
     	// back away from the scale a bit and head towards the cube for the switch
-    	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0, 180.0)); // was .5
+       	addParallel(new PivotToFloor());
+       	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0, 180.0)); // was .5
    	
     	// drive to get the cube
     	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
+    	
     	// put the turret to the front position
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new ElevatorArmSetMotorAuto(0.0));
-    	addSequential(new PivotToFloor());
+ 
     	
     	// engage the cube and lift it up.
     	addParallel(new ElevatorSetPosition(Elevator.HANDOFF_HEIGHT));
