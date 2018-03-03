@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveStraightOnHeading extends Command {
+public class DriveStraightOnHeadingForTime extends Command {
 
 	double m_targetPower;
 	double m_desiredDisplacement;
 	double m_desiredHeading;
 	public enum DistanceUnits { ENCODER_TICKS, INCHES };
 
-	public DriveStraightOnHeading(double arg_targetSpeed, double arg_distance, double heading) {
+	public DriveStraightOnHeadingForTime(double arg_targetSpeed, double arg_distance, double heading) {
 		this(arg_targetSpeed, DistanceUnits.INCHES, arg_distance, heading);
 	}
 	/**
@@ -23,7 +23,7 @@ public class DriveStraightOnHeading extends Command {
 	 * @param arg_targetPower +/- motor power [-1.0, +1.0]
 	 * @param arg_distance Distance in encoder counts
 	 */
-	public DriveStraightOnHeading(double arg_targetSpeed, DistanceUnits units, double arg_distance, double heading) {
+	public DriveStraightOnHeadingForTime(double arg_targetSpeed, DistanceUnits units, double arg_distance, double heading) {
 		
 		if (units == DistanceUnits.INCHES) {
 			arg_distance = arg_distance / Drive.DISTANCE_PER_PULSE;
@@ -51,11 +51,6 @@ public class DriveStraightOnHeading extends Command {
 		
 		displacement = Math.abs(displacement);
 		System.out.println("displacement" + displacement);
-		
-		double heading = Robot.drive.getHeading();
-		double desiredHeading = Robot.drive.getDesiredHeading();
-		System.out.println("Drive heading:" + heading + " " + desiredHeading);
-		
 		return (displacement >= m_desiredDisplacement);
 	}
 

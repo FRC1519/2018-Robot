@@ -9,7 +9,7 @@ public class ZZ_Auto1CubeFromRight extends SmartAutoChooserBase {
 
 	@Override
 	protected Command GetAutoroutine() {
-    	boolean ourswitch = Robot.gameData.GetNearSwitch();
+    	boolean ourswitch = Robot.gameData.getNearSwitchOnRight();
     	
     	// switch on right, scale on right...
     	if( ourswitch )

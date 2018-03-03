@@ -83,6 +83,10 @@ public class Intake extends Subsystem {
     public void reverseLeft(boolean b)
     {
     	m_reverseLeftSide = b;
+    }    
+    public void reverseRight(boolean b)
+    {
+    	m_reverseRightSide = b;
     }
     
     public void periodic()

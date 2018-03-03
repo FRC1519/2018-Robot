@@ -23,7 +23,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	public static final int SPIT_POSITION = 2100; //Was 1900 02-02-2018
 	public static final int EXCHANGE_POSITION = 700;//was 500 02-02-2018
 	public static final int DOWNWARD_POSITION = 0;
-	public static final int PIVOT_TOLERANCE = 75; // PLACEHOLDER!
+	public static final int PIVOT_TOLERANCE = 150; // 75 seemed like not quite enough at Week 1
 	
 	public static final int DOWN_TOLERANCE = 50;
 	

@@ -12,7 +12,7 @@ public class Week0StartLeft extends SmartAutoChooserBase {
    
 	@Override
 	protected Command GetAutoroutine() {
-    	boolean ourswitch = Robot.gameData.GetNearSwitch();
+    	boolean ourswitch = Robot.gameData.getNearSwitchOnRight();
     	
     	// switch on left...
     	if( !ourswitch )
@@ -22,7 +22,7 @@ public class Week0StartLeft extends SmartAutoChooserBase {
     	// switch on right...
     	else
     	{
-  			return new CrossBaseline();
+  			return new CrossBaselineBackwards();
     	}
 	}
 }

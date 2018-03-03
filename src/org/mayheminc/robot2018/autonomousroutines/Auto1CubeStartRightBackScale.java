@@ -13,7 +13,7 @@ public class Auto1CubeStartRightBackScale extends SmartAutoChooserBase {
 
     @Override
 	protected Command GetAutoroutine() {
-    	boolean ourScale = Robot.gameData.GetScale();
+    	boolean ourScale = Robot.gameData.getScaleOnRight();
     	
     	// scale on right...
     	if( ourScale )

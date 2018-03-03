@@ -1,6 +1,7 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
+import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
@@ -39,25 +40,26 @@ public class StartRightBackRLR extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
 
     	// start the turret to shift to the right  (really want it to be off the back)
-    	addParallel(new TurretMoveTo(Turret.LEFT_POSITION));
+//    	addParallel(new TurretMoveTo(Turret.LEFT_POSITION));
     	
     	// drive straight backwards until near the end of the switch
     	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 175.0, 180.0)); // was -.5
     	addParallel(new TurretMoveTo(Turret.LEFT_ANGLED_BACK_POSITION));
    	
     	// driving down the alley
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 110.0, 90.0)); // was -0.5
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 120.0, 90.0)); // was -0.5
     	
     	// raise elevator to scoring height on normal scale
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 105.0, 90.0)); // was -0.5
 
     	// turn towards the scale
-    	addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 50.0, 180.0)); // was -0.5
+    	addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 53.0, 180.0)); // was -0.5
   	  
     	// spit out the the cube
-    	addSequential(new ElevatorArmSetMotorAuto(-1.0));
-
+//    	addSequential(new ElevatorArmSetMotorAuto(-0.3));
+    	addSequential(new ElevatorArmOpen());
+    	
     	// wait for the robot to fully stop before we back up (don't fall over)
     	addSequential(new Wait(0.5)); 
     	
@@ -74,7 +76,7 @@ public class StartRightBackRLR extends CommandGroup {
     	// engage the cube and grab it.
     	addParallel(new ElevatorSetPosition(Elevator.HANDOFF_HEIGHT));
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 15.0, 180.0));
-    	addSequential(new IntakeInForTime(1.0));
+    	addSequential(new IntakeInForTime(1.5));     // had been 1.0 at practice field
 
     	// to prepare for teleop, back away and handoff to elevator
     	addSequential(new DriveStraightOnHeading(-0.6, DistanceUnits.INCHES, 5.0, 180.0)); // was .5

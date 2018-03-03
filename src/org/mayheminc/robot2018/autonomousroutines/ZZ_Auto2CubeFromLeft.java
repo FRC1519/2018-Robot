@@ -16,8 +16,8 @@ public class ZZ_Auto2CubeFromLeft extends SmartAutoChooserBase {
      */
     protected Command GetAutoroutine()
     {
-    	boolean ourswitch = Robot.gameData.GetNearSwitch();
-    	boolean scale = Robot.gameData.GetScale();
+    	boolean ourswitch = Robot.gameData.getNearSwitchOnRight();
+    	boolean scale = Robot.gameData.getScaleOnRight();
     	
     	// switch on right, scale on right...
     	if( ourswitch && scale)

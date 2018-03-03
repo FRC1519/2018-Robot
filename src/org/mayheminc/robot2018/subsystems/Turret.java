@@ -35,7 +35,7 @@ public class Turret extends Subsystem implements PidTunerObject {
 	public static final int RIGHT_REAR = 8500;
 	public static final int LEFT_REAR = -RIGHT_REAR;
 
-	public static final int POSITION_TOLERANCE = 250;  		// 250 units is "close enough" to be at a position
+	public static final int POSITION_TOLERANCE = 250; // 250 units is "close enough" to be at a position
 
 	MayhemTalonSRX m_motor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
 	boolean m_manualmode = true;
@@ -47,6 +47,8 @@ public class Turret extends Subsystem implements PidTunerObject {
     {
     	super();
     	
+
+
     	// initialize the PID controller
     	m_motor.config_kP(0,  0.4,  0);
     	m_motor.config_kI(0,  0.0,  0);
@@ -66,6 +68,12 @@ public class Turret extends Subsystem implements PidTunerObject {
 		
 		m_motor.setSelectedSensorPosition(m_motor.getSelectedSensorPosition(0), 0, 0);
 		m_motor.configMotionAcceleration(1000,  0);
+		
+		m_motor.configNominalOutputForward(0.0,  0);
+		m_motor.configNominalOutputReverse(0.0, 0);
+		m_motor.configPeakOutputForward(0.5,  0);
+		m_motor.configPeakOutputReverse(-0.5,  0); 
+		
     	m_motor.enableControl();
     }
     

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Week0StartMid extends SmartAutoChooserBase {
 
 	protected Command GetAutoroutine() {
-    	boolean ourswitch = Robot.gameData.GetNearSwitch();
+    	boolean ourswitch = Robot.gameData.getNearSwitchOnRight();
     	
     	// switch on left...
     	if( !ourswitch )

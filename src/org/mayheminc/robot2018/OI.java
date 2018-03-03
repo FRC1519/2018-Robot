@@ -50,7 +50,8 @@ public class OI {
 	public static final Joystick DRIVER_STICK = new Joystick(RobotMap.DRIVER_JOYSTICK);
 	
 	// driver stick buttons
-    private static final Button DRIVER_STICK_BUTTON_ONE = new DisabledOnlyJoystickButton(DRIVER_STICK, 1);
+    private static final Button DRIVER_STICK_BUTTON_ONE_DISABLED = new DisabledOnlyJoystickButton(DRIVER_STICK, 1);
+    private static final Button DRIVER_STICK_BUTTON_ONE_ENABLED = new EnabledOnlyJoystickButton(DRIVER_STICK, 1);
 	private static final Button DRIVER_STICK_BUTTON_TWO = new DisabledOnlyJoystickButton(DRIVER_STICK, 2);
 	private static final Button DRIVER_STICK_BUTTON_THREE = new DisabledOnlyJoystickButton(DRIVER_STICK, 3);	
 	private static final Button DRIVER_STICK_BUTTON_FOUR = new DisabledOnlyJoystickButton(DRIVER_STICK, 4);
@@ -177,8 +178,8 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************
 
-        DRIVER_PAD_RED_BUTTON.whenPressed(new IntakeEscapeDeathGrip());
-        DRIVER_PAD_BLUE_BUTTON.whenPressed(new IntakeEscapeDeathGrip());
+        DRIVER_PAD_RED_BUTTON.whenPressed(new IntakeEscapeDeathGripLeft());
+        DRIVER_PAD_BLUE_BUTTON.whenPressed(new IntakeEscapeDeathGripRight());
         
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
@@ -188,7 +189,8 @@ public class OI {
 		
      	//******************************* DRIVER STICK ****************************************************************************
 		
-     	DRIVER_STICK_BUTTON_ONE.whenPressed(new TurretZero());
+     	DRIVER_STICK_BUTTON_ONE_DISABLED.whenPressed(new TurretZero());
+     	DRIVER_STICK_BUTTON_ONE_ENABLED.whenPressed(new ElevatorZero());
 //        DRIVER_STICK_BUTTON_ONE.whenPressed(new CheckInWithFieldManagement());
 
     	// adjust auto parameters
@@ -235,7 +237,27 @@ public class OI {
 		
      	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
      	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
- 	
+
+//     	OPERATOR_PAD_D_PAD_UP.whenPressed(
+//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
+//     			new TurretMoveTo(Turret.FRONT_POSITION), 
+//     			new ElevatorSetPosition(Elevator.CEILING)));
+//
+//     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(
+//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
+//     			new TurretMoveTo(Turret.RIGHT_REAR), 
+//     			new ElevatorSetPosition(Elevator.PICK_UP_CUBE)));
+//
+//     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(
+//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
+//     			new TurretMoveTo(Turret.RIGHT_POSITION), 
+//     			new ElevatorSetPosition(Elevator.SWITCH_HEIGHT)));
+//
+//     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(
+//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
+//     			new TurretMoveTo(Turret.LEFT_POSITION), 
+//     			new ElevatorSetPosition(Elevator.SCALE_MID)));
+
 
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());

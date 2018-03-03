@@ -119,7 +119,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public void disabledPeriodic() {
 		// update sensors that need periodic update
-		targeting.periodic();
+//		targeting.periodic();
 		cubeDetector.periodic();
 		pivot.UpdateSmartDashboard();
 
@@ -199,7 +199,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// update sensors that need periodic update
 		// KBS:  Why isn't this list the same as the list in teleop?  Should a function be called to
 		//       share this code?
-		targeting.periodic();
+//		targeting.periodic();
 		cubeDetector.periodic();
 
 		Scheduler.getInstance().run();
@@ -271,7 +271,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		elevatorArms.periodic();
 		intake.periodic();
 		pivot.periodic();
-		targeting.periodic();
+//		targeting.periodic();
 		turret.periodic();
 
 		Scheduler.getInstance().run();
@@ -316,7 +316,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				elevatorArms.updateSmartDashboard();
 				intake.updateSmartDashboard();
 				pivot.UpdateSmartDashboard();
-				targeting.updateSmartDashboard();
+//				targeting.updateSmartDashboard();
 				turret.updateSmartDashboard();
 
 				OI.pidTuner.updateSmartDashboard();

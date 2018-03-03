@@ -17,14 +17,16 @@ import org.mayheminc.util.PidTunerObject;
  */
 public class Elevator extends Subsystem implements PidTunerObject {
 
+	// Note:  300 counts is about 1 inch
 	public static final int PICK_UP_CUBE = 0;
-	public static final int REST_NEAR_BOTTOM = 1000;
-	public static final int HANDOFF_HEIGHT = 3000;
-	public static final int SWITCH_HEIGHT = 3000;
+	public static final int REST_NEAR_BOTTOM = 1500;
+	public static final int HANDOFF_HEIGHT = 3500;
+	public static final int SWITCH_HEIGHT = 3500;
 	public static final int SCALE_LOW = 15000;
-	public static final int SCALE_MID = 18700;
-	public static final int SCALE_HIGH = 20000;
-	public static final int CEILING = 24100; // high scale is 24100
+	public static final int SCALE_MID = 18700;    // normally used by "scale button" on OI
+	public static final int SCALE_HIGH = 21000;   // also used by the autonomous programs
+	public static final int CEILING = 25500; 	  // was 24100 at start of Week 1
+	public static final int TOP_SAFETY_LIMIT = 30000;
 	
 	boolean m_SafetyOn = true;
 
@@ -42,8 +44,8 @@ public class Elevator extends Subsystem implements PidTunerObject {
 
 		m_motor.configNominalOutputForward(0.0,  0);
 		m_motor.configNominalOutputReverse(0.0, 0);
-		m_motor.configPeakOutputForward(1.0,  0);
-		m_motor.configPeakOutputReverse(-0.6,  0);  // full speed of -1.0 going down was too fast
+		m_motor.configPeakOutputForward(0.8,  0);
+		m_motor.configPeakOutputReverse(-0.5,  0);  // full speed of -1.0 going down was too fast
 
 		// TODO: need to tune the PIDF parameters
 		m_motor.config_kP(0, 0.3, 0);
@@ -54,8 +56,8 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		// RJD !@!#@!#12
 		
-		m_motor.setInverted(true); // PRAC has this true
-		m_motor.setSensorPhase(false); // PRAC has this true
+		m_motor.setInverted(false); 		// PRAC has this true
+		m_motor.setSensorPhase(true); 		// PRAC has this true
 		
 		m_motor.configClosedloopRamp(0.25, 0);
 		m_motor.configOpenloopRamp(0.25,  0);
@@ -76,10 +78,10 @@ public class Elevator extends Subsystem implements PidTunerObject {
     	m_motor.configMotionAcceleration(1000,  0);
     }
     
-    
     public void changeSetpointToCurrentPosition() {
     	m_autoSetpoint = m_motor.getSelectedSensorPosition(0);
     }
+    
     
     /**
      * If the elevator is within the tolerance, then return true.

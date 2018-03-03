@@ -20,6 +20,9 @@ public class Autonomous extends Subsystem {
 			/* 0 */   new StayStill()  // do nothing	
 			, new CrossBaselineBackwards()
 			, new Week1StartRight()
+			, new Week1StartCenter()
+			, new StartCenterRightSwitch()
+			, new StartCenterLeftSwitch()
 			, new StartRightBackRRR()
 			, new StartRightBackRLR()
 			, new StartRightBackLRL()

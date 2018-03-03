@@ -5,6 +5,7 @@ import org.mayheminc.robot2018.subsystems.Turret;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  *
@@ -12,7 +13,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 public class TurretMoveTo extends Command {
 
 	int m_position;
+	//static double MAX_TIMEOUT = 5.0; // maximum number of seconds to run this command.
     public TurretMoveTo(int position) {
+//        super(MAX_TIMEOUT);
         super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

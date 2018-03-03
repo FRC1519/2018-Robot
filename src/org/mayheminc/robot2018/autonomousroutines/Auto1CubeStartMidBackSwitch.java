@@ -8,7 +8,7 @@ public class Auto1CubeStartMidBackSwitch extends SmartAutoChooserBase {
 
     @Override
 	protected Command GetAutoroutine() {
-    	boolean ourSwitch = Robot.gameData.GetNearSwitch();
+    	boolean ourSwitch = Robot.gameData.getNearSwitchOnRight();
     	
     	// switch on right...
     	if( ourSwitch )

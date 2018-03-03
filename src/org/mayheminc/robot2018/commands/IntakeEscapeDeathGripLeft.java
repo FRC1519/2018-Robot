@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.*;
 /**
  *
  */
-public class IntakeEscapeDeathGrip extends CommandGroup {	
-    public IntakeEscapeDeathGrip() {
-    	addSequential(new IntakeReverse(0.2));
+public class IntakeEscapeDeathGripLeft extends CommandGroup {	
+    public IntakeEscapeDeathGripLeft() {
+    	addSequential(new IntakeReverseLeft(0.2));
     	addSequential(new IntakeInForTime(0.4));
     }
 }

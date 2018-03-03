@@ -76,12 +76,12 @@ public class Targeting extends Subsystem {
 		
 		// get the list of objects from the listener
 		int frame = listener.getLastFrame();
-		System.out.println("Frame == " + frame);
+//		System.out.println("Frame == " + frame);
 		List<ObjectLocation> objects = listener.getObjectList();
 		
 		if( objects != null )
 		{
-			System.out.println("Targeting: Received non-null list");
+//			System.out.println("Targeting: Received non-null list");
 			// loop through the objects.  This may be an empty list.
 			for(ObjectLocation obj : objects)
 			{
@@ -106,7 +106,7 @@ public class Targeting extends Subsystem {
 		}
 		else
 		{
-			System.out.println("Targeting: objects is null");
+//			System.out.println("Targeting: objects is null");
 		}
 		
 		latestCenterX = 1000; // no cube visible

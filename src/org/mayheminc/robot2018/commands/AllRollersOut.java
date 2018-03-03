@@ -12,7 +12,7 @@ public class AllRollersOut extends Command {
 
     protected void initialize() {
     	Robot.intake.spitOutCube();
-    	Robot.elevatorArms.setMotor(-1.0);
+    	Robot.elevatorArms.setMotor(-0.7);  // had been at 1.0; spit less forcefully
     }
     protected boolean isFinished() {return false;}
     protected void end()

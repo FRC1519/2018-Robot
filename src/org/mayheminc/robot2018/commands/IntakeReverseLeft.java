@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class IntakeReverse extends Command {
+public class IntakeReverseLeft extends Command {
 //	 static final double REVERSE_TIME_SEC = 0.2; 
 	
 	Timer m_Timer = new Timer();
 	double m_timeout;
 	
-    public IntakeReverse(double t) {
+    public IntakeReverseLeft(double t) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	m_timeout = t;

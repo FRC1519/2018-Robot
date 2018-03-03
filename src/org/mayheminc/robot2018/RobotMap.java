@@ -36,7 +36,7 @@ public class RobotMap {
 	
 	//Solenoids:
 	public static final int INTAKE_FINGERS_SOLENOID = 0;
-	public static final int ELEVATOR_ARM_SOLENOID = 1;
+	public static final int ELEVATOR_ARM_SOLENOID = 2;
 	public static final int SHIFTING_SOLENOID = 4;
 	
 	// Analog Inputs
