@@ -259,7 +259,7 @@ public class OI {
 //     			new ElevatorSetPosition(Elevator.SCALE_MID)));
 
 
-//     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
+     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator());
      	

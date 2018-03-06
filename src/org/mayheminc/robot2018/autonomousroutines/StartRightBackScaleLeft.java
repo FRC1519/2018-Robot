@@ -72,7 +72,7 @@ public class StartRightBackScaleLeft extends CommandGroup {
     	addSequential(new PivotToFloor());
     	
     	// engage the cube and lift it up.
-    	addParallel(new ElevatorSetPosition(Elevator.HANDOFF_HEIGHT));
+    	addParallel(new ElevatorSetPosition(Elevator.PREPARE_FOR_HANDOFF_HEIGHT));
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 15.0, 180.0));
     	addSequential(new IntakeInForTime(1.0));
     	addSequential(new PivotMove(Pivot.SPIT_POSITION));

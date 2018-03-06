@@ -20,10 +20,10 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	// Note:  300 counts is about 1 inch
 	public static final int PICK_UP_CUBE = 0;
 	public static final int REST_NEAR_BOTTOM = 1500;
-	public static final int HANDOFF_HEIGHT = 3500;
+	public static final int PREPARE_FOR_HANDOFF_HEIGHT = 3500;
 	public static final int SWITCH_HEIGHT = 3500;
 	public static final int SCALE_LOW = 15000;
-	public static final int SCALE_MID = 18700;    // normally used by "scale button" on OI
+	public static final int SCALE_MID = 19700; // was 18700;    // normally used by "scale button" on OI
 	public static final int SCALE_HIGH = 21000;   // also used by the autonomous programs
 	public static final int CEILING = 25500; 	  // was 24100 at start of Week 1
 	public static final int TOP_SAFETY_LIMIT = 30000;
@@ -76,6 +76,11 @@ public class Elevator extends Subsystem implements PidTunerObject {
     	m_autoSetpoint = pos; // get the desired setpoint
     	m_motor.set(ControlMode.Position, m_autoSetpoint); // tell the motor to get to the setpoint
     	m_motor.configMotionAcceleration(1000,  0);
+    }
+    
+    public int getCurrentPosition()
+    {
+    	return m_motor.getSelectedSensorPosition(0);
     }
     
     public void changeSetpointToCurrentPosition() {

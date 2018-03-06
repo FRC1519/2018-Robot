@@ -847,7 +847,7 @@ public class Drive extends Subsystem {
 	//NOTE the difference between rotateToHeading(...) and goToHeading(...)
 	public void setDesiredHeading(double desiredHeading) {
 		m_desiredHeading = desiredHeading;
-		m_iterationsSinceRotationCommanded = 50;
+		m_iterationsSinceRotationCommanded = 50;  // RJD: I think this should be the constnat.
 
 		// reset the heading control loop for the new heading
 		m_HeadingPid.reset();

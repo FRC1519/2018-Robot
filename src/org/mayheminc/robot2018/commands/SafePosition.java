@@ -15,8 +15,8 @@ public class SafePosition extends CommandGroup {
 
     public SafePosition() {
 
-    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-    	addSequential(new TurretMoveTo(Turret.RIGHT_REAR));
-    	addSequential(new PivotToUpright());
+    	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
+    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
+//    	addSequential(new PivotToUpright());
     }
 }

@@ -59,11 +59,11 @@ public class StartRightBackLLL extends CommandGroup {
     	addSequential (new Wait(1.0));  // pause briefly before placing cube
     	
     	// spit out the the cube
-    	addSequential(new ElevatorArmSetMotorAuto(-0.3));
+    	addSequential(new ElevatorArmSetMotorAuto(-0.5));
 //    	addSequential(new ElevatorArmOpen());
 
-    	// wait for the robot to fully stop before we back up (don't fall over)
-//    	addSequential(new Wait(0.5)); 
+    	// wait for the robot to fully eject cube before we back up
+    	addSequential(new Wait(1.0)); 
     	
     	// back away from the scale a bit and head towards the cube for the switch
        	addParallel(new PivotToFloor());
@@ -78,8 +78,8 @@ public class StartRightBackLLL extends CommandGroup {
  
     	
     	// engage the cube and lift it up.
-    	addParallel(new ElevatorSetPosition(Elevator.HANDOFF_HEIGHT));
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 15.0, 180.0));
+    	addParallel(new ElevatorSetPosition(Elevator.PREPARE_FOR_HANDOFF_HEIGHT));
+    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0, 180.0));
     	addSequential(new IntakeInForTime(1.5));     // had been 1.0 at practice field
     	addSequential(new PivotMove(Pivot.SPIT_POSITION));
     	
