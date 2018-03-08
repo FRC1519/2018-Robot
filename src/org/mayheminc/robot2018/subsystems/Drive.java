@@ -744,37 +744,37 @@ public class Drive extends Subsystem {
 	//********************************AUTO TARGET*********************************
 	
 	public void autoTarget(double argPower) {
-		final double DEGREES_PER_PIXEL = (56.5 / 320.0); // Axis 206 - 56.5 degree FOV, 320 pixels
-		double correction = Robot.targeting.getCubeCenterOffset() * DEGREES_PER_PIXEL;
-		double headingForImage = Robot.targeting.getRobotHeading();
-		double targetHeading = (headingForImage + correction);
-		
-		SmartDashboard.putNumber("Auto Aim: Target Heading", targetHeading);
+//		final double DEGREES_PER_PIXEL = (56.5 / 320.0); // Axis 206 - 56.5 degree FOV, 320 pixels
+//		double correction = Robot.targeting.getCubeCenterOffset() * DEGREES_PER_PIXEL;
+//		double headingForImage = Robot.targeting.getRobotHeading();
+//		double targetHeading = (headingForImage + correction);
+//		
+//		SmartDashboard.putNumber("Auto Aim: Target Heading", targetHeading);
 //		SmartDashboard.putNumber("Auto Aim: Image Header", headingForImage);
 //		SmartDashboard.putNumber("Auto Aim: Target Correction", correction);
 		
 		// if we can see a target, update the PID Controller with the desired heading
-		if (Robot.targeting.isCubeVisible()) {
-			m_desiredHeading = targetHeading;
-		}
+//		if (Robot.targeting.isCubeVisible()) {
+//			m_desiredHeading = targetHeading;
+//		}
 		
 		// ask the PIDController for the adjustment needed to go to the desired heading 
-		double adjustment = maintainHeading();
-		double leftPower = argPower + adjustment;
-		double rightPower = argPower - adjustment;
-		
-		if (argPower > 0) {
-			// constrain leftPower and rightPower to be positive
-			if (leftPower <= 0) { leftPower = 0; }
-			if (rightPower <= 0) { rightPower = 0; }
-		}
-		if (argPower < 0) {
-			// constrain leftPower and rightPower to be negative
-			if (leftPower >= 0) { leftPower = 0; }
-			if (rightPower >= 0) { rightPower = 0; }			
-		}
-		positiveSimpleDrive(leftPower, rightPower);
-		SmartDashboard.putNumber("Auto Aim: Drive Adjustment", adjustment);
+//		double adjustment = maintainHeading();
+//		double leftPower = argPower + adjustment;
+//		double rightPower = argPower - adjustment;
+//		
+//		if (argPower > 0) {
+//			// constrain leftPower and rightPower to be positive
+//			if (leftPower <= 0) { leftPower = 0; }
+//			if (rightPower <= 0) { rightPower = 0; }
+//		}
+//		if (argPower < 0) {
+//			// constrain leftPower and rightPower to be negative
+//			if (leftPower >= 0) { leftPower = 0; }
+//			if (rightPower >= 0) { rightPower = 0; }			
+//		}
+//		positiveSimpleDrive(leftPower, rightPower);
+//		SmartDashboard.putNumber("Auto Aim: Drive Adjustment", adjustment);
 	}
 	
 	private int m_loopsOnTarget = 0;
@@ -786,18 +786,20 @@ public class Drive extends Subsystem {
 		m_loopsOnTarget = 0;
 	}
 	public boolean isAlignedToTarget(int requiredLoopsOnTarget) {
-		int diff = Math.abs(Robot.targeting.getCubeCenterOffset());
-		if (diff <= AIM_PIXEL_TOLERANCE ) {
-			m_loopsOnTarget++;
-		} else {
-			if (m_loopsOnTarget >=1) {
-				DriverStation.reportError("Aim lost after " + m_loopsOnTarget + " loops. \n", false);
-			}
-			m_loopsOnTarget = 0;
-		}
+//		int diff = Math.abs(Robot.targeting.getCubeCenterOffset());
+//		if (diff <= AIM_PIXEL_TOLERANCE ) {
+//			m_loopsOnTarget++;
+//		} else {
+//			if (m_loopsOnTarget >=1) {
+//				DriverStation.reportError("Aim lost after " + m_loopsOnTarget + " loops. \n", false);
+//			}
+//			m_loopsOnTarget = 0;
+//		}
+//		
+//		// require multiple loops of being on target
+//		return (m_loopsOnTarget >= requiredLoopsOnTarget);
 		
-		// require multiple loops of being on target
-		return (m_loopsOnTarget >= requiredLoopsOnTarget);
+		return false;
 	}
 	
 	final double CAMERA_LAG = 0.2;

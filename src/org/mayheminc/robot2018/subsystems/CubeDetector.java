@@ -54,7 +54,7 @@ public class CubeDetector extends Subsystem {
     static final double OUTSIDE_CORNER_V = 0.8;
     static final double CENTER_CORNER_V = 1.3;
     static final double IR_TOLERANCE = 0.3;
-    static final double CUBE_FULLY_IN = 2.0;
+    static final double CUBE_FULLY_IN = 2.3;
     
     public boolean isDeathGrip()
     {
@@ -80,7 +80,7 @@ public class CubeDetector extends Subsystem {
     	double right = getRight();
     	
     	if( left > CUBE_FULLY_IN &&
-    			center > CUBE_FULLY_IN &&
+    			//center > CUBE_FULLY_IN &&
     			right > CUBE_FULLY_IN)
     	{
     		return true;

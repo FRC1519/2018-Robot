@@ -178,9 +178,9 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************
 
-        DRIVER_PAD_RED_BUTTON.whenPressed(new IntakeEscapeDeathGripLeft());
+        DRIVER_PAD_RED_BUTTON.whenPressed(new DeferredCommand(IntakeEscapeDeathGripLeft.class));
         DRIVER_PAD_BLUE_BUTTON.whenPressed(new IntakeEscapeDeathGripRight());
-        
+        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
         DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new DriveSetShifter(Drive.HIGH_GEAR));
@@ -216,7 +216,9 @@ public class OI {
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
      	
      	//BUTTONS FIVE AND SEVEN ARE For Operating pneumatics
-     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose()); 
+//     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose());
+     	
+     	
      	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new AllJawsOpen()); 
 //     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeCloseJaw()); 
 //     	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeOpenJaw()); 
@@ -239,9 +241,9 @@ public class OI {
      	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
 
 //     	OPERATOR_PAD_D_PAD_UP.whenPressed(
-//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
-//     			new TurretMoveTo(Turret.FRONT_POSITION), 
-//     			new ElevatorSetPosition(Elevator.CEILING)));
+//     			new ShiftCommand(OPERATOR_PAD_BUTTON_FIVE, 
+//     			new PivotToFloor(), 
+//     			new PivotToUpright()));
 //
 //     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(
 //     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
@@ -263,6 +265,7 @@ public class OI {
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator());
      	
+     	Robot.blackbox.addButton("DRIVER_PAD_BLUE_BUTTON", DRIVER_PAD_BLUE_BUTTON);
 	}
 	
     public boolean quickTurn() {
@@ -415,7 +418,7 @@ public class OI {
 
 	// returns true if any of the autoInTeleop buttons are held
 	public boolean autoInTeleop() {
-		return DRIVER_PAD_RED_BUTTON.get();
+		return DRIVER_PAD_GREEN_BUTTON.get();
 	}
 
 	public double getTurretPower() {

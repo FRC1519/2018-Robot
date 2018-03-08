@@ -46,6 +46,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static Targeting targeting = new Targeting();
 	public static CubeDetector cubeDetector = new CubeDetector();
 	public static Turret turret = new Turret();
+	public static BlackBox blackbox = new BlackBox();
 
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()
@@ -114,7 +115,13 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 			double autonomousTimeElapsed = (double) (System.currentTimeMillis() - autonomousStartTime) / 1000.0;
 			DriverStation.reportError("Autonomous Time Elapsed: " + autonomousTimeElapsed + "\n", false);
 			printAutoElapsedTime = false;
-		}	    
+		}	   
+		
+		// print the blackbox.
+		blackbox.print();
+		
+		// reset the blackbox.
+		blackbox.reset();
 	}
 
 	public void disabledPeriodic() {

@@ -28,17 +28,15 @@ public class ShiftCommand extends Command {
     // Called just before this Command runs the first time
 	// get the command that we are going to run.
     protected void initialize() {
-    	DriverStation.reportError("Shift Cmd init", false);
     	m_runningCmd = (m_button.get() ? m_cmdA : m_cmdB);
+    	m_cmdStarted = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	DriverStation.reportError("Shift Cmd execute", false);
     	// if this command has not been told to start, start it.
     	if( !m_cmdStarted )
-    	{
-    		DriverStation.reportError("Shift Cmd started", false);
+    	{    		
     		m_runningCmd.start();
     		m_cmdStarted = true;
     	}
@@ -47,19 +45,17 @@ public class ShiftCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     // This command is done when cmdA or cmdB has been started.
     protected boolean isFinished() {
-    	DriverStation.reportError("Shift Cmd is Finished " + m_runningCmd.isRunning(), false);
-        return m_cmdStarted;
+        return m_cmdStarted  && !m_runningCmd.isRunning();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	DriverStation.reportError("Shift Cmd end ", false);
-        
+    	m_runningCmd.cancel();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	DriverStation.reportError("Shift Cmd interrupted ", false);
+    	m_runningCmd.cancel();
     }
 }

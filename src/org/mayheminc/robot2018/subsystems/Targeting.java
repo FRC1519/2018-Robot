@@ -17,31 +17,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * and returns 
  */
 public class Targeting extends Subsystem {
-//	NetworkTableInstance table;
-
-//	enum NetworkTableData
-//	{
-//		FRAME_NUM(0),
-//		CUBE_X(1),
-//		BLUE_SWITCH_X(2),
-//		RED_SWITCH_Y(3),
-//		BLUE_SCALE_X(4),
-//		RED_SCALE_Y(5);
-//		
-//	    private final int id; // https://stackoverflow.com/questions/1067352/can-set-enum-start-value-in-java
-//		NetworkTableData(int id) { this.id = id; }
-//	    public int getValue() { return id; }
-//
-//	}
+	public double cubeDrive = 0.0;
+	public double cubepercentage = 0.0;
+	private float cubex = 1000;
+	private float cubey = 1000;
+	private float cubewidth = 1000;
+	private float cubeheight = 1000;
+	private float cubeprobability = 1000;
 	
-	private static final Number[] DEFAULT_IMG_RESULTS = {0.0, 1001.0};
-	private Number[] latestImgResults = {0.0, 1001.0};
-	private int latestFrameNum = 0;
-	private int latestCenterX = 1001;
-	private double latestImageHeading = 0.0;
-	public double cubeDrive = 0.5;
-	public double cubepercentage = 0.5;
-
+	private boolean m_yoloPacket;
 	private double m_probability;
 	
 	ObjectListener listener;
@@ -49,9 +33,7 @@ public class Targeting extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	public Targeting()
-	{
-//		table = NetworkTableInstance.getDefault();
-		
+	{		
 		try {
 			listener = new ObjectListener();
 		} catch (SocketException e) {
@@ -63,19 +45,25 @@ public class Targeting extends Subsystem {
 
 	public void initDefaultCommand() { }
 	
+	//This function returns the value x value of the cube.
+	public float locationCubeX(){return cubex;}	
+	public float locationCubeY(){return cubey;}
+	public float locationCubeW(){return cubewidth;}
+	public float locationCubeH(){return cubeheight;}
+	public float locationCubeP() {return cubeprobability;}
+	
+	int m_lastFrame;
 	public void periodic()
-	{
-//		latestImgResults = table.getEntry("ImgResults").getNumberArray(DEFAULT_IMG_RESULTS);
-
-		// check to see if these are new results
-/*		if ( (int) latestImgResults[0] != latestFrameNum) {
-			latestFrameNum = (int) latestImgResults[NetworkTableData.FRAME_NUM.getValue()];
-			latestCenterX = (int) latestImgResults[NetworkTableData.CUBE_X.getValue()];
-			latestImageHeading = Robot.drive.getHeadingForCapturedImage();
-		}*/
-		
+	{	
 		// get the list of objects from the listener
 		int frame = listener.getLastFrame();
+		
+		if(frame == m_lastFrame)
+		{
+			return;
+		}
+		m_lastFrame = frame;
+		
 //		System.out.println("Frame == " + frame);
 		List<ObjectLocation> objects = listener.getObjectList();
 		
@@ -83,25 +71,37 @@ public class Targeting extends Subsystem {
 		{
 //			System.out.println("Targeting: Received non-null list");
 			// loop through the objects.  This may be an empty list.
+			cubex = 1000;
+			cubey = 1000;
+			cubewidth = 1000;
+			cubeheight = 1000;
+			cubeprobability = 1000;
+			
+			ObjectLocation bestCube = null;
+			float maxScore = 0.0f;
+
+			SmartDashboard.putNumber("Number of Targets", objects.size());
+			
 			for(ObjectLocation obj : objects)
 			{
 //				System.out.println("Target: " + obj.toString());
 
 				// if there is a cube...
-				if( obj.type == ObjectTypes.OBJ_CUBE)
+				if( obj.type == ObjectTypes.OBJ_CUBE &&
+					obj.probability > 0.4 )
 				{
-					m_probability = obj.probability;
-					// get its center
-					latestCenterX = (int) obj.x;
-					latestFrameNum++;
-					SmartDashboard.putNumber("Target X",  obj.x);
-					SmartDashboard.putNumber("Target Y",  obj.y);
-					SmartDashboard.putNumber("Target width",  obj.width);
-					SmartDashboard.putNumber("Target height",  obj.height);
-					cubeDrive = Math.abs((obj.x * 2) + 1 / 4);
-					cubepercentage = obj.x;
-					return;
+					float score = ScoreCube(obj);
+					
+					if( score > maxScore)
+					{
+						maxScore = score;
+						bestCube = obj;
+					}
 				}
+			}
+			if( bestCube != null )
+			{
+				SaveBestCube(bestCube, maxScore);
 			}
 		}
 		else
@@ -109,21 +109,54 @@ public class Targeting extends Subsystem {
 //			System.out.println("Targeting: objects is null");
 		}
 		
-		latestCenterX = 1000; // no cube visible
+//		latestCenterX = 1000; // no cube visible
 	}
 	
+	private void SaveBestCube(ObjectLocation obj, float Score) {
+		// TODO Auto-generated method stub
+		m_probability = obj.probability;
+		// get its center
+		cubex = obj.x;
+		cubey = obj.y;
+		cubewidth = obj.width;
+		cubeheight = obj.height;
+		cubeprobability = obj.probability;
+		
+//		latestFrameNum++;
+		m_yoloPacket = !m_yoloPacket;
+		
+		SmartDashboard.putBoolean("Target Packet", m_yoloPacket);
+		SmartDashboard.putNumber("Target X",  obj.x);
+		SmartDashboard.putNumber("Target Y",  obj.y);
+		SmartDashboard.putNumber("Target width",  obj.width);
+		SmartDashboard.putNumber("Target height",  obj.height);
+		SmartDashboard.putNumber("target prob", m_probability);
+		SmartDashboard.putNumber("Score", Score);
+//		cubeDrive = Math.abs((obj.x * 2) + 1 / 4);
+		cubepercentage = obj.x;
+	}
+
 	public void updateSmartDashboard()
 	{
 		//SmartDashboard.putNumber("Target X",  latestCenterX);
-		SmartDashboard.putNumber("Target Frame", latestFrameNum);
+//		SmartDashboard.putNumber("Target Frame", latestFrameNum);
 		SmartDashboard.putNumber("Target Prob", m_probability);
 	}
 	
-	public double getRobotHeading() {return latestImageHeading;}
-	public int getCubeCenterOffset() {return latestCenterX;}
-	public boolean isCubeVisible() 
+//	public double getRobotHeading() {return latestImageHeading;}
+//	public int getCubeCenterOffset() {return latestCenterX;}
+//	public boolean isCubeVisible() 
+//	{
+//		return (getCubeCenterOffset() < 1000);
+//	}
+	
+	public float ScoreCube(ObjectLocation obj) 
 	{
-		return (getCubeCenterOffset() < 1000);
+		float centerscore = (float) (1-Math.abs(obj.x-0.5));
+		float likeableness = obj.width*centerscore;
+		return likeableness;
 	}
+
+	
 }
 
