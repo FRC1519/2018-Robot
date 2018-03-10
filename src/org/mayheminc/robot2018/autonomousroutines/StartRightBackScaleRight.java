@@ -6,13 +6,15 @@ import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.IntakeInForTime;
-import org.mayheminc.robot2018.commands.PivotToFloor;
+import org.mayheminc.robot2018.commands.PivotMove;
+//import org.mayheminc.robot2018.commands.PivotToFloor;
 import org.mayheminc.robot2018.commands.SetHeadingOffset180;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.subsystems.Elevator;
+import org.mayheminc.robot2018.subsystems.Pivot;
 import org.mayheminc.robot2018.subsystems.Turret;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -70,7 +72,7 @@ public class StartRightBackScaleRight extends CommandGroup {
     	// put the turret to the front position
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new ElevatorArmSetMotorAuto(0.0));
-    	addSequential(new PivotToFloor());
+    	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	
     	// engage the cube
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 15.0, 180.0));

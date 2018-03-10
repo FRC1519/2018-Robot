@@ -23,13 +23,14 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	public static final int SPIT_POSITION = 2100; //Was 1900 02-02-2018
 	public static final int EXCHANGE_POSITION = 700;//was 500 02-02-2018
 	public static final int DOWNWARD_POSITION = 0;
-	public static final int PIVOT_TOLERANCE = 150; // 75 seemed like not quite enough at Week 1
 	
-	public static final int DOWN_TOLERANCE = 50;
+	private static final int PIVOT_TOLERANCE = 150; // 75 seemed like not quite enough at Week 1
 	
-	public static final double ZERO_MAX_CURRENT = 1.0; // Amps
-	public static final double ZERO_MOTOR_POWER = 0.25;
-	public static final double DOWN_MOTOR_POWER = -0.15;
+	private static final int DOWN_TOLERANCE = 50;
+	
+	private static final double ZERO_MAX_CURRENT = 1.0; // Amps
+	private static final double ZERO_MOTOR_POWER = 0.25;
+	private static final double DOWN_MOTOR_POWER = -0.15;
 	
 	MayhemTalonSRX m_pivotmotor = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
 	int m_position;
@@ -82,6 +83,11 @@ public class Pivot extends Subsystem implements PidTunerObject {
     	m_pivotmotor.set(ControlMode.Position, position);
     	m_position = position;
     	m_manualMode = false;
+    }
+    
+    public int getPosition()
+    {
+    	return m_pivotmotor.getSelectedSensorPosition(0);
     }
     
     public boolean IsPivotInPosition()

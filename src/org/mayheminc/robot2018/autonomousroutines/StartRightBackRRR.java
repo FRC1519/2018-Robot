@@ -7,13 +7,15 @@ import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.IntakeInForTime;
-import org.mayheminc.robot2018.commands.PivotToFloor;
+import org.mayheminc.robot2018.commands.PivotMove;
+//import org.mayheminc.robot2018.commands.PivotToFloor;
 import org.mayheminc.robot2018.commands.SetHeadingOffset180;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.subsystems.Elevator;
+import org.mayheminc.robot2018.subsystems.Pivot;
 import org.mayheminc.robot2018.subsystems.Turret;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -68,7 +70,7 @@ public class StartRightBackRRR extends CommandGroup {
     	addSequential(new Wait(1.0)); 
     	
     	// back away from the scale a bit and head towards the cube for the switch
-    	addParallel(new PivotToFloor());
+    	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0, 180.0)); // was .5
 
     	// drive to get the cube

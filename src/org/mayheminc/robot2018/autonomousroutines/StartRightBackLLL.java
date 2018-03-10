@@ -7,7 +7,7 @@ import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.IntakeInForTime;
 import org.mayheminc.robot2018.commands.IntakeOutForTime;
 import org.mayheminc.robot2018.commands.PivotMove;
-import org.mayheminc.robot2018.commands.PivotToFloor;
+//import org.mayheminc.robot2018.commands.PivotToFloor;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.SetHeadingOffset180;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
@@ -66,7 +66,7 @@ public class StartRightBackLLL extends CommandGroup {
     	addSequential(new Wait(1.0)); 
     	
     	// back away from the scale a bit and head towards the cube for the switch
-       	addParallel(new PivotToFloor());
+       	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
        	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0, 180.0)); // was .5
    	
     	// drive to get the cube

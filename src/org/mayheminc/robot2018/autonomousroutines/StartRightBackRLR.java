@@ -8,7 +8,7 @@ import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.IntakeInForTime;
 import org.mayheminc.robot2018.commands.IntakeOutForTime;
 import org.mayheminc.robot2018.commands.PivotMove;
-import org.mayheminc.robot2018.commands.PivotToFloor;
+//import org.mayheminc.robot2018.commands.PivotToFloor;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.SetHeadingOffset180;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
@@ -67,7 +67,7 @@ public class StartRightBackRLR extends CommandGroup {
     	addSequential(new Wait(1.0)); 
     	
     	// back away from the scale a bit and head towards the cube for the switch
-       	addParallel(new PivotToFloor());
+       	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
        	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0, 180.0)); // was .5
    	
     	// drive to get the cube
@@ -75,7 +75,7 @@ public class StartRightBackRLR extends CommandGroup {
     	// put the turret to the front position
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new ElevatorArmSetMotorAuto(0.0));
-    	addSequential(new PivotToFloor());
+    	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	
     	// engage the cube and grab it.
     	addParallel(new ElevatorSetPosition(Elevator.PREPARE_FOR_HANDOFF_HEIGHT));

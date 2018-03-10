@@ -14,6 +14,7 @@ public class PivotMove extends Command {
     public PivotMove(int position) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.pivot);
     	m_position = position;
     }
 

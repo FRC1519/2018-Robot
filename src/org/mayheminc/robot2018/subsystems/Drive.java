@@ -655,7 +655,7 @@ public class Drive extends Subsystem {
 
 	public static final boolean AUTO_SHIFT = true;
 	public static final boolean MANUAL_SHIFT = false;
-	private boolean m_autoShift = false;      // flag for automatic shifting
+	private boolean m_autoShift = true;      // flag for automatic shifting
 
 	public void setShifter(boolean position){
 		m_shifter.set(position);
@@ -696,7 +696,7 @@ public class Drive extends Subsystem {
 
 	//TODO: SeanM thinks that these constants are not great for 2016 Robot.  Should be re-evaluated at large practice space.
 	//private static final double SHIFT_RATIO = 2.56;    // Gear spread is 2.56:1 in sonic shifter
-	private static final double SHIFT_TO_HIGH = 30.0;  // numbers determined empirically
+	private static final double SHIFT_TO_HIGH = 450.0;  // numbers determined empirically
 	private static final double SHIFT_TO_LOW = SHIFT_TO_HIGH / 2.56;   // numbers determined empirically
 	private static final double SHIFT_DELAY = .5;
 	private static double m_priorShiftTime = Timer.getFPGATimestamp();
@@ -708,8 +708,7 @@ public class Drive extends Subsystem {
 		//double currentAverageSpeed = (getLeftSpeed() + getRightSpeed()) / 2;
 
 		// display current speed to driver
-		//        DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser1, 3,
-		//                "s" + Utils.oneDecimalPlace(currentAverageSpeed) + "  ");
+		SmartDashboard.putNumber("Current Speed",  currentSpeed);
 
 		if (m_autoShift &&  
 				(Robot.oi.forceLowGear() ||  

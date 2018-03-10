@@ -14,7 +14,7 @@ public class PivotZeroEncoder extends InstantCommand {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 //    	setRunWhenDisabled(true);
-
+        requires(Robot.pivot);
     }
 
     // Called once when the command executes

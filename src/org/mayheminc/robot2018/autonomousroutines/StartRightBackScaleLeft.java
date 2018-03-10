@@ -7,7 +7,7 @@ import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.IntakeInForTime;
 import org.mayheminc.robot2018.commands.IntakeOutForTime;
 import org.mayheminc.robot2018.commands.PivotMove;
-import org.mayheminc.robot2018.commands.PivotToFloor;
+//import org.mayheminc.robot2018.commands.PivotToFloor;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.SetHeadingOffset180;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
@@ -69,7 +69,7 @@ public class StartRightBackScaleLeft extends CommandGroup {
     	// put the turret to the front position
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new ElevatorArmSetMotorAuto(0.0));
-    	addSequential(new PivotToFloor());
+    	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	
     	// engage the cube and lift it up.
     	addParallel(new ElevatorSetPosition(Elevator.PREPARE_FOR_HANDOFF_HEIGHT));

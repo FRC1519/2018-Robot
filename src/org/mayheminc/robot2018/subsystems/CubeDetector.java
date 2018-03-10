@@ -51,10 +51,10 @@ public class CubeDetector extends Subsystem {
     	SmartDashboard.putBoolean("Cube In",  isCubeSquare());
     }
     
-    static final double OUTSIDE_CORNER_V = 0.8;
+    static final double OUTSIDE_CORNER_V = 1.0;
     static final double CENTER_CORNER_V = 1.3;
     static final double IR_TOLERANCE = 0.3;
-    static final double CUBE_FULLY_IN = 2.3;
+    static final double CUBE_FULLY_IN = 1.6;
     
     public boolean isDeathGrip()
     {
@@ -63,9 +63,16 @@ public class CubeDetector extends Subsystem {
     	double right = getRight();
     	
     	// if the left, center, and right are within the tolerance of the death grip...
-    	if( Math.abs(center - CENTER_CORNER_V) < IR_TOLERANCE &&
-    		Math.abs(left -OUTSIDE_CORNER_V ) < IR_TOLERANCE &&
-    		Math.abs(right - OUTSIDE_CORNER_V) < IR_TOLERANCE)
+//    	if( Math.abs(center - CENTER_CORNER_V) < IR_TOLERANCE &&
+//    		Math.abs(left -OUTSIDE_CORNER_V ) < IR_TOLERANCE &&
+//    		Math.abs(right - OUTSIDE_CORNER_V) < IR_TOLERANCE)
+//    	{
+//    		return true;
+//    	}
+    	
+    	if( center > CENTER_CORNER_V &&
+    			left < OUTSIDE_CORNER_V &&
+    			right < OUTSIDE_CORNER_V )
     	{
     		return true;
     	}

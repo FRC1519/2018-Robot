@@ -1,5 +1,7 @@
 package org.mayheminc.robot2018.commands;
 
+import org.mayheminc.robot2018.subsystems.Pivot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -24,7 +26,7 @@ public class AutoGatherCubeSeq extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new PivotToFloor());
+    	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new IntakeInInstant());
     	addSequential(new GatherCube());
 //    	addSequential(new IntakeEscapeDeathGripLeft());

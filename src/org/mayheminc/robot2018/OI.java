@@ -178,7 +178,7 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************
 
-        DRIVER_PAD_RED_BUTTON.whenPressed(new DeferredCommand(IntakeEscapeDeathGripLeft.class));
+//        DRIVER_PAD_RED_BUTTON.whenPressed(new DeferredCommand(PivotTest.class));
         DRIVER_PAD_BLUE_BUTTON.whenPressed(new IntakeEscapeDeathGripRight());
         DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
@@ -208,15 +208,15 @@ public class OI {
      	//*************************OPERATOR PAD*******************************
      	
      	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotMove(Pivot.EXCHANGE_POSITION));
-     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotToFloor());
+     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
      	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
-     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotToUpright());
+     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotMove(Pivot.UPRIGHT_POSITION));// PivotToUpright());
      	
 
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
      	
      	//BUTTONS FIVE AND SEVEN ARE For Operating pneumatics
-//     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose());
+     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose());
      	
      	
      	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new AllJawsOpen()); 
@@ -266,6 +266,30 @@ public class OI {
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator());
      	
      	Robot.blackbox.addButton("DRIVER_PAD_BLUE_BUTTON", DRIVER_PAD_BLUE_BUTTON);
+     	Robot.blackbox.addButton("DRIVER_PAD_GREEN_BUTTON", DRIVER_PAD_GREEN_BUTTON);
+     	Robot.blackbox.addButton("DRIVER_PAD_RED_BUTTON", DRIVER_PAD_RED_BUTTON);
+     	Robot.blackbox.addButton("DRIVER_PAD_YELLOW_BUTTON", DRIVER_PAD_YELLOW_BUTTON);
+     	Robot.blackbox.addButton("DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON", DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON);
+     	Robot.blackbox.addButton("DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON", DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON);
+	
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_ONE", OPERATOR_PAD_BUTTON_ONE);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWO", OPERATOR_PAD_BUTTON_TWO);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_THREE", OPERATOR_PAD_BUTTON_THREE);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_FOUR", OPERATOR_PAD_BUTTON_FOUR);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_FIVE", OPERATOR_PAD_BUTTON_FIVE);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_SIX", OPERATOR_PAD_BUTTON_SIX);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_SEVEN", OPERATOR_PAD_BUTTON_SEVEN);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_EIGHT", OPERATOR_PAD_BUTTON_EIGHT);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_NINE", OPERATOR_PAD_BUTTON_NINE);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TEN", OPERATOR_PAD_BUTTON_TEN);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_ELEVEN", OPERATOR_PAD_BUTTON_ELEVEN);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWELVE", OPERATOR_PAD_BUTTON_TWELVE);
+
+     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_LEFT", OPERATOR_PAD_D_PAD_LEFT);
+     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_RIGHT", OPERATOR_PAD_D_PAD_RIGHT);
+     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_UP", OPERATOR_PAD_D_PAD_UP);
+     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_DOWN", OPERATOR_PAD_D_PAD_DOWN);
+     	
 	}
 	
     public boolean quickTurn() {

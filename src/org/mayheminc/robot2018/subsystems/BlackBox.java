@@ -30,7 +30,7 @@ public class BlackBox extends Subsystem {
     		str += ": ";
     		str += m_map.get(b);
     		
-    		DriverStation.reportError(str, false);
+    		DriverStation.reportWarning(str, false);
     	}
     }
     

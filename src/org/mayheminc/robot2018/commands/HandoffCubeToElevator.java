@@ -1,6 +1,7 @@
 package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.subsystems.Elevator;
+import org.mayheminc.robot2018.subsystems.Pivot;
 import org.mayheminc.robot2018.subsystems.Turret;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -29,7 +30,7 @@ public class HandoffCubeToElevator extends CommandGroup {
     	
     	
     	addSequential(new IntakeCloseJaw());
-    	addSequential(new PivotToUpright());
+    	addSequential(new PivotMove(Pivot.UPRIGHT_POSITION)); // PivotToUpright());
     	addSequential(new ElevatorArmSetMotorAuto(.5));
     	addSequential(new IntakeOutInstant());
     	addSequential(new Wait(0.1));

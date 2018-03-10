@@ -20,9 +20,18 @@ public class GameData extends Subsystem {
     void Read()
 	{
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if( gameData.length() < 3 )
+		{
+			return;
+		}
+		try
+		{
 		OurSwitch = (gameData.charAt(0) == 'R');
 		Scale = (gameData.charAt(1) == 'R');
 		OpposingSwitch = (gameData.charAt(2) == 'R');
+		}
+		catch(Exception e)
+		{}
 	}
 
 	public boolean getNearSwitchOnRight() 

@@ -59,8 +59,6 @@ public class Intake extends Subsystem {
     void setMotors(double speed)
     {
     	m_setSpeed = speed;
-//    	m_intakeMoterRight.set(ControlMode.PercentOutput, speed);
-//    	m_intakeMoterLeft.set(ControlMode.PercentOutput, -speed);
     }
     
     public void stop() {
