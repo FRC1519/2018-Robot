@@ -49,10 +49,10 @@ public class StartCenterRightSwitch extends CommandGroup {
     	
     	// go almost due east
     	addSequential(new PrintToDriverStation("DriveStraightOnHeading"));
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 10.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 5.0, 0.0));
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 40.0, 80.0));
     	// drive to near-side of fence
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 65.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 70.0, 0.0));
     	
     	// drive gently for a little longer to make sure we're against the fence
 //    	addSequential(new DriveStraightOnHeadingForTime(0.4, DistanceUnits.INCHES, 60.0, 0.0));

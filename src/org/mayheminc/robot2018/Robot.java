@@ -47,6 +47,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static CubeDetector cubeDetector = new CubeDetector();
 	public static Turret turret = new Turret();
 	public static BlackBox blackbox = new BlackBox();
+	public static Shifter shifter = new Shifter();
 
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()
@@ -143,7 +144,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void autonomousInit() {
 		
 		//force low gear
-		drive.setShifter(Drive.LOW_GEAR);
+		shifter.setShifter(Shifter.LOW_GEAR);
 
 		// turn off the compressor
 		// KBS:  Not sure we really want to do this -- we did this in 2016 to ensure the compressor
@@ -294,7 +295,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 		updateSmartDashboard(DONT_UPDATE_AUTO_SETUP_FIELDS);
 
-		Robot.drive.updateAutoShift();
+		Robot.shifter.updateAutoShift();
 		Robot.drive.updateHistory();
 	}
 

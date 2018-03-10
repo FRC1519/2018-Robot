@@ -1,16 +1,13 @@
-package org.mayheminc.robot2018.commands;
-
-import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
-import org.mayheminc.robot2018.subsystems.Pivot;
+package org.mayheminc.robot2018.autonomousroutines;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class AutoGatherCubeSeq extends CommandGroup {
+public class StartCenterLeftSwitchPyramid extends CommandGroup {
 
-    public AutoGatherCubeSeq() {
+    public StartCenterLeftSwitchPyramid() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -27,13 +24,5 @@ public class AutoGatherCubeSeq extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential(new IntakeInInstant());
-    	addSequential(new GatherCube());
-//    	addSequential(new IntakeEscapeDeathGripLeft());
-
-//    	addSequential(new IntakeOff());
-//    	addSequential(new PivotMove(Pivot.UPRIGHT_POSITION));
-//    	addSequential(new WaitForever());
     }
 }

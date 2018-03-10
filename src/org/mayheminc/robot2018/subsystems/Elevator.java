@@ -139,7 +139,8 @@ public class Elevator extends Subsystem implements PidTunerObject {
     	if ( power > 0.01 || power < -0.01 ) {
     		m_manualMode = true;
     		m_motor.set(ControlMode.PercentOutput,  power);
-    	} else {    			// this is position control (not just manual mode)
+    	} 
+    	else {    			// this is position control (not just manual mode)
     		if (m_manualMode) { // we must have just previously been in manual mode, set to "hold position"
     			m_manualMode = false;
     			m_autoSetpoint = m_motor.getSelectedSensorPosition(0);

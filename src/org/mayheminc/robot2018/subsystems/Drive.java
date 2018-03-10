@@ -48,8 +48,8 @@ public class Drive extends Subsystem {
 	private final MB1340Ultrasonic ultrasonic = new MB1340Ultrasonic(0);
 	private AHRS Navx;
 
-	// Solenoid
-	Solenoid m_shifter;
+//	// Solenoid
+//	Solenoid m_shifter;
 
 	// Driving mode
 	private boolean m_speedRacerDriveMode = true; // set by default
@@ -112,7 +112,7 @@ public class Drive extends Subsystem {
 		rightRearTalon.changeControlMode(ControlMode.Follower);
 		rightRearTalon.set(rightFrontTalon.getDeviceID());
 
-		m_shifter = new Solenoid(RobotMap.SHIFTING_SOLENOID);
+//		m_shifter = new Solenoid(RobotMap.SHIFTING_SOLENOID);
 	}
 
 	public void init() {
@@ -437,8 +437,8 @@ public class Drive extends Subsystem {
 
 		if (Robot.oi.autoTarget()) {
 			// shift into low gear if needed
-			if (getGear() == HIGH_GEAR) {
-				setGear(LOW_GEAR);
+			if (Robot.shifter.getGear() == Shifter.HIGH_GEAR) {
+				Robot.shifter.setGear(Shifter.LOW_GEAR);
 			}
 			// we are in autoTarget mode
 			if (Robot.oi.forceLowGear()) {
@@ -625,7 +625,7 @@ public class Drive extends Subsystem {
 
 		SmartDashboard.putBoolean("Closed Loop Mode", m_closedLoopMode);
 //		SmartDashboard.putBoolean("Speed Racer Drive Mode", m_speedRacerDriveMode);
-		SmartDashboard.putBoolean("Auto Shift Mode", m_autoShift);
+//		SmartDashboard.putBoolean("Auto Shift Mode", m_autoShift);
 
 		SmartDashboard.putBoolean("Heading Correction Mode", m_useHeadingCorrection);
 		SmartDashboard.putNumber("Heading Desired", m_desiredHeading);
@@ -637,7 +637,15 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Joystick Drive Throttle", Robot.oi.driveThrottle());
 		SmartDashboard.putNumber("Joystick SteeringX", Robot.oi.steeringX());
 
-		SmartDashboard.putBoolean("Low Gear", !m_highGear);
+//		SmartDashboard.putBoolean("Low Gear", !m_highGear);
+
+		// determine currentAverageSpeed and display it
+		double currentSpeed = getLeftSpeed() > getRightSpeed() ? getLeftSpeed() : getRightSpeed();
+		//double currentAverageSpeed = (getLeftSpeed() + getRightSpeed()) / 2;
+
+		// display current speed to driver
+		SmartDashboard.putNumber("Current Speed",  currentSpeed);
+
 
 //		SmartDashboard.putNumber("Tilt", getTilt());
 	}
@@ -647,99 +655,99 @@ public class Drive extends Subsystem {
 		return ultrasonic.getDistanceInInches();
 	}
 
-	//**********************************SHIFTER PISTONS***********************************************
-
-	public static final boolean HIGH_GEAR = true;
-	public static final boolean LOW_GEAR = !HIGH_GEAR;
-	private boolean m_highGear = LOW_GEAR; // flag for current gear setting
-
-	public static final boolean AUTO_SHIFT = true;
-	public static final boolean MANUAL_SHIFT = false;
-	private boolean m_autoShift = true;      // flag for automatic shifting
-
-	public void setShifter(boolean position){
-		m_shifter.set(position);
-		m_highGear = position;
-	}
-
-	//private static final double LEFT_SHIFT_HIGH = 0.0;
-	//private static final double LEFT_SHIFT_LOW = 1.0;
-	//private static final double RIGHT_SHIFT_HIGH = 0.0;
-	//private static final double RIGHT_SHIFT_LOW = 1.0;
-
-	public final void setGear(boolean gear) {
-		m_priorShiftTime = Timer.getFPGATimestamp();
-		m_highGear = gear;
-		if (m_highGear == HIGH_GEAR) {
-			//            leftShiftServo.set(LEFT_SHIFT_HIGH);
-			//            rightShiftServo.set(RIGHT_SHIFT_HIGH);
-			setShifter(HIGH_GEAR);  
-			//DriverStation.reportError("High Gear", false);
-
-		} else {
-			//            leftShiftServo.set(LEFT_SHIFT_LOW);
-			//            rightShiftServo.set(RIGHT_SHIFT_LOW);
-			setShifter(LOW_GEAR);   // NOTE:  Solenoid set to false gives low gear
-			//DriverStation.reportError("Low Gear", false);
-		}
-	}
-
-	public boolean getGear() {
-		return m_highGear;
-	}
-
-	public void setAutoShift(boolean useAutoShift) {
-		m_autoShift = useAutoShift;
-	}
-
-	// shift speeds are in inches per second.
-
-	//TODO: SeanM thinks that these constants are not great for 2016 Robot.  Should be re-evaluated at large practice space.
-	//private static final double SHIFT_RATIO = 2.56;    // Gear spread is 2.56:1 in sonic shifter
-	private static final double SHIFT_TO_HIGH = 450.0;  // numbers determined empirically
-	private static final double SHIFT_TO_LOW = SHIFT_TO_HIGH / 2.56;   // numbers determined empirically
-	private static final double SHIFT_DELAY = .5;
-	private static double m_priorShiftTime = Timer.getFPGATimestamp();
-
-	public void updateAutoShift() {
-
-		// determine currentAverageSpeed and display it
-		double currentSpeed = getLeftSpeed() > getRightSpeed() ? getLeftSpeed() : getRightSpeed();
-		//double currentAverageSpeed = (getLeftSpeed() + getRightSpeed()) / 2;
-
-		// display current speed to driver
-		SmartDashboard.putNumber("Current Speed",  currentSpeed);
-
-		if (m_autoShift &&  
-				(Robot.oi.forceLowGear() ||  
-						Timer.getFPGATimestamp() > m_priorShiftTime + SHIFT_DELAY)) {    
-
-			// general approach:
-			//     if currentAverageSpeed is high enough, shift into high gear
-			//     if currentAverageSpeed is low, shift into low gear
-			// NOTE:  un-needed shifts into high could be avoided by checking
-			//        that driver still wants to go faster (i.e., commanding
-			//        significant power) when considering a shift into high
-
-			if ((!Robot.oi.forceLowGear() && Math.abs(currentSpeed) > SHIFT_TO_HIGH) &&
-					(Math.abs(Robot.oi.driveThrottle()) > 0.9)) {
-				setGear(HIGH_GEAR);
-			} else if (Robot.oi.forceLowGear() || 
-					Math.abs(currentSpeed) < SHIFT_TO_LOW) {
-				setGear(LOW_GEAR);
-			} else {
-				// don't need to shift to high or low; stay in current gear
-			}  
-		}
-
-		// display debugging information for auto-shift data collection
-		//        System.out.println("t:" + Utils.twoDecimalPlaces(Timer.getFPGATimestamp()) +
-		//                   "  g:" + ((currentGear == HIGH_GEAR) ? "H" : "L") +
-		//                   "  as:" + Utils.twoDecimalPlaces(currentAverageSpeed) + 
-		//                   "  thr:" + Utils.twoDecimalPlaces(CommandBase.oi.driveThrottle()) +
-		//                   "  v:" + Utils.twoDecimalPlaces(DriverStation.getInstance().getBatteryVoltage()));
-	}
-	
+//	//**********************************SHIFTER PISTONS***********************************************
+//
+//	public static final boolean HIGH_GEAR = true;
+//	public static final boolean LOW_GEAR = !HIGH_GEAR;
+//	private boolean m_highGear = LOW_GEAR; // flag for current gear setting
+//
+//	public static final boolean AUTO_SHIFT = true;
+//	public static final boolean MANUAL_SHIFT = false;
+//	private boolean m_autoShift = true;      // flag for automatic shifting
+//
+//	public void setShifter(boolean position){
+//		m_shifter.set(position);
+//		m_highGear = position;
+//	}
+//
+//	//private static final double LEFT_SHIFT_HIGH = 0.0;
+//	//private static final double LEFT_SHIFT_LOW = 1.0;
+//	//private static final double RIGHT_SHIFT_HIGH = 0.0;
+//	//private static final double RIGHT_SHIFT_LOW = 1.0;
+//
+//	public final void setGear(boolean gear) {
+//		m_priorShiftTime = Timer.getFPGATimestamp();
+//		m_highGear = gear;
+//		if (m_highGear == HIGH_GEAR) {
+//			//            leftShiftServo.set(LEFT_SHIFT_HIGH);
+//			//            rightShiftServo.set(RIGHT_SHIFT_HIGH);
+//			setShifter(HIGH_GEAR);  
+//			//DriverStation.reportError("High Gear", false);
+//
+//		} else {
+//			//            leftShiftServo.set(LEFT_SHIFT_LOW);
+//			//            rightShiftServo.set(RIGHT_SHIFT_LOW);
+//			setShifter(LOW_GEAR);   // NOTE:  Solenoid set to false gives low gear
+//			//DriverStation.reportError("Low Gear", false);
+//		}
+//	}
+//
+//	public boolean getGear() {
+//		return m_highGear;
+//	}
+//
+//	public void setAutoShift(boolean useAutoShift) {
+//		m_autoShift = useAutoShift;
+//	}
+//
+//	// shift speeds are in inches per second.
+//
+//	//TODO: SeanM thinks that these constants are not great for 2016 Robot.  Should be re-evaluated at large practice space.
+//	//private static final double SHIFT_RATIO = 2.56;    // Gear spread is 2.56:1 in sonic shifter
+//	private static final double SHIFT_TO_HIGH = 450.0;  // numbers determined empirically
+//	private static final double SHIFT_TO_LOW = SHIFT_TO_HIGH / 2.56;   // numbers determined empirically
+//	private static final double SHIFT_DELAY = .5;
+//	private static double m_priorShiftTime = Timer.getFPGATimestamp();
+//
+//	public void updateAutoShift() {
+//
+//		// determine currentAverageSpeed and display it
+//		double currentSpeed = getLeftSpeed() > getRightSpeed() ? getLeftSpeed() : getRightSpeed();
+//		//double currentAverageSpeed = (getLeftSpeed() + getRightSpeed()) / 2;
+//
+//		// display current speed to driver
+//		SmartDashboard.putNumber("Current Speed",  currentSpeed);
+//
+//		if (m_autoShift &&  
+//				(Robot.oi.forceLowGear() ||  
+//						Timer.getFPGATimestamp() > m_priorShiftTime + SHIFT_DELAY)) {    
+//
+//			// general approach:
+//			//     if currentAverageSpeed is high enough, shift into high gear
+//			//     if currentAverageSpeed is low, shift into low gear
+//			// NOTE:  un-needed shifts into high could be avoided by checking
+//			//        that driver still wants to go faster (i.e., commanding
+//			//        significant power) when considering a shift into high
+//
+//			if ((!Robot.oi.forceLowGear() && Math.abs(currentSpeed) > SHIFT_TO_HIGH) &&
+//					(Math.abs(Robot.oi.driveThrottle()) > 0.9)) {
+//				setGear(HIGH_GEAR);
+//			} else if (Robot.oi.forceLowGear() || 
+//					Math.abs(currentSpeed) < SHIFT_TO_LOW) {
+//				setGear(LOW_GEAR);
+//			} else {
+//				// don't need to shift to high or low; stay in current gear
+//			}  
+//		}
+//
+//		// display debugging information for auto-shift data collection
+//		//        System.out.println("t:" + Utils.twoDecimalPlaces(Timer.getFPGATimestamp()) +
+//		//                   "  g:" + ((currentGear == HIGH_GEAR) ? "H" : "L") +
+//		//                   "  as:" + Utils.twoDecimalPlaces(currentAverageSpeed) + 
+//		//                   "  thr:" + Utils.twoDecimalPlaces(CommandBase.oi.driveThrottle()) +
+//		//                   "  v:" + Utils.twoDecimalPlaces(DriverStation.getInstance().getBatteryVoltage()));
+//	}
+//	
 	//********************************AUTO TARGET*********************************
 	
 	public void autoTarget(double argPower) {

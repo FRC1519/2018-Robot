@@ -80,7 +80,7 @@ public class Targeting extends Subsystem {
 			ObjectLocation bestCube = null;
 			float maxScore = 0.0f;
 
-			SmartDashboard.putNumber("Number of Targets", objects.size());
+//			SmartDashboard.putNumber("Number of Targets", objects.size());
 			
 			for(ObjectLocation obj : objects)
 			{

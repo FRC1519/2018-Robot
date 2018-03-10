@@ -43,41 +43,41 @@ public class GatherCube extends Command {
     	SmartDashboard.putNumber("cubeh", cubeh);
     	SmartDashboard.putNumber("cubep", cubep);
     	
-    	double RobotDriveX = (cubex-0.5);//*2;
+    	double RobotDriveX = (cubex-0.5);//*2; // convert from the YOLO 0 to 1.0 to -.5 to +.5
     	float AutoDriveFWDSpeed;//(float) (Math.abs(1-cubew)/3 + 0.2);//cubew;
+    	// if the cube is far away, then go fast.
     	if (cubew <= 0.3)
     	{
-    		AutoDriveFWDSpeed = 0.7f;
+    		AutoDriveFWDSpeed = 0.5f;
     	}
+    	// if the cube is getting close, go a bit slower
     	else if (cubew <= 0.66)
     	{
     		AutoDriveFWDSpeed = 0.4f;
     	}
+    	// if the cube is close, keep crawling
     	else //if (cubew <= 0.72)
     	{
-    		AutoDriveFWDSpeed = 0.2f;
+    		AutoDriveFWDSpeed = 0.1f;
     	}
-    	//double robotdepthw = ((1-cubew)-2);
-//    	if (robotdepthw < 0.2 ) {
-//    		robotdepthw = 0.2;
-//    	}
-//    	org.mayheminc.robot2018.commands.AllRollersOut();
-    	
+
+    	// if we can see a cube, drive towards it
     	if (cubex != 1000) {
     		Robot.drive.speedRacerDrive(AutoDriveFWDSpeed, RobotDriveX, false);
     		SmartDashboard.putString("Cube???", "I see a cube!!!");
     		SmartDashboard.putNumber("RobotDriveX", RobotDriveX);
     	}
+    	// if we can't see it, crawl!
     	else //if (cubex == 1000) 
     	{
     		SmartDashboard.putString("Cube???", "I do not see a cube");
-    		Robot.drive.speedRacerDrive(0, 0, false);
+    		Robot.drive.speedRacerDrive(0.1, 0, false);
     		
     	}
     	
-    	if (Robot.cubeDetector.isDeathGrip() == true) {
+//    	if (Robot.cubeDetector.isDeathGrip() == true) {
 //    		IntakeEscapeDeathGripLeft();
-    	}
+//    	}
 //    	else if (Robot.cubeDetector.isCubeSquare() == true) {
 //    		break;
 //    	}

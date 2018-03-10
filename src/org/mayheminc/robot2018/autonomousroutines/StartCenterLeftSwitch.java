@@ -45,11 +45,11 @@ public class StartCenterLeftSwitch extends CommandGroup {
     	
 //    	addSequential(new Wait(2.0)); 
 
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 10.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 5.0, 0.0));
     	// go almost due east
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 45.0, 280.0));
     	// drive to near-side of fence
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 65.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 70.0, 0.0));
     	
     	// drive gently for a little longer to make sure we're against the fence
 //    	addSequential(new DriveStraightOnHeadingForTime(0.4, DistanceUnits.INCHES, 60.0, 0.0));

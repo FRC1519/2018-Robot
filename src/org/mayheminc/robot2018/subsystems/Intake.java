@@ -92,7 +92,7 @@ public class Intake extends Subsystem {
     	double reverseLeft = (m_reverseLeftSide) ? -1.0 : 1.0;
     	double reverseRight = (m_reverseRightSide) ? -1.0 : 1.0;
     	
-    	m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverseLeft);
+    	m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverseLeft * .75);
     	m_intakeMotorRight.set(ControlMode.PercentOutput, m_setSpeed * reverseRight);
 
     }

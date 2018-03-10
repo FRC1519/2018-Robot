@@ -21,6 +21,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
 
 	public static final int UPRIGHT_POSITION = 2800; //JUST PLACEHOLDER!
 	public static final int SPIT_POSITION = 2100; //Was 1900 02-02-2018
+	public static final int FLIP_CUBE_POSITION = 700;
 	public static final int EXCHANGE_POSITION = 700;//was 500 02-02-2018
 	public static final int DOWNWARD_POSITION = 0;
 	
@@ -80,7 +81,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
     
     public void moveTo(int position)
     {
-    	m_pivotmotor.set(ControlMode.Position, position);
+//    	m_pivotmotor.set(ControlMode.Position, position);
     	m_position = position;
     	m_manualMode = false;
     }
@@ -105,7 +106,13 @@ public class Pivot extends Subsystem implements PidTunerObject {
     	{
     		m_manualMode = true;
     	}
-    	
+    	else {    			// this is position control (not just manual mode)
+    		if (m_manualMode) { // we must have just previously been in manual mode, set to "hold position"
+    			m_manualMode = false;
+    			m_position = m_pivotmotor.getSelectedSensorPosition(0);
+    		}
+    	}
+
     	// if we are zeroing the pivot...
     	if ( m_zero )
     	{
@@ -127,6 +134,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
 //    	    			System.out.println("ZeroDone");
     					m_zero = false;
     					m_pivotmotor.setSelectedSensorPosition(UPRIGHT_POSITION, 0, 0);
+    					m_position = UPRIGHT_POSITION;
     				}
     			}
     			else
@@ -163,7 +171,15 @@ public class Pivot extends Subsystem implements PidTunerObject {
     					// set the motor to press down lightly.
     					m_pivotmotor.set(ControlMode.PercentOutput,  DOWN_MOTOR_POWER);;
     				}
+    				else
+    				{
+    					m_pivotmotor.set(ControlMode.Position, m_position);
+    				}
     				break;
+    				
+    			default:
+    					m_pivotmotor.set(ControlMode.Position, m_position);
+    					break;		
     			}
     		}
     	
