@@ -24,22 +24,19 @@ public class HandoffCubeToElevator extends CommandGroup {
     	addSequential(new ElevatorArmOpen());
 
     	addSequential(new PrepareElevatorForHandOff());
-//    	addSequential(new ElevatorSetPosition(Elevator.PREPARE_FOR_HANDOFF_HEIGHT));
-//    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
-//    	addSequential(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
-    	
     	
     	addSequential(new IntakeCloseJaw());
-    	addSequential(new PivotMove(Pivot.UPRIGHT_POSITION)); // PivotToUpright());
+    	addSequential(new PivotMove(Pivot.UPRIGHT_POSITION));
     	addSequential(new ElevatorArmSetMotorAuto(.5));
     	addSequential(new IntakeOutInstant());
-    	addSequential(new Wait(0.1));
+    	addSequential(new Wait(0.05));
     	addSequential(new ElevatorArmClose());
     	addSequential(new Wait(0.2));
     	addSequential(new IntakeOff());
-    	addSequential(new Wait(0.5));
+//    	addSequential(new Wait(0.5));
     	addSequential(new ElevatorArmSetMotorAuto(0.2));
     	addSequential(new IntakeOpenJaw());
+//    	addSequential(new ElevatorSetPositionButton(Elevator.SWITCH_HEIGHT));
     	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	addSequential(new IntakeCloseJaw());
     }

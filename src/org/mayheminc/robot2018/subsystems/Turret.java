@@ -20,12 +20,13 @@ public class Turret extends Subsystem implements PidTunerObject {
 	// Turret Positions:
 	//   Driven by a VersaPlanetary with BAG motor on a 63:1 gearbox and a VP Encoder (4096 cpr) on the output shaft.
 	//   Experiment on 28 Feb 2018 shows approx 17000 counts per full 360-degree rotation.
-	//   Desired range of rotation is -225 degrees to +225 degrees, which is approx 10000 counts
+	//   Desired range of rotation is -225 degrees to +225 degrees, which is approx -10000 counts to +10000 counts
 	//   180 degrees is approximately 8500 counts.
 	
-	//   Encoder is set up so that + rotation is clockwise (right) when "forward" motor power applied.
-	
+	//   Encoder is set up so that + rotation is clockwise (right) when "forward" motor power is applied.
+
 	public static final int FRONT_POSITION = 0;
+	public static final int ZERO_POSITION = FRONT_POSITION;
 	public static final int RIGHT_POSITION = 4250;
 	public static final int LEFT_POSITION = -RIGHT_POSITION;
 
@@ -37,9 +38,9 @@ public class Turret extends Subsystem implements PidTunerObject {
 
 	public static final int POSITION_TOLERANCE = 250; // 250 units is "close enough" to be at a position
 
-	MayhemTalonSRX m_motor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
+	MayhemTalonSRX m_turretMotor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
 	boolean m_manualmode = true;
-	int m_autoSetpoint = 0;
+	int m_desiredPosition = 0;
 	
     public void initDefaultCommand() { }
     
@@ -47,83 +48,90 @@ public class Turret extends Subsystem implements PidTunerObject {
     {
     	super();
     	
-
-
     	// initialize the PID controller
-    	m_motor.config_kP(0,  0.4,  0);
-    	m_motor.config_kI(0,  0.0,  0);
-    	m_motor.config_kD(0,  0.0,  0);
-    	m_motor.config_kF(0,  0.0, 0);
+    	m_turretMotor.config_kP(0,  0.4,  0);
+    	m_turretMotor.config_kI(0,  0.0,  0);
+    	m_turretMotor.config_kD(0,  0.0,  0);
+    	m_turretMotor.config_kF(0,  0.0, 0);
     	
-    	m_motor.selectProfileSlot(0,  0);
+    	m_turretMotor.selectProfileSlot(0,  0);
     	
-    	m_motor.setNeutralMode(NeutralMode.Coast);
-    	m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+    	m_turretMotor.setNeutralMode(NeutralMode.Coast);
+    	m_turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
     	
-		m_motor.setInverted(true);
-		m_motor.setSensorPhase(false);
+		m_turretMotor.setInverted(true);
+		m_turretMotor.setSensorPhase(false);
 		
-		m_motor.configClosedloopRamp(0.25, 0);
-		m_motor.configOpenloopRamp(0.25,  0);
+		m_turretMotor.configClosedloopRamp(0.25, 0);
+		m_turretMotor.configOpenloopRamp(0.25,  0);
 		
-		m_motor.setSelectedSensorPosition(m_motor.getSelectedSensorPosition(0), 0, 0);
-		m_motor.configMotionAcceleration(1000,  0);
+		m_turretMotor.setSelectedSensorPosition(m_turretMotor.getSelectedSensorPosition(0), 0, 0);
+		m_turretMotor.configMotionAcceleration(1000,  0);
 		
-		m_motor.configNominalOutputForward(0.0,  0);
-		m_motor.configNominalOutputReverse(0.0, 0);
-		m_motor.configPeakOutputForward(0.5,  0);
-		m_motor.configPeakOutputReverse(-0.5,  0); 
+		m_turretMotor.configNominalOutputForward(0.0,  0);
+		m_turretMotor.configNominalOutputReverse(0.0, 0);
+		m_turretMotor.configPeakOutputForward(0.5,  0);
+		m_turretMotor.configPeakOutputReverse(-0.5,  0); 
 		
-    	m_motor.enableControl();
+    	m_turretMotor.enableControl();		
     }
     
     public boolean isAtPosition()
     {
-    	return ( Math.abs(getPosition() - m_autoSetpoint) < 250);
+    	return ( Math.abs(getCurrentPosition() - m_desiredPosition) < 250);
     }
     
-    public int getPosition()
+    public int getCurrentPosition()
     {
-    	return m_motor.getSelectedSensorPosition(0);
+    	return m_turretMotor.getSelectedSensorPosition(0);
     }
     
-    public void setPosition(int position)
+    public void setDesiredPosition(int position)
     {
     	System.out.println("Turret: setPosition" + position);
-    	m_autoSetpoint = position;
+    	m_desiredPosition = position;
     	m_manualmode = false;
+    }
+    
+    /**
+     * Where ever the turret is, hold that position.
+     */
+    public void holdCurrentPosition()
+    {
+    	// "hold" current position is the same as a setPosition of the current position
+    	setDesiredPosition(m_turretMotor.getSelectedSensorPosition(0));
     }
     
     public void zeroEncoder()
     {
-    	m_motor.setEncPosition(FRONT_POSITION);
+    	m_turretMotor.setEncPosition(ZERO_POSITION);
     }
     
     public void periodic()
     {
-    	double power = Robot.oi.getTurretPower();
+    	double manualPowerRequested = Robot.oi.getTurretPower();
     	
     	// if the joystick is being commanded...
-    	if(Math.abs(power) > 0.0)
+    	if (Math.abs(manualPowerRequested) > 0.01)
     	{
-    		System.out.println("Turret: periodic: Power: " + power);
+    		System.out.println("Turret: periodic: Power: " + manualPowerRequested);
     		m_manualmode = true;
     	}
     	
-    	if( m_manualmode )
+    	if ( m_manualmode )
     	{
-    		m_motor.set(ControlMode.PercentOutput, power);
+    		m_turretMotor.set(ControlMode.PercentOutput, manualPowerRequested);
     	}
 		else // PID mode is set in setPosition()
     	{
-			m_motor.set(ControlMode.Position, m_autoSetpoint);
+			m_turretMotor.set(ControlMode.Position, m_desiredPosition);
     	}
     }
     
     public void updateSmartDashboard()
     {
-    	SmartDashboard.putNumber("Turret Pos", m_motor.getPosition());
-    	SmartDashboard.putNumber("Turret Power", m_motor.getMotorOutputPercent());
+    	SmartDashboard.putNumber("Turret Pos", m_turretMotor.getPosition());
+    	SmartDashboard.putNumber("Turret Power", m_turretMotor.getMotorOutputPercent());
     	SmartDashboard.putBoolean("Turret Manual Mode",  m_manualmode);
     }
     
@@ -133,35 +141,35 @@ public class Turret extends Subsystem implements PidTunerObject {
     
 	public double getP()
 	{
-		return m_motor.getP();
+		return m_turretMotor.getP();
 	}
 	public double getI()
 	{
-		return m_motor.getI();
+		return m_turretMotor.getI();
 	}
 	public double getD()
 	{
-		return m_motor.getD();
+		return m_turretMotor.getD();
 	}
 	public double getF()
 	{
-		return m_motor.getF();
+		return m_turretMotor.getF();
 	}
 	public void setP(double d)
 	{
-		m_motor.config_kP(0,  d,  0);
+		m_turretMotor.config_kP(0,  d,  0);
 	}
 	public void setI(double d)
 	{
-		m_motor.config_kI(0,  d,  0);
+		m_turretMotor.config_kI(0,  d,  0);
 	}
 	public void setD(double d)
 	{
-		m_motor.config_kD(0,  d,  0);
+		m_turretMotor.config_kD(0,  d,  0);
 	}
 	public void setF(double d)
 	{
-		m_motor.config_kF(0,  d,  0);
+		m_turretMotor.config_kF(0,  d,  0);
 	}
 }
 

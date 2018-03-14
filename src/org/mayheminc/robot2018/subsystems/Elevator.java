@@ -22,7 +22,15 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	public static final int REST_NEAR_BOTTOM = 1500;
 	public static final int PREPARE_FOR_HANDOFF_HEIGHT = 3500;
 	public static final int SWITCH_HEIGHT = 3500;
-	public static final int SCALE_LOW = 15000;
+	
+	// Below heights are for Gray's Basement
+//	public static final int SCALE_LOW = 7500;
+//	public static final int SCALE_MID = 10000; // was 18700;    // normally used by "scale button" on OI
+//	public static final int SCALE_HIGH = 13000;   // also used by the autonomous programs
+//	public static final int CEILING = 16000; 	  // was 24100 at start of Week 1
+	
+	
+	public static final int SCALE_LOW = 15000;	
 	public static final int SCALE_MID = 19700; // was 18700;    // normally used by "scale button" on OI
 	public static final int SCALE_HIGH = 21000;   // also used by the autonomous programs
 	public static final int CEILING = 25500; 	  // was 24100 at start of Week 1
@@ -34,72 +42,68 @@ public class Elevator extends Subsystem implements PidTunerObject {
     
 	int m_motorSpeed;
 	boolean m_manualMode = true;
-	int m_autoSetpoint;
+	int m_desiredPosition;
 	
-	MayhemTalonSRX m_motor = new MayhemTalonSRX(RobotMap.ELEVATOR_TALON);
+	MayhemTalonSRX m_elevatorMotor = new MayhemTalonSRX(RobotMap.ELEVATOR_TALON);
 	
 	public Elevator()
 	{
-//		super();
+		super();
 
-		m_motor.configNominalOutputForward(0.0,  0);
-		m_motor.configNominalOutputReverse(0.0, 0);
-		m_motor.configPeakOutputForward(0.8,  0);
-		m_motor.configPeakOutputReverse(-0.5,  0);  // full speed of -1.0 going down was too fast
+		m_elevatorMotor.configNominalOutputForward(0.0,  0);
+		m_elevatorMotor.configNominalOutputReverse(0.0, 0);
+		m_elevatorMotor.configPeakOutputForward(1.0,  0);
+		m_elevatorMotor.configPeakOutputReverse(-0.5,  0);  // full speed of -1.0 going down was too fast
 
 		// TODO: need to tune the PIDF parameters
-		m_motor.config_kP(0, 0.3, 0);
-		m_motor.config_kI(0, 0.0, 0);
-		m_motor.config_kD(0, 0.01, 0);
-		m_motor.config_kF(0, 0.0, 0);
+		m_elevatorMotor.config_kP(0, 1.0, 0);
+		m_elevatorMotor.config_kI(0, 0.0, 0);
+		m_elevatorMotor.config_kD(0, 100.0, 0);
+		m_elevatorMotor.config_kF(0, 0.0, 0);
 		
-		m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		m_elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		// RJD !@!#@!#12
 		
-		m_motor.setInverted(false); 		// PRAC has this true
-		m_motor.setSensorPhase(true); 		// PRAC has this true
+		m_elevatorMotor.setInverted(false); 		// PRAC has this true, COMP has this false.
+		m_elevatorMotor.setSensorPhase(true); 		// PRAC has this true, COMP has this true
 		
-		m_motor.configClosedloopRamp(0.25, 0);
-		m_motor.configOpenloopRamp(0.25,  0);
+		m_elevatorMotor.configClosedloopRamp(0.25, 0);
+		m_elevatorMotor.configOpenloopRamp(0.25,  0);
 		
-		m_motor.setSelectedSensorPosition(m_motor.getSelectedSensorPosition(0), 0, 0);
+		m_elevatorMotor.setSelectedSensorPosition(m_elevatorMotor.getSelectedSensorPosition(0), 0, 0);
 	}
 	
     public void initDefaultCommand() {}
     
-    public void setElevatorPosition(int pos)
+    public void setDesiredPosition(int pos)
     {
-//    	System.out.println("Elevator Auto Pos: " + pos);
-    	
     	m_manualMode = false; // set to auto mode
     	m_SafetyOn = true; // turn on the safety checks
-    	m_autoSetpoint = pos; // get the desired setpoint
-    	m_motor.set(ControlMode.Position, m_autoSetpoint); // tell the motor to get to the setpoint
-    	m_motor.configMotionAcceleration(1000,  0);
+    	m_desiredPosition = pos; // get the desired setpoint
+    	m_elevatorMotor.configMotionAcceleration(1000,  0);
     }
     
     public int getCurrentPosition()
     {
-    	return m_motor.getSelectedSensorPosition(0);
+    	return m_elevatorMotor.getSelectedSensorPosition(0);
     }
     
-    public void changeSetpointToCurrentPosition() {
-    	m_autoSetpoint = m_motor.getSelectedSensorPosition(0);
+    public void holdCurrentPosition() {
+    	// "hold" current position is the same as a setPosition of the current position
+    	setDesiredPosition(m_elevatorMotor.getSelectedSensorPosition(0));
     }
-    
     
     /**
      * If the elevator is within the tolerance, then return true.
      * @return
      */
-    public boolean IsElevatorAtPosition()
+    public boolean isAtPosition()
     {
-//    	System.out.println("IsElevatorAtPosition Manual " + m_manualMode);
     	// if manual mode is enabled, always return true.
     	if( m_manualMode ) return true;
     	
-    	int position = m_motor.getSelectedSensorPosition(0);
-    	int diff = Math.abs(position - m_autoSetpoint);
+    	int position = m_elevatorMotor.getSelectedSensorPosition(0);
+    	int diff = Math.abs(position - m_desiredPosition);
     	
 //    	System.out.println("IsElevatorAtPosition Diff " + diff);
     	
@@ -112,7 +116,7 @@ public class Elevator extends Subsystem implements PidTunerObject {
      */
     public void Zero()
     {
-    	m_motor.setSelectedSensorPosition(0,  0,  0);
+    	m_elevatorMotor.setSelectedSensorPosition(0,  0,  0);
     }
     
     /**
@@ -131,28 +135,28 @@ public class Elevator extends Subsystem implements PidTunerObject {
      */
     public void periodic()
     {
-    	double power = Robot.oi.getElevatorPower();
+    	double manualPowerRequested = Robot.oi.getElevatorPower();
 
 //    	System.out.println("Elevator Manual Mode: " + m_manualMode);
 //		System.out.println("Elevator Auto: " + m_autoSetpoint);
     	
-    	if ( power > 0.01 || power < -0.01 ) {
+    	if ( Math.abs(manualPowerRequested) > 0.01 ) {
     		m_manualMode = true;
-    		m_motor.set(ControlMode.PercentOutput,  power);
+    		m_elevatorMotor.set(ControlMode.PercentOutput,  manualPowerRequested);
     	} 
     	else {    			// this is position control (not just manual mode)
-    		if (m_manualMode) { // we must have just previously been in manual mode, set to "hold position"
-    			m_manualMode = false;
-    			m_autoSetpoint = m_motor.getSelectedSensorPosition(0);
+    		if (m_manualMode) {
+    			// we must have just previously been in manual mode, set to "hold position"
+    			holdCurrentPosition();
     		}
     		
     		// if our desired position is near the bottom, and our current position is also near the bottom,
     		// give the motor a chance to rest for a while
-    		if ((m_autoSetpoint < REST_NEAR_BOTTOM) && (m_motor.getSelectedSensorPosition(0) < REST_NEAR_BOTTOM)) {
-        		m_motor.set(ControlMode.PercentOutput,  0.0);
+    		if ((m_desiredPosition < REST_NEAR_BOTTOM) && (m_elevatorMotor.getSelectedSensorPosition(0) < REST_NEAR_BOTTOM)) {
+        		m_elevatorMotor.set(ControlMode.PercentOutput,  0.0);
     		} else {
     			// actively hold position
-        		m_motor.set(ControlMode.Position, m_autoSetpoint);	
+        		m_elevatorMotor.set(ControlMode.Position, m_desiredPosition);	
     		}
     		
     	}
@@ -160,46 +164,46 @@ public class Elevator extends Subsystem implements PidTunerObject {
     
     public void updateSmartDashboard()
     {
-    	SmartDashboard.putNumber("Elevator Pos", m_motor.getPosition());
+    	SmartDashboard.putNumber("Elevator Pos", m_elevatorMotor.getPosition());
     }
 
 	@Override
 	public double getP() {
-		return m_motor.getP();
+		return m_elevatorMotor.getP();
 	}
 
 	@Override
 	public double getI() {
-		return m_motor.getI();
+		return m_elevatorMotor.getI();
 	}
 
 	@Override
 	public double getD() {
-		return m_motor.getD();
+		return m_elevatorMotor.getD();
 	}
 
 	@Override
 	public double getF() {
-		return m_motor.getF();
+		return m_elevatorMotor.getF();
 	}
 
 	@Override
 	public void setP(double d) {
-		m_motor.config_kP(0, d, 0);
+		m_elevatorMotor.config_kP(0, d, 0);
 	}
 
 	@Override
 	public void setI(double d) {
-		m_motor.config_kI(0, d, 0);
+		m_elevatorMotor.config_kI(0, d, 0);
 	}
 
 	@Override
 	public void setD(double d) {
-		m_motor.config_kD(0, d, 0);
+		m_elevatorMotor.config_kD(0, d, 0);
 	}
 	@Override
 	public void setF(double d) {
-		m_motor.config_kF(0, d, 0);
+		m_elevatorMotor.config_kF(0, d, 0);
 	}
 }
 

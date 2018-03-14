@@ -40,9 +40,13 @@ public class DriveRotate extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	if (isAbsolute) {
-    		Robot.drive.rotateToHeading(degrees);
-    	} else {
-    		Robot.drive.rotate(degrees);
+//    		Robot.drive.rotateToHeading(degrees);
+    		Robot.drive.setDesiredHeading(degrees);
+    	} 
+    	else {
+//    		Robot.drive.rotate(degrees);
+    		degrees += Robot.drive.getHeading();
+    		Robot.drive.setDesiredHeading(degrees);
     	}
     	
     	timer.start();

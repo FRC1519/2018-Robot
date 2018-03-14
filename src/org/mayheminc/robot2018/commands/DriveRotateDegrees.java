@@ -9,7 +9,7 @@ import org.mayheminc.robot2018.Robot;
  */
 public class DriveRotateDegrees extends Command {
 	final static double DEFAULT_TIME_LIMIT_SEC = 2.0;
-	final static double FINAL_HEADING_TOLERANCE = 2.0;
+	final static double FINAL_HEADING_TOLERANCE = 10.0;
 	double timeLimit = 0;
 	double degrees = 0;
 	Timer timer = new Timer();
@@ -32,6 +32,7 @@ public class DriveRotateDegrees extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.drive.speedRacerDrive(0.05,  0.0, true);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -47,10 +48,12 @@ public class DriveRotateDegrees extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	System.out.println("Completed RotateDegrees Command");
+    	Robot.drive.speedRacerDrive(0.0,  0.0,  false);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.drive.speedRacerDrive(0.0,  0.0,  false);
     }
 }

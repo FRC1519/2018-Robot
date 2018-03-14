@@ -29,13 +29,13 @@ public class TurretMoveTo extends Command {
     	if( m_position == Turret.LEFT_REAR ||
     		m_position == Turret.RIGHT_REAR )
     	{
-    		if( Robot.turret.getPosition() > 0 )
+    		if( Robot.turret.getCurrentPosition() > 0 )
     			m_position = Turret.RIGHT_REAR;
     		else
     			m_position = Turret.LEFT_REAR;
     	}
     	System.out.println("TurretMoveTo: setPosition" + m_position);
-    	Robot.turret.setPosition(m_position);
+    	Robot.turret.setDesiredPosition(m_position);
     }
     
     protected boolean isFinished() {return Robot.turret.isAtPosition();}

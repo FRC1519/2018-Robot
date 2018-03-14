@@ -24,7 +24,6 @@ public class Targeting extends Subsystem {
 	private float cubewidth = 1000;
 	private float cubeheight = 1000;
 	private float cubeprobability = 1000;
-	
 	private boolean m_yoloPacket;
 	private double m_probability;
 	
@@ -79,7 +78,8 @@ public class Targeting extends Subsystem {
 			
 			ObjectLocation bestCube = null;
 			float maxScore = 0.0f;
-
+			ObjectLocation bestExchange = null;
+			float maxScoreExchange = 0.0f;
 //			SmartDashboard.putNumber("Number of Targets", objects.size());
 			
 			for(ObjectLocation obj : objects)
@@ -98,6 +98,18 @@ public class Targeting extends Subsystem {
 						bestCube = obj;
 					}
 				}
+				//if there is an exchange red or blue...
+				if((obj.type == ObjectTypes.OBJ_EXCHANGE_RED && obj.probability > 0.4) ||
+					(obj.type == ObjectTypes.OBJ_EXCHANGE_BLUE && obj.probability > 0.4))
+					{
+						float score = ScoreExchange(obj);
+						
+						if( score > maxScoreExchange)
+						{
+							maxScoreExchange = score;
+							bestExchange = obj;
+						}
+					}
 			}
 			if( bestCube != null )
 			{
@@ -157,6 +169,12 @@ public class Targeting extends Subsystem {
 		return likeableness;
 	}
 
+	public float ScoreExchange(ObjectLocation obj) 
+	{
+		float centerscore = (float) (1-Math.abs(obj.x-0.5));  //This needs to be changed to the right thing for the exchange. 
+		float likeableness = obj.width*centerscore;
+		return likeableness;
+	}
 	
 }
 

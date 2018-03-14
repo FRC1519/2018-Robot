@@ -1,6 +1,8 @@
 package org.mayheminc.robot2018.subsystems;
 
 import org.mayheminc.robot2018.RobotMap;
+import org.mayheminc.robot2018.commands.DriveStraight;
+import org.mayheminc.robot2018.commands.DriveStraight.DistanceUnits;
 import org.mayheminc.util.RangeFinder_GP2D120;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -94,5 +96,15 @@ public class CubeDetector extends Subsystem {
     	}
     	return false;
     }
+    
+    public boolean isCubeHalfIn()
+    {
+    	if (getLeft() >= 0.7 || getRight() >= 0.7 || getCenter() >= 0.7)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+
 }
 

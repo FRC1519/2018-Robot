@@ -20,7 +20,7 @@ public class PivotZeroEncoder extends InstantCommand {
     // Called once when the command executes
     protected void initialize() {
     	System.out.println("Pivot Zero Encoder");
-    	Robot.pivot.zeroPivot();
+    	Robot.pivot.commenceZeroingPivot();
     }
 
 }

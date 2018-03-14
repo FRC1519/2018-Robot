@@ -109,8 +109,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void disabledInit() {
 		
 		// for safety reasons, change the elevator and cturret setpoints to the current position
-		turret.setPosition(turret.getPosition());
-		elevator.changeSetpointToCurrentPosition();
+		turret.setDesiredPosition(turret.getCurrentPosition());
+		elevator.holdCurrentPosition();
 		
 		if (printAutoElapsedTime) {
 			double autonomousTimeElapsed = (double) (System.currentTimeMillis() - autonomousStartTime) / 1000.0;
@@ -174,7 +174,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		turret.zeroEncoder();
 
 		// set the current arm/pivot position to the upright position
-		pivot.zeroPivot();   // Note:  this will initiate a sequence to move the arm/pivot to vertical
+		pivot.commenceZeroingPivot();   // Note:  this will initiate a sequence to move the arm/pivot to vertical
 
 		
 		// where ever the pivot is, lock it there.
@@ -218,9 +218,10 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public void teleopInit() {
 	
-		// Don't move the turret or elevator
-		turret.setPosition(turret.getPosition());
-		elevator.changeSetpointToCurrentPosition();
+		// where ever the pivot, turret, and elevator are, hold them there.
+		pivot.holdCurrentPosition();
+		turret.holdCurrentPosition();
+		elevator.holdCurrentPosition();
 		
 		// turn on the compressor
 		compressor.start();
@@ -236,8 +237,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// turret.relaxForSafety();
 		// pivot.relaxForSafety();
 		
-		// where ever the pivot is, lock it there.
-		pivot.LockCurrentPosition();
+		// where ever the pivot is, hold it there.
+		pivot.holdCurrentPosition();
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -248,6 +249,8 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		}
 
 		DriverStation.reportError("Entering Teleop.\n", false);
+		
+		shifter.setGear(Shifter.HIGH_GEAR);
 	}
 
 	/**

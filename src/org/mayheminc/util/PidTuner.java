@@ -168,6 +168,7 @@ public class PidTuner extends InstantCommand{
 		SmartDashboard.putNumber("PID Tuner P",  m_pidObj.getP());
 		SmartDashboard.putNumber("PID Tuner I",  m_pidObj.getI());
 		SmartDashboard.putNumber("PID Tuner D",  m_pidObj.getD());
+		SmartDashboard.putNumber("PID Tuner F",  m_pidObj.getF());
 		
 		SmartDashboard.putString("PID Tuner Cycle", getCycleStr());
 		SmartDashboard.putNumber("PID Tuner Amount", calculateAmount());

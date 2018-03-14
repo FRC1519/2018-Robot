@@ -3,7 +3,6 @@ package org.mayheminc.robot2018.commands;
 import org.mayheminc.robot2018.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.mayheminc.robot2018.commands.IntakeEscapeDeathGripLeft;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -24,13 +23,10 @@ public class GatherCube extends Command {
         // eg. requires(chassis);
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
+    protected void initialize() { }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//    	while (true) {
     	cubex = Robot.targeting.locationCubeX();
     	cubey = Robot.targeting.locationCubeY();
     	cubew = Robot.targeting.locationCubeW();
@@ -61,45 +57,37 @@ public class GatherCube extends Command {
     		AutoDriveFWDSpeed = 0.1f;
     	}
 
+    	if (Robot.cubeDetector.isCubeHalfIn() == true)
+    	{
+    		Robot.drive.speedRacerDrive(-0.3, 0, false);
+    	}
     	// if we can see a cube, drive towards it
-    	if (cubex != 1000) {
+    	else if (cubex != 1000) {
     		Robot.drive.speedRacerDrive(AutoDriveFWDSpeed, RobotDriveX, false);
     		SmartDashboard.putString("Cube???", "I see a cube!!!");
     		SmartDashboard.putNumber("RobotDriveX", RobotDriveX);
     	}
     	// if we can't see it, crawl!
-    	else //if (cubex == 1000) 
+    	else
     	{
     		SmartDashboard.putString("Cube???", "I do not see a cube");
     		Robot.drive.speedRacerDrive(0.1, 0, false);
     		
     	}
-    	
-//    	if (Robot.cubeDetector.isDeathGrip() == true) {
-//    		IntakeEscapeDeathGripLeft();
-//    	}
-//    	else if (Robot.cubeDetector.isCubeSquare() == true) {
-//    		break;
-//    	}
-//    	}
-//    	isFinished();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.cubeDetector.isCubeSquare() ||
-        		Robot.cubeDetector.isDeathGrip();
+        return Robot.cubeDetector.isCubeSquare();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	Robot.drive.speedRacerDrive(0, 0, false);
-    	Robot.intake.stop();
     }
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     	Robot.drive.speedRacerDrive(0, 0, false);
-    	Robot.intake.stop();
     }
 }

@@ -19,7 +19,7 @@ import com.ctre.phoenix.motorcontrol.*;
  */
 public class Pivot extends Subsystem implements PidTunerObject {
 
-	public static final int UPRIGHT_POSITION = 2800; //JUST PLACEHOLDER!
+	public static final int UPRIGHT_POSITION = 2700;   // PRAC 3/12/2018 // 2800 had been used at comp bot & WPI
 	public static final int SPIT_POSITION = 2100; //Was 1900 02-02-2018
 	public static final int FLIP_CUBE_POSITION = 700;
 	public static final int EXCHANGE_POSITION = 700;//was 500 02-02-2018
@@ -27,188 +27,231 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	
 	private static final int PIVOT_TOLERANCE = 150; // 75 seemed like not quite enough at Week 1
 	
-	private static final int DOWN_TOLERANCE = 50;
+	private static final int DOWN_TOLERANCE = 10;
+	private static final int UP_TOLERANCE = 10;
 	
 	private static final double ZERO_MAX_CURRENT = 1.0; // Amps
-	private static final double ZERO_MOTOR_POWER = 0.25;
-	private static final double DOWN_MOTOR_POWER = -0.15;
+	private static final double ZERO_MOTOR_POWER = 0.20; // was 0.25 at Week 1; KBS trying to lower this a bit
+	private static final double HOLD_DOWN_MOTOR_POWER = -0.10;  // was -0.15 at Week 1; KBS trying to lower this a bit
+	private static final double HOLD_UP_MOTOR_POWER = 0.10;
+
+	private static final int ZEROING_LOOPS_TO_WAIT_TO_MOVE = 10;  // at start of zeroing, loops to wait for arm to move
+	private static final int ZEROING_LOOPS_TO_WAIT_FOR_SAME = 5;  // at end of zeroing, loops to wait with same value
 	
-	MayhemTalonSRX m_pivotmotor = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
-	int m_position;
-	boolean m_manualMode = false;
-	boolean m_zero = false;
+	MayhemTalonSRX m_pivotMotor = new MayhemTalonSRX(RobotMap.PIVOT_TALON);
+	int m_desiredPosition = UPRIGHT_POSITION;  // default is the "starting position"
+	boolean m_manualMode = false;              // default to automatic mode
+	boolean m_zero = false;                    // flag for if zeroing has been performed; initialized to false
 	int m_zeroWaitToMove;
 	int m_zeroWaitForSame;
-	int m_zeroEncoderCount;
+	int m_priorPositionWhileZeroing;
 	
 	public Pivot()
 	{
 		super();
 		
-		m_pivotmotor.configNominalOutputForward(0.0,  0);
-		m_pivotmotor.configNominalOutputReverse(0.0, 0);
-		m_pivotmotor.configPeakOutputForward(0.8,  0);  // was 0.5 before bag day; for going up
-		m_pivotmotor.configPeakOutputReverse(-0.6,  0);    // was -0.3 before bag day; for going down
+		m_pivotMotor.configNominalOutputForward(0.0,  0);
+		m_pivotMotor.configNominalOutputReverse(0.0, 0);
+		m_pivotMotor.configPeakOutputForward(1.0,  0);      // was 0.8 at Week 1; was 0.5 before bag day; for going up
+		m_pivotMotor.configPeakOutputReverse(-0.8,  0);     // was -0.6 at Week 1; was -0.3 before bag day; for going down
 		
-		m_pivotmotor.config_kP(0, 3, 0);
-		m_pivotmotor.config_kI(0, 0, 0);
-		m_pivotmotor.config_kD(0, 0, 0);
-		m_pivotmotor.config_kF(0, 0, 0);
+		m_pivotMotor.configClosedloopRamp(0.10, 0);
+		m_pivotMotor.configOpenloopRamp(0.10,  0);
 		
-		m_pivotmotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		m_pivotmotor.setInverted(false);
-		m_pivotmotor.setSensorPhase(true);
+		m_pivotMotor.config_kP(0, 2.0, 0);                    // was 3.0 at week 1
+		m_pivotMotor.config_kI(0, 0.0, 0);
+		m_pivotMotor.config_kD(0, 120.0, 0);
+		m_pivotMotor.config_kF(0, 0.0, 0);
+		
+		m_pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		m_pivotMotor.setInverted(false);
+		m_pivotMotor.setSensorPhase(true);
+		
+    	m_pivotMotor.enableControl();	
 	}
     protected void initDefaultCommand() { }
     
+    
     /**
-     * Set the zero flag. Set the counters.  Let periodic run the zero routine. 
+     * Commence zeroing of the pivot.  Let periodic run the zero routine.  Set the zero flag.  Set the counters.  
      */
-    public void zeroPivot() {	
-    	m_pivotmotor.set(ControlMode.PercentOutput, ZERO_MOTOR_POWER);
+    public void commenceZeroingPivot() {
+    	// set flag indicating that zeroing is in process
     	m_zero = true;
-    	m_zeroWaitToMove = 10;
-    	m_zeroWaitForSame = 5;
+    	
+    	// initialize counters used in the zeroing procedure
+    	m_zeroWaitToMove = ZEROING_LOOPS_TO_WAIT_TO_MOVE;
+    	m_zeroWaitForSame = ZEROING_LOOPS_TO_WAIT_FOR_SAME;
+    	
+    	// set the motor power to the power to be used for zeroing
+    	m_pivotMotor.set(ControlMode.PercentOutput, ZERO_MOTOR_POWER);
     }
+    
     
     /**
      * Where ever the pivot is, hold that position.
      */
-    public void LockCurrentPosition()
+    public void holdCurrentPosition()
     {
-    	m_pivotmotor.set(ControlMode.Position, m_pivotmotor.getSelectedSensorPosition(0));
+    	// "hold" current position is the same as a "moveTo" the current position
+    	setDesiredPosition(m_pivotMotor.getSelectedSensorPosition(0));
     }
     
-    public void moveTo(int position)
+    
+    /**
+     * Set a new desired position for the arm.
+     */
+    public void setDesiredPosition(int position)
     {
-//    	m_pivotmotor.set(ControlMode.Position, position);
-    	m_position = position;
+    	// Simply set the mode to be automatic (not manual) and set the desiredPosition;
+    	// the "periodic" control loop takes care of appropriately commanding the pivot motor
     	m_manualMode = false;
+    	m_desiredPosition = position;
     }
     
-    public int getPosition()
+    /**
+     * Get the current position of the arm pivot.
+     */
+    public int getCurrentPosition()
     {
-    	return m_pivotmotor.getSelectedSensorPosition(0);
+    	return m_pivotMotor.getSelectedSensorPosition(0);
     }
     
-    public boolean IsPivotInPosition()
+    /**
+     * Returns true if the arm pivot is "close enough" to the desired position.
+     */
+    public boolean isAtPosition()
     {
-    	int diff = Math.abs(m_pivotmotor.getSelectedSensorPosition(0) - m_position);
+    	int diff = Math.abs(m_pivotMotor.getSelectedSensorPosition(0) - m_desiredPosition);
     	return diff < PIVOT_TOLERANCE;
     }
     
+    /**
+     * Perform the zeroing procedure while in "periodic"
+     */
+    public void periodicZero() {
+    	// While in the process of zeroing, this function will be called exactly once during each periodic loop
+		
+    	// we only get here if zeroing is in progress.
+    	
+		// First, check to see if we have waited long enough to start moving
+		if ( m_zeroWaitToMove > 0 )
+		{
+			// if we haven't waited long enough for the arm to move, keep waiting
+				m_zeroWaitToMove--;
+		} else {  
+			// the arm has started moving in the zeroing procedure, let's see where it is
+			int currentPosition = m_pivotMotor.getSelectedSensorPosition(0);
+
+			// see if the encoder hasn't moved since the prior loop...
+			if ( currentPosition == m_priorPositionWhileZeroing )
+			{
+				// count down the same encoder counts.
+				m_zeroWaitForSame--;
+				if ( m_zeroWaitForSame == 0 )
+				{
+					// zero is done; we are in the upright position
+					m_zero = false;
+					m_pivotMotor.setSelectedSensorPosition(UPRIGHT_POSITION, 0, 0);
+					m_desiredPosition = UPRIGHT_POSITION;
+					m_manualMode = false;
+				}
+			} else {  
+				// the arm is still moving, reset the "wait for same" counter
+				m_zeroWaitForSame = 5;
+				// reset the encoder count we are looking for.
+				m_priorPositionWhileZeroing = currentPosition;
+			}
+		}
+    }
+    
+    
+    /**
+     * Perform the "periodic" update of the arm pivot.
+     */
     public void periodic()
     {
-    	double power = Robot.oi.pivotArmPower();
-    	// if the joystick is commanding a movement, go to manual mode.,
-    	if( power > 0.01 ||
-    		power < -0.01 )
-    	{
-    		m_manualMode = true;
-    	}
-    	else {    			// this is position control (not just manual mode)
-    		if (m_manualMode) { // we must have just previously been in manual mode, set to "hold position"
-    			m_manualMode = false;
-    			m_position = m_pivotmotor.getSelectedSensorPosition(0);
-    		}
-    	}
-
     	// if we are zeroing the pivot...
     	if ( m_zero )
     	{
-//    		System.out.println("Zero Pivot");
-    		
-    		// if the wait to move has expired...
-    		if( m_zeroWaitToMove == 0 )
-    		{
-    			int encoder = m_pivotmotor.getSelectedSensorPosition(0);
-//    			System.out.println("Zero Wait Expired: " + encoder + " " + m_zeroEncoderCount);
-    			// if the encoder has not moved...
-    			if( encoder == m_zeroEncoderCount )
-    			{
-    				// count down the same encoder counts.
-    				m_zeroWaitForSame--;
-    				if( m_zeroWaitForSame == 0 )
-    				{
-    					// zero is done.
-//    	    			System.out.println("ZeroDone");
-    					m_zero = false;
-    					m_pivotmotor.setSelectedSensorPosition(UPRIGHT_POSITION, 0, 0);
-    					m_position = UPRIGHT_POSITION;
-    				}
-    			}
-    			else
-    			{
-    				// reset the wait for same counter
-    				m_zeroWaitForSame = 5;
-    				// reset the encoder count we are looking for.
-    				m_zeroEncoderCount = encoder;
-    			}
-    		}
-    		else
-    		{
-    			m_zeroWaitToMove--;
-    		}
+    		periodicZero();
     	} 
     	else // not zeroing
     	{
-    		// control the arm pivot normally if not zeroing
-
-    		if( m_manualMode )
+    		// find out if the joystick is commanding a movement.  If so, go to manual mode
+        	double manualPowerRequested = Robot.oi.pivotArmPower();
+        	if ( Math.abs(manualPowerRequested) > 0.01 )
+        	{
+        		m_manualMode = true;
+        	} else {  // joystick not commanding movement
+        		if (m_manualMode) { // we must have just previously been in manual mode, set to "hold position"
+        			holdCurrentPosition();
+        		}
+        	}
+        	
+    		// command the arm appropriately depending upon mode
+    		if ( m_manualMode )
     		{
-    			m_pivotmotor.set(ControlMode.PercentOutput, power);
+    			m_pivotMotor.set(ControlMode.PercentOutput, manualPowerRequested);
     		}
     		else // positioning mode
     		{
-    			switch(m_position)
+    			// determine the current position of the arm
+    			int currentPosition = m_pivotMotor.getSelectedSensorPosition(0);
+    			
+    			// handle position control with two special cases and the third "normal" case:
+    			// 1 - if we want a position that is at or below the DOWNWARD_POSITION and 
+    			//     we are currently close enough to the DOWNWARD_POSITION, press down lightly
+    			// 2 - if we want a position that is at or above the UPRIGHT_POSITION and
+    			//     we are currently close enough to the UPRIGHT_POSITION, press up lightly
+    			// 3 - otherwise just go to the desired position
+    			
+    			
+    			// 1 - if we want a position that is at or below the DOWNWARD_POSITION and 
+    			//     we are currently close enough to the DOWNWARD_POSITION, press down lightly
+    			if ( ( m_desiredPosition <= DOWNWARD_POSITION ) &&
+    					( currentPosition < (DOWNWARD_POSITION + DOWN_TOLERANCE)) ) 
     			{
-    			case DOWNWARD_POSITION:
-    				// if we wanted the DOWN position...
-    				int pos = m_pivotmotor.getSelectedSensorPosition(0);
-    				// and we are within a tolerance of being down...
-    				if( pos < DOWNWARD_POSITION + DOWN_TOLERANCE)
-    				{
-    					// set the motor to press down lightly.
-    					m_pivotmotor.set(ControlMode.PercentOutput,  DOWN_MOTOR_POWER);;
-    				}
-    				else
-    				{
-    					m_pivotmotor.set(ControlMode.Position, m_position);
-    				}
-    				break;
-    				
-    			default:
-    					m_pivotmotor.set(ControlMode.Position, m_position);
-    					break;		
+    				m_pivotMotor.set(ControlMode.PercentOutput,  HOLD_DOWN_MOTOR_POWER);;
+    			} else if ( ( m_desiredPosition >= UPRIGHT_POSITION ) &&
+    					    ( currentPosition > (UPRIGHT_POSITION - UP_TOLERANCE)) ) 
+    			// 2 - if we want a position that is at or above the UPRIGHT_POSITION and
+    			//     we are currently close enough to the UPRIGHT_POSITION, press up lightly
+    			{
+    				m_pivotMotor.set(ControlMode.PercentOutput,  HOLD_UP_MOTOR_POWER);;
+    			} else {
+        			// 3 - otherwise just go to the desired position
+					m_pivotMotor.set(ControlMode.Position, m_desiredPosition);	
     			}
-    		}
-    	
-     	}
+    		}  // end if positioning mode
+     	}  // end if zeroing
     }
+    
     
     public void UpdateSmartDashboard()
     {
-    	SmartDashboard.putNumber("Pivot Encoder Pos", m_pivotmotor.getSelectedSensorPosition(0));
+    	SmartDashboard.putNumber("Pivot Encoder Pos", m_pivotMotor.getSelectedSensorPosition(0));
     	SmartDashboard.putBoolean("Pivot Manual Mode", m_manualMode);
     }
+    
     
     ////////////////////////////////////////////////////////
     // PidTunerObject
     ////////////////////////////////////////////////////////
 	@Override
-	public double getP() { return m_pivotmotor.getP();}
+	public double getP() { return m_pivotMotor.getP();}
 	@Override
-	public double getI() { return m_pivotmotor.getI();}
+	public double getI() { return m_pivotMotor.getI();}
 	@Override
-	public double getD() { return m_pivotmotor.getD();}
+	public double getD() { return m_pivotMotor.getD();}
 	@Override
-	public double getF() { return m_pivotmotor.getF();}
+	public double getF() { return m_pivotMotor.getF();}
 	@Override
-	public void setP(double d) {m_pivotmotor.config_kP(0,  d,  0); }
+	public void setP(double d) {m_pivotMotor.config_kP(0,  d,  0); }
 	@Override
-	public void setI(double d) {m_pivotmotor.config_kI(0,  d,  0); }
+	public void setI(double d) {m_pivotMotor.config_kI(0,  d,  0); }
 	@Override
-	public void setD(double d) {m_pivotmotor.config_kD(0,  d,  0); }
+	public void setD(double d) {m_pivotMotor.config_kD(0,  d,  0); }
 	@Override
-	public void setF(double d) {m_pivotmotor.config_kF(0,  d,  0); }
+	public void setF(double d) {m_pivotMotor.config_kF(0,  d,  0); }
 }

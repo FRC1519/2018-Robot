@@ -20,7 +20,7 @@ public class PivotMove extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.pivot.moveTo(m_position);
+    	Robot.pivot.setDesiredPosition(m_position);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -29,7 +29,7 @@ public class PivotMove extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return Robot.pivot.IsPivotInPosition();
+    	return Robot.pivot.isAtPosition();
     }
 
     // Called once after isFinished returns true

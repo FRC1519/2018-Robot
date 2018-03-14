@@ -19,6 +19,7 @@ public class Autonomous extends Subsystem {
 	private static Command autonomousPrograms[] = {
 			/* 0 */   new StayStill()  // do nothing	
 			, new CrossBaselineBackwards()
+			, new auto1()
 			, new Week1StartRight()
 			, new Week5StartCenterSwitchPyramid()
 			, new StartCenterRightSwitch()

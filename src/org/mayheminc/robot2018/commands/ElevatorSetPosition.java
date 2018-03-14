@@ -21,7 +21,7 @@ public class ElevatorSetPosition extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.elevator.setElevatorPosition(m_position);
+    	Robot.elevator.setDesiredPosition(m_position);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -31,7 +31,7 @@ public class ElevatorSetPosition extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.elevator.IsElevatorAtPosition();
+        return Robot.elevator.isAtPosition();
     }
 
     // Called once after isFinished returns true

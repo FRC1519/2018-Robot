@@ -44,7 +44,7 @@ public class ElevatorArms extends Subsystem {
      */
     public void setMotor(double d)
     {
-    	m_motor.set(ControlMode.PercentOutput, d);
+    	m_motor.set(ControlMode.PercentOutput, -d);  // PRAC has -, COMP has +
     }
     
     public void updateSmartDashboard()

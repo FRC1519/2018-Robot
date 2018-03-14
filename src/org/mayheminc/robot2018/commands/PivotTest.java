@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PivotTest extends CommandGroup {
 
     public PivotTest() {
-    	if( Robot.pivot.getPosition() > 1400 )
+    	if( Robot.pivot.getCurrentPosition() > 1400 )
     	{
     		addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));
     	}
