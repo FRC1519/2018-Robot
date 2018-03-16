@@ -15,26 +15,29 @@ public class IntakeInAndLiftTheCube extends Command {
 
 	    protected void initialize() {
 	    	Robot.intake.takeInCube();
-	    	Robot.elevatorArms.setMotor(0.5);
 	    }
 	    
 	    protected void execute()
 	    {
+	    	// if the pivot is down and the cube is in, lift it.
 	    	if( Robot.pivot.getCurrentPosition() < Pivot.DOWNWARD_POSITION + Pivot.PIVOT_TOLERANCE &&
 	    		Robot.cubeDetector.isCubeSquare() )
 	    	{
 	    		Robot.pivot.setDesiredPosition(Pivot.UPRIGHT_POSITION);
+	    	}
+	    	// if the pivot is up, turn off the intake.
+	    	if( Robot.pivot.getCurrentPosition() > Pivot.UPRIGHT_POSITION - Pivot.PIVOT_TOLERANCE )
+	    	{
+	    		Robot.intake.stop();
 	    	}
 	    }
 	    protected boolean isFinished() {return false;}
 	    protected void end()
 	    {
 	    	Robot.intake.stop();
-	    	Robot.elevatorArms.setMotor(0.0);
 	    }
 	    protected void interrupt()
 	    {
 	    	Robot.intake.stop();
-	    	Robot.elevatorArms.setMotor(0.0);
 	    }
 	}
