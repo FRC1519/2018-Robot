@@ -35,12 +35,16 @@ public class Turret extends Subsystem implements PidTunerObject {
 	
 	public static final int RIGHT_REAR = 8500;
 	public static final int LEFT_REAR = -RIGHT_REAR;
+	
+	public static final int RIGHT_SAFETY_LIMIT = 10000;
+	public static final int LEFT_SAFETY_LIMIT = -RIGHT_SAFETY_LIMIT;
 
 	public static final int POSITION_TOLERANCE = 250; // 250 units is "close enough" to be at a position
 
 	MayhemTalonSRX m_turretMotor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
 	boolean m_manualmode = true;
 	int m_desiredPosition = 0;
+	boolean m_fieldOriented = false;
 	
     public void initDefaultCommand() { }
     
@@ -72,6 +76,11 @@ public class Turret extends Subsystem implements PidTunerObject {
 		m_turretMotor.configNominalOutputReverse(0.0, 0);
 		m_turretMotor.configPeakOutputForward(0.5,  0);
 		m_turretMotor.configPeakOutputReverse(-0.5,  0); 
+		
+		m_turretMotor.configForwardSoftLimitThreshold(RIGHT_SAFETY_LIMIT, 0);
+		m_turretMotor.configForwardSoftLimitEnable(true,  0);
+		m_turretMotor.configReverseSoftLimitThreshold(LEFT_SAFETY_LIMIT, 0);
+		m_turretMotor.configReverseSoftLimitEnable(true,  0);
 		
     	m_turretMotor.enableControl();		
     }
@@ -121,6 +130,25 @@ public class Turret extends Subsystem implements PidTunerObject {
     	if ( m_manualmode )
     	{
     		m_turretMotor.set(ControlMode.PercentOutput, manualPowerRequested);
+    	}
+    	else if( m_fieldOriented )
+    	{
+    		// need to add checks for 0 to 360 degrees or -180 to 180
+    		int robotHeading = (int)(Robot.drive.getHeading() + 360*4) % 360; // 0 to 360 // 360*4 is to make sure this is positive.
+    		int desiredTurretHeading = m_desiredPosition * 90 / RIGHT_POSITION; // -180 to +180.  use 90 degrees is RIGHT_POSITION for calculation
+    		int turretHeading = desiredTurretHeading - robotHeading; // -540 to 180
+    		turretHeading += 720.0; // 180 to 900
+    		turretHeading %= 360; // 0 to 360
+    		// convert to -180 to 180
+    		if( turretHeading > 180 )
+    		{
+    			// 181 ==> -179
+    			// 270 ==?> -90
+    			// 359 ==> -1
+    			turretHeading = -(360-turretHeading); // -180 to 180
+    		}
+    		int turrentEncoder = (int) (turretHeading * RIGHT_POSITION / 90.0);
+    		m_turretMotor.set(ControlMode.Position, turrentEncoder);
     	}
 		else // PID mode is set in setPosition()
     	{

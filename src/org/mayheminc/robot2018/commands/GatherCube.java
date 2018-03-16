@@ -57,12 +57,13 @@ public class GatherCube extends Command {
     		AutoDriveFWDSpeed = 0.1f;
     	}
 
-    	if (Robot.cubeDetector.isCubeHalfIn() == true)
-    	{
-    		Robot.drive.speedRacerDrive(-0.3, 0, false);
-    	}
+//    	if (Robot.cubeDetector.isCubeHalfIn() == true)
+//    	{
+//    		Robot.drive.speedRacerDrive(-0.3, 0, false);
+//    	}
     	// if we can see a cube, drive towards it
-    	else if (cubex != 1000) {
+//    	else 
+    		if (cubex != 1000) {
     		Robot.drive.speedRacerDrive(AutoDriveFWDSpeed, RobotDriveX, false);
     		SmartDashboard.putString("Cube???", "I see a cube!!!");
     		SmartDashboard.putNumber("RobotDriveX", RobotDriveX);
@@ -71,7 +72,7 @@ public class GatherCube extends Command {
     	else
     	{
     		SmartDashboard.putString("Cube???", "I do not see a cube");
-    		Robot.drive.speedRacerDrive(0.1, 0, false);
+    		Robot.drive.speedRacerDrive(0.2, 0, false);
     		
     	}
     }

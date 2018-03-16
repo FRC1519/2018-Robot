@@ -18,6 +18,7 @@ import org.mayheminc.util.PidTunerObject;
 public class Elevator extends Subsystem implements PidTunerObject {
 
 	// Note:  300 counts is about 1 inch
+	public static final int BOTTOM_SAFETY_LIMIT = 0;
 	public static final int PICK_UP_CUBE = 0;
 	public static final int REST_NEAR_BOTTOM = 1500;
 	public static final int PREPARE_FOR_HANDOFF_HEIGHT = 3500;
@@ -29,12 +30,11 @@ public class Elevator extends Subsystem implements PidTunerObject {
 //	public static final int SCALE_HIGH = 13000;   // also used by the autonomous programs
 //	public static final int CEILING = 16000; 	  // was 24100 at start of Week 1
 	
-	
 	public static final int SCALE_LOW = 15000;	
 	public static final int SCALE_MID = 19700; // was 18700;    // normally used by "scale button" on OI
 	public static final int SCALE_HIGH = 21000;   // also used by the autonomous programs
-	public static final int CEILING = 25500; 	  // was 24100 at start of Week 1
-	public static final int TOP_SAFETY_LIMIT = 30000;
+	public static final int CEILING = 28500; 	  // was 24100 at start of Week 1
+	public static final int TOP_SAFETY_LIMIT = 30000;  // should really be 30000
 	
 	boolean m_SafetyOn = true;
 
@@ -64,11 +64,16 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		m_elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		// RJD !@!#@!#12
 		
-		m_elevatorMotor.setInverted(false); 		// PRAC has this true, COMP has this false.
-		m_elevatorMotor.setSensorPhase(true); 		// PRAC has this true, COMP has this true
+		m_elevatorMotor.setInverted(false); 		
+		m_elevatorMotor.setSensorPhase(true); 		
 		
 		m_elevatorMotor.configClosedloopRamp(0.25, 0);
 		m_elevatorMotor.configOpenloopRamp(0.25,  0);
+		
+		m_elevatorMotor.configForwardSoftLimitThreshold(TOP_SAFETY_LIMIT, 0);
+		m_elevatorMotor.configForwardSoftLimitEnable(true,  0);
+		m_elevatorMotor.configReverseSoftLimitThreshold(BOTTOM_SAFETY_LIMIT, 0);
+		m_elevatorMotor.configReverseSoftLimitEnable(true,  0);
 		
 		m_elevatorMotor.setSelectedSensorPosition(m_elevatorMotor.getSelectedSensorPosition(0), 0, 0);
 	}

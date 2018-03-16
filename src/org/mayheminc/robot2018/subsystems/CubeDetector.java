@@ -56,7 +56,7 @@ public class CubeDetector extends Subsystem {
     static final double OUTSIDE_CORNER_V = 1.0;
     static final double CENTER_CORNER_V = 1.3;
     static final double IR_TOLERANCE = 0.3;
-    static final double CUBE_FULLY_IN = 1.6;
+    static final double CUBE_FULLY_IN = 1.3;
     
     public boolean isDeathGrip()
     {
