@@ -19,9 +19,7 @@ public class Autonomous extends Subsystem {
 	private static Command autonomousPrograms[] = {
 			/* 0 */   new StayStill()  // do nothing	
 			, new CrossBaselineBackwards()
-			, new auto1()
-			, new auto2()
-			, new Week1StartRight()
+			, new Week5StartRight()
 			, new Week5StartCenterSwitchPyramid()
 			, new StartCenterRightSwitch()
 			, new StartCenterLeftSwitch()
@@ -61,7 +59,7 @@ public class Autonomous extends Subsystem {
 */			
 	};
 
-	private static int programNumber = 1; // 1 = cross baseline backwards
+	private static int programNumber = 2; // 1 = cross baseline backwards
 	private static int delay = 0;
 
 	public Autonomous() {

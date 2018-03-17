@@ -20,7 +20,6 @@ public class IntakeInAndLiftTheCube extends Command {
 	    public IntakeInAndLiftTheCube() {
 	        super();
 	        
-//	    	m_handoffCommand = new BackupTwoInchesAndHandoff();
 	    	m_handoffCommand = new HandoffCubeToElevator();
 	    }
 

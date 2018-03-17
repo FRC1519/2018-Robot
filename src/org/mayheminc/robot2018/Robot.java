@@ -250,7 +250,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 		DriverStation.reportError("Entering Teleop.\n", false);
 		
-		shifter.setGear(Shifter.HIGH_GEAR);
+		shifter.setGear(Shifter.LOW_GEAR);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package org.mayheminc.robot2018.subsystems;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -170,6 +171,11 @@ public class Elevator extends Subsystem implements PidTunerObject {
     public void updateSmartDashboard()
     {
     	SmartDashboard.putNumber("Elevator Pos", m_elevatorMotor.getPosition());
+    	SmartDashboard.putNumber("Elevator V", m_elevatorMotor.getMotorOutputVoltage());
+    	SmartDashboard.putNumber("Elevator I", m_elevatorMotor.getOutputCurrent());
+    	SmartDashboard.putNumber("Elevator Watts", m_elevatorMotor.getMotorOutputVoltage() * m_elevatorMotor.getOutputCurrent());
+    	
+    	SmartDashboard.putNumber("Elevator V PDP", Robot.pdp.getCurrent(3));
     }
 
 	@Override

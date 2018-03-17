@@ -8,6 +8,7 @@ import org.mayheminc.util.PidTunerObject;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.sun.org.apache.xalan.internal.xsltc.trax.SmartTransformerFactoryImpl;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,9 +45,16 @@ public class Turret extends Subsystem implements PidTunerObject {
 	public static final int POSITION_TOLERANCE = 200; 
 
 	MayhemTalonSRX m_turretMotor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
-	boolean m_manualmode = true;
+	
+	public enum TurretMode
+	{
+		MANUAL_MODE,
+		ROBOT_CENTERED_MODE,
+		FIELD_CENTERED_MODE
+	};
+	
+	TurretMode m_turretMode = TurretMode.MANUAL_MODE;
 	int m_desiredPosition = 0;
-	boolean m_fieldOriented = false;
 	
     public void initDefaultCommand() { }
     
@@ -78,8 +86,8 @@ public class Turret extends Subsystem implements PidTunerObject {
 		
 		m_turretMotor.configNominalOutputForward(0.0,  0);
 		m_turretMotor.configNominalOutputReverse(0.0, 0);
-		m_turretMotor.configPeakOutputForward(0.5,  0);
-		m_turretMotor.configPeakOutputReverse(-0.5,  0); 
+		m_turretMotor.configPeakOutputForward(0.7,  0);
+		m_turretMotor.configPeakOutputReverse(-0.7,  0); 
 		
 		m_turretMotor.configForwardSoftLimitThreshold(RIGHT_SAFETY_LIMIT, 0);
 		m_turretMotor.configForwardSoftLimitEnable(true,  0);
@@ -103,8 +111,7 @@ public class Turret extends Subsystem implements PidTunerObject {
     {
     	System.out.println("Turret: setPosition" + position);
     	m_desiredPosition = position;
-    	m_manualmode = false;
-    	m_fieldOriented = false;
+    	m_turretMode = TurretMode.ROBOT_CENTERED_MODE;
     }
     
     /**
@@ -120,52 +127,81 @@ public class Turret extends Subsystem implements PidTunerObject {
     {
     	m_turretMotor.setEncPosition(ZERO_POSITION);
     }
-    
+    /**
+     * 
+     */
+    int m_fieldOrientedDesiredAngle;
+    int turretEncoder;
     public void periodic()
     {
-    	double manualPowerRequested = Robot.oi.getTurretPower();
+    	double manualPowerRequested = Robot.oi.getTurretManualPower();
     	
-    	// if the joystick is being commanded...
+    	// if the operator is requesting manual turret power
     	if (Math.abs(manualPowerRequested) > 0.01)
     	{
     		System.out.println("Turret: periodic: Power: " + manualPowerRequested);
-    		m_manualmode = true;
+    		m_turretMode = TurretMode.MANUAL_MODE;
+    	}
+    	else // not commanding a manual mode request...
+    	{
+    		// if there is a field orient request...
+    		if ( Robot.oi.getTurretFieldOrientedIsCommanded() )
+    		{
+				m_fieldOrientedDesiredAngle = (int)Robot.oi.getTurretFieldOrientedDirection(); 
+    			m_turretMode = TurretMode.FIELD_CENTERED_MODE;
+    		}
+    		
+    		// NOTE:  There isn't a "ROBOT_CENTERED_MODE" here because the only way to
+    		//        get into ROBOT_CENTERED_MODE is to use a Command
     	}
     	
-    	if ( m_manualmode )
-    	{
+    	switch (m_turretMode) {
+    	case MANUAL_MODE: {
+        	SmartDashboard.putString("Turret mode", "Manual Mode");
     		m_turretMotor.set(ControlMode.PercentOutput, manualPowerRequested);
+    		break;
     	}
-    	else if( m_fieldOriented )
-    	{
-    		// need to add checks for 0 to 360 degrees or -180 to 180
-    		int robotHeading = (int)(Robot.drive.getHeading() + 360*4) % 360; // 0 to 360 // 360*4 is to make sure this is positive.
-    		int desiredTurretHeading = m_desiredPosition * 90 / RIGHT_POSITION; // -180 to +180.  use 90 degrees is RIGHT_POSITION for calculation
-    		int turretHeading = desiredTurretHeading - robotHeading; // -540 to 180
-    		turretHeading += 720.0; // 180 to 900
-    		turretHeading %= 360; // 0 to 360
-    		// convert to -180 to 180
-    		if( turretHeading > 180 )
-    		{
-    			// 181 ==> -179
-    			// 270 ==?> -90
-    			// 359 ==> -1
-    			turretHeading = -(360-turretHeading); // -180 to 180
+    	case FIELD_CENTERED_MODE: {	
+        	SmartDashboard.putString("Turret mode", "Field Oriented Mode");
+	    		// need to add checks for 0 to 360 degrees or -180 to 180
+	    		int robotHeading = (int)(Robot.drive.getHeading() + 360*4) % 360; // 0 to 360 // 360*4 is to make sure this is positive.
+	    		int desiredTurretHeading = m_fieldOrientedDesiredAngle;// * 90 / RIGHT_POSITION; // -180 to +180.  use 90 degrees is RIGHT_POSITION for calculation
+	    		int turretHeading = desiredTurretHeading - robotHeading; // -540 to 180
+	    		turretHeading += 720.0; // 180 to 900
+	    		turretHeading %= 360; // 0 to 360
+	    		// convert to -180 to 180
+	    		if( turretHeading > 180 )
+	    		{
+	    			// 181 ==> -179
+	    			// 270 ==?> -90
+	    			// 359 ==> -1
+	    			turretHeading = -(360-turretHeading); // -180 to 180
+	    		}
+	    		turretEncoder = (int) (turretHeading * RIGHT_POSITION / 90.0);
+	    		m_turretMotor.set(ControlMode.Position, turretEncoder);
+	    		break;
+	    	}
+    	case ROBOT_CENTERED_MODE: {
+        	SmartDashboard.putString("Turret mode", "Robot Oriented Mode");
+				m_turretMotor.set(ControlMode.Position, m_desiredPosition);
+				break;
+	    	}
+    	default: {
+    			// do nothing
+    			break;
     		}
-    		int turrentEncoder = (int) (turretHeading * RIGHT_POSITION / 90.0);
-    		m_turretMotor.set(ControlMode.Position, turrentEncoder);
     	}
-		else // PID mode is set in setPosition()
-    	{
-			m_turretMotor.set(ControlMode.Position, m_desiredPosition);
-    	}
+    	
     }
     
     public void updateSmartDashboard()
     {
     	SmartDashboard.putNumber("Turret Pos", m_turretMotor.getPosition());
     	SmartDashboard.putNumber("Turret Power", m_turretMotor.getMotorOutputPercent());
-    	SmartDashboard.putBoolean("Turret Manual Mode",  m_manualmode);
+//    	SmartDashboard.putBoolean("Turret Manual Mode",  m_manualmode);
+    	SmartDashboard.putNumber("Turret Desired Position", m_desiredPosition);
+    	SmartDashboard.putNumber("Turret Field Angle", m_fieldOrientedDesiredAngle);
+    	SmartDashboard.putNumber("Turret Encoder", turretEncoder);
     }
     
     /////////////////////////////////////////////////////////

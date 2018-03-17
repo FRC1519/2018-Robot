@@ -178,8 +178,8 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************
 
-        DRIVER_PAD_RED_BUTTON.whenPressed(new FlipACubeRight());
-        DRIVER_PAD_BLUE_BUTTON.whenPressed(new FlipACubeLeft());
+        DRIVER_PAD_RED_BUTTON.whileHeld(new FlipACube(45));
+        DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45));
 //        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
@@ -314,24 +314,32 @@ public class OI {
 	//       control of the robot mechanisms.
     public double pivotArmPower()
     {
-		// NOTE:  Joystick has "up" be negative and "down" be positive.  Reverse this by multiplying by -1.
-    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
-    	// if the power is less than 20%, make it 0
-    	if ( -0.2 < value && value < 0.2)
+    	// if the joystick button is held in, calculate the power.
+    	if( OPERATOR_PAD_BUTTON_TWELVE.get())
     	{
-    		value = 0.0;
+			// NOTE:  Joystick has "up" be negative and "down" be positive.  Reverse this by multiplying by -1.
+	    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
+	    	// if the power is less than 20%, make it 0
+	    	if ( -0.2 < value && value < 0.2)
+	    	{
+	    		value = 0.0;
+	    	}
+	    	else if ( value > 0.2 )
+	    	{
+	    		// if it is above 20%, subtract the 20% to keep the linearness.
+	    		value = value - 0.2;
+	    	}
+	    	else // (this means value < -0.2)
+	    	{
+	    		// if it is above 20%, subtract the 20% to keep the linearness.
+	    		value = value + 0.2;
+	    	}
+	    	return value;
     	}
-    	else if ( value > 0.2 )
+    	else // joystick button is not held in, return 0 power.
     	{
-    		// if it is above 20%, subtract the 20% to keep the linearness.
-    		value = value - 0.2;
+    		return 0.0;
     	}
-    	else // (this means value < -0.2)
-    	{
-    		// if it is above 20%, subtract the 20% to keep the linearness.
-    		value = value + 0.2;
-    	}
-    	return value;
     }
     
     public double tankDriveLeft() {
@@ -431,36 +439,45 @@ public class OI {
 
 	// returns true if any of the autoInTeleop buttons are held
 	public boolean autoInTeleop() {
-		return DRIVER_PAD_BLUE_BUTTON.get() ||
-				DRIVER_PAD_RED_BUTTON.get() ||
-				DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.get();
+		return ( DRIVER_PAD_BLUE_BUTTON.get() ||
+				 DRIVER_PAD_RED_BUTTON.get() ||
+				 DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.get() );
 	}
 
-	public double getTurretPower() {
+	public double getTurretManualPower() {
 		
 		// Positive turret power should give clockwise rotation.
 		// KBS:  Note that right axis should be positive when clockwise;  I don't think we really want this
 		//       reversed for the turret.  Looks like a copy/paste error from pivotArmPower.  For ease of
 		//       thinking about the turret operation, I think we want clockwise to be "forward" and ascending
 		//       sensor values.
-    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS));
-    	// if the power is less than 20%, make it 0
-    	if( value < 0.2 && value > -0.2)
-    	{
-    		value = 0.0;
-    	}
-    	else if( value > 0.2 )
-    	{
-    		// if it is above 20%, subtract the 20% to keep the linearness.
-    		value = value - 0.2;
-    	}
-    	else 
-    	{
-    		// if it is below -20%, add the 20% to keep the linearness.
-    		value = value + 0.2;
-    	}
-    	return value;	
-    }
+
+		if (OPERATOR_PAD_BUTTON_TWELVE.get())
+		{
+
+			double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS));
+			// if the power is less than 20%, make it 0
+			if( value < 0.2 && value > -0.2)
+			{
+				value = 0.0;
+			}
+			else if( value > 0.2 )
+			{
+				// if it is above 20%, subtract the 20% to keep the linearness.
+				value = value - 0.2;
+			}
+			else 
+			{
+				// if it is below -20%, add the 20% to keep the linearness.
+				value = value + 0.2;
+			}
+			return value;
+		}
+		else // if the joysitck button is not held in, return 0.0
+		{
+			return 0.0;
+		}
+	}
 
 	public double getElevatorPower() {
 		// NOTE:  Joystick has "up" be negative and "down" be positive.  Reverse this by multiplying by -1.
@@ -481,6 +498,24 @@ public class OI {
     		value = value + 0.2;
     	}
     	return value;	
+	}
+
+	public boolean getTurretFieldOrientedIsCommanded() {
+		double x = OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS);
+		double y = OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)*-1; // up is positive
+		
+		double mag =  Math.sqrt(x*x + y*y);
+		
+		return mag > 0.5;
+	}
+
+	public double getTurretFieldOrientedDirection() {
+		double x = OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_X_AXIS);
+		double y = OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)*-1; // up is positive
+
+		double radians = Math.atan2(x, y);
+		double degrees = radians * 180 / Math.PI;
+		return degrees;
 	}
 }
 

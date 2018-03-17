@@ -67,13 +67,13 @@ public class StartRightBackRRR extends CommandGroup {
 //    	addSequential(new ElevatorArmOpen());
     	
     	// wait for the robot to fully eject cube before we back up
-    	addSequential(new Wait(1.0)); 
+    	addSequential(new Wait(0.5)); 
     	
     	// back away from the scale a bit and head towards the cube for the switch
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0, 180.0)); // was .5
+    	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 35.0, 180.0)); // was .5
 
-    	// drive to get the cube
+    	// prepare upper assembly to get cube.
     	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
     	// put the turret to the front position
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
