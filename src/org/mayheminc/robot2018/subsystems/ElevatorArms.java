@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
 import org.mayheminc.robot2018.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 /**
@@ -14,37 +15,67 @@ public class ElevatorArms extends Subsystem {
 
 	Solenoid m_arm = new Solenoid(RobotMap.ELEVATOR_ARM_SOLENOID);
 	TalonSRX m_motor = new TalonSRX(RobotMap.ELEVATOR_ARM_MOTOR);
-
-	public static boolean OPEN_ARM = true;
-	public static boolean CLOSE_ARM = !OPEN_ARM;
+	
+	// default Jaw Position is closed.
+	private static final JawPosition DEFAULT_JAW_POSITION = JawPosition.CLOSE;
+	
+	// initialize variables for solenoid state management
+	private JawPosition m_elevatorArmDesiredState = DEFAULT_JAW_POSITION;
+	private long m_elevatorArmTimeMotionComplete = System.currentTimeMillis();
+	private static final long MOVING_TIME_MILLIS = 200;
 	
 	public static final double MOTOR_STOP = 0.0;
-	public static final double MOTOR_OUT_SLOW = 0.2;
-	public static final double MOTOR_OUT_FAST = 1.0;
+	public static final double MOTOR_IN_SLOW = 0.2;
+	public static final double MOTOR_IN_FAST = 1.0;
 	
-	public enum JawPosition{
+	public enum JawPosition {
 		OPEN(true),
 		CLOSE(false);
 		
-	    private final boolean id; // https://stackoverflow.com/questions/1067352/can-set-enum-start-value-in-java
-	    JawPosition(boolean id) { this.id = id; }
-	    public boolean getValue() { return id; }
+	    private final boolean value; // https://stackoverflow.com/questions/1067352/can-set-enum-start-value-in-java
+	    JawPosition(boolean value) { this.value = value; }
+	    public boolean getValue() { return value; }
+	}
+	
+	public ElevatorArms()
+	{
+		setJaw(DEFAULT_JAW_POSITION);
+		
+		m_motor.configNominalOutputForward(0,  0);
+		m_motor.configNominalOutputReverse(0.0,  0);
+		m_motor.configPeakOutputForward(1.0,  0);
+		m_motor.configPeakOutputReverse(-1.0,  0);
+		
+		m_motor.setNeutralMode(NeutralMode.Brake);
 	}
 	
     public void initDefaultCommand() { }
     
-    public void setJaw(JawPosition b)
+    public void setJaw(JawPosition newDesiredJawPosition)
     {
-    	m_arm.set(b.getValue());
+    	// if setting a new position, need to set time motion will be complete
+    	if (m_elevatorArmDesiredState != newDesiredJawPosition) {
+    		m_elevatorArmTimeMotionComplete = System.currentTimeMillis() + MOVING_TIME_MILLIS;
+    		m_elevatorArmDesiredState = newDesiredJawPosition;
+    	}
+    	
+    	// set the jaw position as desired
+    	m_arm.set(newDesiredJawPosition.getValue());
     }
+    
+    // return true if jaw may still be moving from a prior setJaw() call
+    public boolean jawStillMoving() {
+		return (System.currentTimeMillis() < m_elevatorArmTimeMotionComplete);
+    }
+    
     
     /**
      * Set the motor to a speed.
-     * @param d
+     * @param speed
      */
-    public void setMotor(double d)
+    public void setMotor(double speed)
     {
-    	m_motor.set(ControlMode.PercentOutput, -d);  // PRAC has -, COMP has +
+    	m_motor.set(ControlMode.PercentOutput, -speed);  // PRAC has -, COMP has +  (due to right-handed vs. left-handed carriage)
     }
     
     public void updateSmartDashboard()

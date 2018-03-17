@@ -39,7 +39,9 @@ public class Turret extends Subsystem implements PidTunerObject {
 	public static final int RIGHT_SAFETY_LIMIT = 10000;
 	public static final int LEFT_SAFETY_LIMIT = -RIGHT_SAFETY_LIMIT;
 
-	public static final int POSITION_TOLERANCE = 250; // 250 units is "close enough" to be at a position
+	// 200 units is "close enough" to be at a position.  Based upon experiments in the Gray's
+	// basement, the "P" term gets to within about 100-120 or so.
+	public static final int POSITION_TOLERANCE = 200; 
 
 	MayhemTalonSRX m_turretMotor = new MayhemTalonSRX(RobotMap.TURRET_TALON);
 	boolean m_manualmode = true;
@@ -54,9 +56,11 @@ public class Turret extends Subsystem implements PidTunerObject {
     	
     	// initialize the PID controller
     	m_turretMotor.config_kP(0,  0.4,  0);
-    	m_turretMotor.config_kI(0,  0.0,  0);
+    	m_turretMotor.config_kI(0,  0.004,  0);    // use I to correct steady-state error, 1/100 of P
     	m_turretMotor.config_kD(0,  0.0,  0);
     	m_turretMotor.config_kF(0,  0.0, 0);
+    	
+    	m_turretMotor.config_IntegralZone(0, POSITION_TOLERANCE, 0);
     	
     	m_turretMotor.selectProfileSlot(0,  0);
     	
@@ -100,6 +104,7 @@ public class Turret extends Subsystem implements PidTunerObject {
     	System.out.println("Turret: setPosition" + position);
     	m_desiredPosition = position;
     	m_manualmode = false;
+    	m_fieldOriented = false;
     }
     
     /**

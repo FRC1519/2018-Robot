@@ -169,7 +169,7 @@ public class OI {
 	public OI() {
 		
 		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
-				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.elevator);
+				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.turret);
 		
     	DriverStation.reportError("OI constructor.\n", false);
 
@@ -178,13 +178,13 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************
 
-//        DRIVER_PAD_RED_BUTTON.whenPressed(new DeferredCommand(PivotTest.class));
-//        DRIVER_PAD_BLUE_BUTTON.whenPressed(new IntakeEscapeDeathGripRight());
-        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
+        DRIVER_PAD_RED_BUTTON.whenPressed(new FlipACubeRight());
+        DRIVER_PAD_BLUE_BUTTON.whenPressed(new FlipACubeLeft());
+//        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
-        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whenPressed(new AutoGatherCubeSeq());
-        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new FlipACube());
+        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq());
+//        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new FlipACubeRight());
 
 		
      	//******************************* DRIVER STICK ****************************************************************************
@@ -216,37 +216,23 @@ public class OI {
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
      	
      	//BUTTONS FIVE AND SEVEN ARE For Operating pneumatics
-     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose());
-     	
-     	
+     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose());     	
      	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new AllJawsOpen()); 
-//     	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new IntakeCloseJaw()); 
-//     	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new IntakeOpenJaw()); 
-//     	OPERATOR_PAD_BUTTON_FIVE.whileHeld(new ElevatorArmClose());
-//     	OPERATOR_PAD_BUTTON_SEVEN.whileHeld(new ElevatorArmOpen());
-     	
      	
      	// Button Six and Eight currently control rollers of intake or elevator
-//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeIn());
-//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new IntakeOut());
-
      	//OPERATOR_PAD_BUTTON_SIX.whileHeld(new AllRollersIn());
-     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeInAndLiftTheCube());
-     	
+     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeInAndLiftTheCube());     	
      	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new AllRollersOut());
-//     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new ElevatorArmSetMotorOld(0.5));
-//     	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new ElevatorArmSetMotorOld(-0.5));
-     	
+
      	OPERATOR_PAD_D_PAD_UP.whenPressed(new ElevatorSetPosition(Elevator.CEILING));
      	OPERATOR_PAD_D_PAD_DOWN.whenPressed(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
-		
      	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
      	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
 
 //     	OPERATOR_PAD_D_PAD_UP.whenPressed(
 //     			new ShiftCommand(OPERATOR_PAD_BUTTON_FIVE, 
-//     			new PivotToFloor(), 
-//     			new PivotToUpright()));
+//     			new TurretMoveTo(Turret.FRONT_POSITION),
+//     			new ElevatorSetPosition(Elevator.CEILING)));
 //
 //     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(
 //     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
@@ -429,7 +415,7 @@ public class OI {
 //		return FORCE_FIRE_BUTTON.get();
 //	}
 //    
-//	
+
 	public boolean autoTarget() {
 		return false;//DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get();
 	}
@@ -445,8 +431,9 @@ public class OI {
 
 	// returns true if any of the autoInTeleop buttons are held
 	public boolean autoInTeleop() {
-		return DRIVER_PAD_GREEN_BUTTON.get() ||
-				DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.get();
+		return DRIVER_PAD_BLUE_BUTTON.get() ||
+				DRIVER_PAD_RED_BUTTON.get() ||
+				DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.get();
 	}
 
 	public double getTurretPower() {

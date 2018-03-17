@@ -53,6 +53,7 @@ public class Drive extends Subsystem {
 
 	// Driving mode
 	private boolean m_speedRacerDriveMode = true; // set by default
+	private boolean m_autoDrivingInTeleop = false; // set by default
 
 	// NavX parameters
 	private double m_desiredHeading = 0.0;
@@ -92,7 +93,6 @@ public class Drive extends Subsystem {
 //RJD		m_HeadingPid = new PIDController(0.015, 0.001, 0.04, m_HeadingError, m_HeadingCorrection);  // vales from NECMP and Pine Tree
 //		m_HeadingPid = new PIDController(0.02, 0.0015, 0.05, m_HeadingError, m_HeadingCorrection);
 
-		
 		m_HeadingPid = new PIDController(0.015, 0.000, 0.04, m_HeadingError, m_HeadingCorrection);  // vales from NECMP and Pine Tree
 		m_HeadingPid.setInputRange(-180.0f, 180.0f);
 		m_HeadingPid.setContinuous(true);             // treats the input range as "continous" with wrap-around
@@ -112,7 +112,7 @@ public class Drive extends Subsystem {
 		rightRearTalon.changeControlMode(ControlMode.Follower);
 		rightRearTalon.set(rightFrontTalon.getDeviceID());
 
-//		m_shifter = new Solenoid(RobotMap.SHIFTING_SOLENOID);
+		m_autoDrivingInTeleop = false;
 	}
 
 	public void init() {

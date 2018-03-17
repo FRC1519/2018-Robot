@@ -21,23 +21,27 @@ public class HandoffCubeToElevator extends CommandGroup {
 	 * Move the elevator up.
 	 */
     public HandoffCubeToElevator() {
-    	addSequential(new ElevatorArmOpen());
-
+    	addSequential(new ElevatorArmOpenAndWait());
     	addSequential(new PrepareElevatorForHandOff());
     	
     	addSequential(new IntakeCloseJaw());
     	addSequential(new PivotMove(Pivot.UPRIGHT_POSITION));
-    	addSequential(new ElevatorArmSetMotorAuto(.5));
+    	addSequential(new ElevatorArmSetMotorAuto(0.5));   // sucks in at half speed
     	addSequential(new IntakeOutInstant());
     	addSequential(new Wait(0.05));
     	addSequential(new ElevatorArmClose());
     	addSequential(new Wait(0.2));
     	addSequential(new IntakeOff());
-//    	addSequential(new Wait(0.5));
+
+    	// before moving the elevator up, turn on the T-Rex motors to hold the cube gently
+    	// and also open up the intake jaws to make sure that the intake is no longer holding the cube
     	addSequential(new ElevatorArmSetMotorAuto(0.2));
     	addSequential(new IntakeOpenJaw());
-//    	addSequential(new ElevatorSetPositionButton(Elevator.SWITCH_HEIGHT));
+
+    	// move the elevator up a bit to the scoring height for the switch
     	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
+    	
+    	// close the intake jaws so that they're ready for harvesting another cube in the future
     	addSequential(new IntakeCloseJaw());
     }
 }

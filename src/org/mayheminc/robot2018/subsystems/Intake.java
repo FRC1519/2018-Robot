@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Intake extends Subsystem {
 	
-	public static final double INTAKE_SPEED = 0.75; //JUST A PLACE HOLDER! changed from 0.5 for testing the transition
-	public static final double OUTTAKE_SPEED = -1.0; //JUST A PLACE HOLDER! changed from -1.0 for testing the transition
+	public static final double INTAKE_SPEED = 0.75; // changed from 0.5 for handoff
+	public static final double OUTTAKE_SPEED = -1.0;   // spit is at full speed...  
 	public static final double STOP_SPEED = 0;
 	
 	public static final boolean ESCAPE_DEATH_GRIP_RIGHT = true;
@@ -92,7 +92,12 @@ public class Intake extends Subsystem {
     	double reverseLeft = (m_reverseLeftSide) ? -1.0 : 1.0;
     	double reverseRight = (m_reverseRightSide) ? -1.0 : 1.0;
     	
-    	m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverseLeft * .75);
+    	// left motor turns more slowly than right for suck in, but same speed for spit out
+    	if (m_setSpeed > 0.0) {
+    		m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverseLeft * .75);
+    	} else {
+    		m_intakeMotorLeft.set(ControlMode.PercentOutput, -m_setSpeed * reverseLeft);
+    	}
     	m_intakeMotorRight.set(ControlMode.PercentOutput, m_setSpeed * reverseRight);
 
     }

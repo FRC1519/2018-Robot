@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class FlipACube extends CommandGroup {
+public class FlipACubeRight extends CommandGroup {
 
-    public FlipACube() {
+    public FlipACubeRight() {
     	//pivot to flip Position.
     	addSequential(new PrintToDriverStation("Pivot"));
     	addSequential(new PivotMove(Pivot.FLIP_CUBE_POSITION));
