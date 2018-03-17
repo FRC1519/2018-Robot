@@ -24,6 +24,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	public static final int FLIP_CUBE_POSITION = 700;
 	public static final int EXCHANGE_POSITION = 700;//was 500 02-02-2018
 	public static final int DOWNWARD_POSITION = 0;
+	public static final int CAMERA_THRESHOLD = UPRIGHT_POSITION/2;
 	
 	public static final int PIVOT_TOLERANCE = 150; // 75 seemed like not quite enough at Week 1
 	
@@ -45,6 +46,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	int m_zeroWaitToMove;
 	int m_zeroWaitForSame;
 	int m_priorPositionWhileZeroing;
+	int m_activeCamera;
 	
 	public Pivot()
 	{
@@ -212,6 +214,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
     			if ( ( m_desiredPosition <= DOWNWARD_POSITION ) &&
     					( currentPosition < (DOWNWARD_POSITION + DOWN_TOLERANCE)) ) 
     			{
+    				
     				m_pivotMotor.set(ControlMode.PercentOutput,  HOLD_DOWN_MOTOR_POWER);;
     			} else if ( ( m_desiredPosition >= UPRIGHT_POSITION ) &&
     					    ( currentPosition > (UPRIGHT_POSITION - UP_TOLERANCE)) ) 
@@ -225,8 +228,36 @@ public class Pivot extends Subsystem implements PidTunerObject {
     			}
     		}  // end if positioning mode
      	}  // end if zeroing
+    	
+    	setActiveCamera();
     }
     
+    private void setActiveCamera()
+    {
+    	if ( m_manualMode )
+    	{
+    		if( getCurrentPosition() < CAMERA_THRESHOLD)
+    		{
+    			m_activeCamera = 0;
+    		}
+    		else
+    		{
+    			m_activeCamera = 1;
+    		}
+    	}
+    	else
+    	{
+    		if( m_desiredPosition < CAMERA_THRESHOLD )
+    		{
+    			m_activeCamera = 0;
+    		}
+    		else
+    		{
+    			m_activeCamera = 1;
+    		}
+    	}
+    	SmartDashboard.putNumber("active camera",  m_activeCamera);
+    }
     
     public void UpdateSmartDashboard()
     {

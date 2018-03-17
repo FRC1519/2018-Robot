@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.sun.org.apache.xalan.internal.xsltc.trax.SmartTransformerFactoryImpl;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,18 +27,19 @@ public class Turret extends Subsystem implements PidTunerObject {
 	
 	//   Encoder is set up so that + rotation is clockwise (right) when "forward" motor power is applied.
 
+	private static final int ENCODER_COUNTS_PER_REVOLUTION = 4096*84/20; // 17203.2
 	public static final int FRONT_POSITION = 0;
 	public static final int ZERO_POSITION = FRONT_POSITION;
-	public static final int RIGHT_POSITION = 4250;
+	public static final int RIGHT_POSITION = ENCODER_COUNTS_PER_REVOLUTION/4;
 	public static final int LEFT_POSITION = -RIGHT_POSITION;
 
 	public static final int RIGHT_ANGLED_BACK_POSITION = 8000;
 	public static final int LEFT_ANGLED_BACK_POSITION = -RIGHT_ANGLED_BACK_POSITION;
 	
-	public static final int RIGHT_REAR = 8500;
+	public static final int RIGHT_REAR = ENCODER_COUNTS_PER_REVOLUTION/2;
 	public static final int LEFT_REAR = -RIGHT_REAR;
 	
-	public static final int RIGHT_SAFETY_LIMIT = 10000;
+	public static final int RIGHT_SAFETY_LIMIT = 10800; // approx +225 degrees
 	public static final int LEFT_SAFETY_LIMIT = -RIGHT_SAFETY_LIMIT;
 
 	// 200 units is "close enough" to be at a position.  Based upon experiments in the Gray's
@@ -144,7 +146,7 @@ public class Turret extends Subsystem implements PidTunerObject {
     	}
     	else // not commanding a manual mode request...
     	{
-    		// if there is a field orient request...
+    		// if there is a field oriented request...
     		if ( Robot.oi.getTurretFieldOrientedIsCommanded() )
     		{
 				m_fieldOrientedDesiredAngle = (int)Robot.oi.getTurretFieldOrientedDirection(); 
@@ -165,10 +167,11 @@ public class Turret extends Subsystem implements PidTunerObject {
         	SmartDashboard.putString("Turret mode", "Field Oriented Mode");
 	    		// need to add checks for 0 to 360 degrees or -180 to 180
 	    		int robotHeading = (int)(Robot.drive.getHeading() + 360*4) % 360; // 0 to 360 // 360*4 is to make sure this is positive.
-	    		int desiredTurretHeading = m_fieldOrientedDesiredAngle;// * 90 / RIGHT_POSITION; // -180 to +180.  use 90 degrees is RIGHT_POSITION for calculation
+	    		int desiredTurretHeading = m_fieldOrientedDesiredAngle;
 	    		int turretHeading = desiredTurretHeading - robotHeading; // -540 to 180
 	    		turretHeading += 720.0; // 180 to 900
 	    		turretHeading %= 360; // 0 to 360
+	    		
 	    		// convert to -180 to 180
 	    		if( turretHeading > 180 )
 	    		{
@@ -177,6 +180,39 @@ public class Turret extends Subsystem implements PidTunerObject {
 	    			// 359 ==> -1
 	    			turretHeading = -(360-turretHeading); // -180 to 180
 	    		}
+	    		
+	    		// if the turret heading is in the first overlap zone...
+	    		if ( turretHeading > 135 )
+	    		{
+	    			// figure out if we should go to the negative heading
+	    			int currentTurretEncoder = m_turretMotor.getSelectedSensorPosition(0);
+	    			int currentTurretHeading = currentTurretEncoder *90 / RIGHT_POSITION;
+	    			
+	    			if( turretHeading - currentTurretHeading > 180 )
+	    			{
+	    				turretHeading -= 360;
+	    			}
+	    		}
+	    		// else if the turret heading is in the second overlap zone.
+	    		else if( turretHeading < -135 )
+	    		{
+	    			// figure out if we should go to the negative heading
+	    			int currentTurretEncoder = m_turretMotor.getSelectedSensorPosition(0);
+	    			int currentTurretHeading = currentTurretEncoder *90 / RIGHT_POSITION;
+	    			
+	    			if( turretHeading - currentTurretHeading < -180 )
+	    			{
+	    				turretHeading += 360;
+	    			}
+	    		}
+
+	    		if( turretHeading < -225 ||
+	    			turretHeading > 225 )
+	    		{
+	    			DriverStation.reportError("ERROR! Turrent going to " + turretHeading, false);
+	    			turretHeading = 0;
+	    		}
+	    		
 	    		turretEncoder = (int) (turretHeading * RIGHT_POSITION / 90.0);
 	    		m_turretMotor.set(ControlMode.Position, turretEncoder);
 	    		break;
