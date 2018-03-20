@@ -27,6 +27,7 @@ public class DriveRotateDegrees extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.drive.rotate(degrees);
+    	// RJD: does this need a timer.reset()?
     	timer.start();
     }
 

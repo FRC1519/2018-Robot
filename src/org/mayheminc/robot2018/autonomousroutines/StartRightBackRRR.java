@@ -1,11 +1,13 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
+import org.mayheminc.robot2018.commands.BackupAndHandOff;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotor;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
+import org.mayheminc.robot2018.commands.IntakeInAndLiftTheCube;
 import org.mayheminc.robot2018.commands.IntakeInForTime;
 import org.mayheminc.robot2018.commands.PivotMove;
 //import org.mayheminc.robot2018.commands.PivotToFloor;
@@ -39,12 +41,9 @@ public class StartRightBackRRR extends CommandGroup {
     	
     	// raise cube to a good carrying height before turning turret
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-
-    	// start the turret to shift to the right  (really want it to be off the back)
-//    	addParallel(new TurretMoveTo(Turret.RIGHT_POSITION));
     	
     	// drive straight backwards until near the end of the switch
-    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 150.0, 180.0)); // was -.5
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 150.0, 180.0));
     	
     	// put the turret to the scoring angle
     	addParallel(new TurretMoveTo(Turret.RIGHT_ANGLED_BACK_POSITION));
@@ -52,15 +51,13 @@ public class StartRightBackRRR extends CommandGroup {
     	// raise elevator to scoring height on normal scale
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
     	
-    	
     	// continue driving backwards, angling towards the scale
-    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 85.0, 150.0)); // was 90.0
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0, 145.0));
     	
     	// straighten out again to be perpendicular to side of scale
-    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 50.0, 180.0)); // was 35.0
-    	//  note:  above was 40 for Q48 at end of day 1; want to go a little further...
+    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 45.0, 180.0));
     	
-    	addSequential (new Wait(1.0));  // pause briefly before placing cube
+    	addSequential (new Wait(0.5));  // pause briefly before placing cube
     	
     	// spit out the the cube
     	addSequential(new ElevatorArmSetMotorAuto(-0.5));
@@ -69,9 +66,9 @@ public class StartRightBackRRR extends CommandGroup {
     	// wait for the robot to fully eject cube before we back up
     	addSequential(new Wait(0.5)); 
     	
-    	// back away from the scale a bit and head towards the cube for the switch
+    	// drive away from the scale a bit and head towards the cube for the switch
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 35.0, 180.0)); // was .5
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 40.0, 180.0));
 
     	// prepare upper assembly to get cube.
     	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
@@ -79,33 +76,21 @@ public class StartRightBackRRR extends CommandGroup {
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
     	addSequential(new ElevatorArmSetMotorAuto(0.0));
     	
-    	
-    	// engage the cube
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0, 180.0));
-    	addSequential(new IntakeInForTime(1.5));     // had been 1.0 at practice field 
-    	
-    	// back away and handoff to elevator
-    	addSequential(new DriveStraightOnHeading(-0.6, DistanceUnits.INCHES, 5.0, 180.0)); // was .5
-    	addSequential(new HandoffCubeToElevator());
+    	// drive the last little bit and engage the cube
+    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 25.0, 180.0));
+    	addSequential(new IntakeInAndLiftTheCube(true));
+    	addSequential(new BackupAndHandOff());
 
+    	// drive forward again to the fence so we can score into the switch
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 30.0, 200.0)); // was .3
 
     	// spit out the the cube
     	addSequential(new ElevatorArmSetMotorAuto(-1.0));
+    	addSequential(new Wait(1.0));
+    	
+    	// back away from the switch two feet
+    	addParallel(new ElevatorArmSetMotorAuto(0.0));
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 24.0, 200.0)); // was .3
 
-//    	addParallel(new ElevatorArmSetMotor(0.4));
-//    	
-//    	// start the turret to shift to the front
-//    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
-//    	addSequential(new ElevatorSetPosition(Elevator.CEILING));
-//    	
-//    	// drive backwards
-//    	addSequential(new DriveStraightOnHeading(-1.0, DistanceUnits.INCHES, 200.0, 180.0));
-//    	
-//    	// wait for the robot to stop swaying
-//    	addSequential(new Wait(0.5));
-//    	
-//    	// spit the cube 
-//    	addParallel(new ElevatorArmSetMotorAuto(0.4));
     }
 }

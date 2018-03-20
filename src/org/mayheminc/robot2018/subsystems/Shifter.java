@@ -57,7 +57,7 @@ public class Shifter extends Subsystem {
 	// shift speeds are in inches per second.
 
 	//private static final double SHIFT_RATIO = 2.56;    // Gear spread is 2.56:1 in sonic shifter
-	private static final double SHIFT_TO_HIGH = 450.0;  // numbers determined empirically
+	private static final double SHIFT_TO_HIGH = 400.0;  // numbers determined empirically
 	private static final double SHIFT_TO_LOW = SHIFT_TO_HIGH / 2.56;   // numbers determined empirically
 	private static final double SHIFT_DELAY = .5;
 	private static double m_priorShiftTime = Timer.getFPGATimestamp();

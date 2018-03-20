@@ -8,7 +8,6 @@ import org.mayheminc.util.PidTunerObject;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.sun.org.apache.xalan.internal.xsltc.trax.SmartTransformerFactoryImpl;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -111,7 +110,6 @@ public class Turret extends Subsystem implements PidTunerObject {
     
     public void setDesiredPosition(int position)
     {
-    	System.out.println("Turret: setPosition" + position);
     	m_desiredPosition = position;
     	m_turretMode = TurretMode.ROBOT_CENTERED_MODE;
     }
@@ -141,7 +139,6 @@ public class Turret extends Subsystem implements PidTunerObject {
     	// if the operator is requesting manual turret power
     	if (Math.abs(manualPowerRequested) > 0.01)
     	{
-    		System.out.println("Turret: periodic: Power: " + manualPowerRequested);
     		m_turretMode = TurretMode.MANUAL_MODE;
     	}
     	else // not commanding a manual mode request...

@@ -256,7 +256,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
     			m_activeCamera = 1;
     		}
     	}
-    	SmartDashboard.putNumber("active camera",  m_activeCamera);
+    	SmartDashboard.putNumber("Active Camera",  m_activeCamera);
     }
     
     public void UpdateSmartDashboard()

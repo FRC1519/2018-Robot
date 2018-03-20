@@ -14,18 +14,23 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class IntakeInAndLiftTheCube extends Command {
 	
+		private boolean m_inAuto;
+		private boolean m_doneEnough;
 		private boolean m_handoffStarted;
 		private Command m_handoffCommand;
 	
-	    public IntakeInAndLiftTheCube() {
+	    public IntakeInAndLiftTheCube(boolean inAuto) {
 	        super();
 	        
-	    	m_handoffCommand = new HandoffCubeToElevator();
+	        m_inAuto = inAuto;
+	    	m_handoffCommand = new BackupAndHandOff();
 	    }
 
 	    protected void initialize() {
+	    	m_doneEnough = false;
 	    	m_handoffStarted = false;
 	    	Robot.intake.takeInCube();
+	    	Robot.elevatorArms.setMotor(ElevatorArms.MOTOR_IN_FAST);
 	    }
 	    
 	    protected void execute()
@@ -39,6 +44,11 @@ public class IntakeInAndLiftTheCube extends Command {
 		    		Robot.elevator.setDesiredPosition(Elevator.PICK_UP_CUBE);
 		    	}
 	    	
+    		if (m_inAuto) {
+    			// in auto, creep forward a little bit while getting the cube
+        		Robot.drive.speedRacerDrive(0.1, 0, false);
+    		}
+    		
 	    	// if the pivot is down and the cube is in, lift it.
 	    	if( Robot.pivot.getCurrentPosition() < Pivot.DOWNWARD_POSITION + Pivot.PIVOT_TOLERANCE &&
 	    		Robot.cubeDetector.isCubeSquare() )
@@ -51,30 +61,35 @@ public class IntakeInAndLiftTheCube extends Command {
 // NOTE:  Temporarily commenting this out to experiment with auto-handoff	    		
 //	    		Robot.pivot.setDesiredPosition(Pivot.UPRIGHT_POSITION);
 	    		
-	    		// automatically handoff the cube to the elevator
-	    		if (!m_handoffStarted) {
-	    			// call a command to make a handoff
-	    			m_handoffCommand.start();
+	    		if (m_inAuto) {
+	    			// this is done enough for autonomous operation
+	    			m_doneEnough = true;
+	    			// stop creeping forward
+	        		Robot.drive.speedRacerDrive(0.0, 0, false);
+	    		} else {
+	    			// we're in teleop, so automatically handoff the cube to the elevator
+	    			if (!m_handoffStarted) {
+	    			// 	call a command to make a handoff
+	    				m_handoffCommand.start();
+	    			}
 	    		}
 
 	    	}
-	    	
-	    	// if the pivot is up, no special handling is needed
-	    	// (NOTE: the arm used to not suck in when up, but this is sometimes desirable)
-//	    	if( Robot.pivot.getCurrentPosition() > Pivot.UPRIGHT_POSITION - Pivot.PIVOT_TOLERANCE )
-//	    	{
-//	    		Robot.intake.stop();
-//	    	}
 	    }
 	    
+	    protected boolean isFinished() {
+	    	// this command will never finish in teleop, but that's what we want...
+	    	return (m_inAuto && m_doneEnough);
+	    }
 	    
-	    protected boolean isFinished() {return false;}
 	    protected void end()
 	    {
 	    	Robot.intake.stop();
+	    	Robot.elevatorArms.setMotor(0.0);
 	    }
 	    protected void interrupt()
 	    {
 	    	Robot.intake.stop();
+	    	Robot.elevatorArms.setMotor(0.0);
 	    }
 	}

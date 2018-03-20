@@ -221,7 +221,7 @@ public class OI {
      	
      	// Button Six and Eight currently control rollers of intake or elevator
      	//OPERATOR_PAD_BUTTON_SIX.whileHeld(new AllRollersIn());
-     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeInAndLiftTheCube());     	
+     	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeInAndLiftTheCube(false));     	
      	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new AllRollersOut());
 
      	OPERATOR_PAD_D_PAD_UP.whenPressed(new ElevatorSetPosition(Elevator.CEILING));

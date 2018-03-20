@@ -26,7 +26,7 @@ public class ElevatorArms extends Subsystem {
 	
 	public static final double MOTOR_STOP = 0.0;
 	public static final double MOTOR_IN_SLOW = 0.2;
-	public static final double MOTOR_IN_FAST = 1.0;
+	public static final double MOTOR_IN_FAST = 0.5;
 	
 	public enum JawPosition {
 		OPEN(true),
@@ -75,7 +75,7 @@ public class ElevatorArms extends Subsystem {
      */
     public void setMotor(double speed)
     {
-    	m_motor.set(ControlMode.PercentOutput, -speed);  // PRAC has -, COMP has +  (due to right-handed vs. left-handed carriage)
+    	m_motor.set(ControlMode.PercentOutput, speed);  // PRAC has -, COMP has +  (due to right-handed vs. left-handed carriage)
     }
     
     public void updateSmartDashboard()

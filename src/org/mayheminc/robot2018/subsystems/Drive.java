@@ -465,7 +465,7 @@ public class Drive extends Subsystem {
 					if ((m_iterationsSinceRotationCommanded == LOOPS_GYRO_DELAY) || 
 						(m_iterationsSinceMovementCommanded >=LOOPS_GYRO_DELAY)) 
 					{
-						DriverStation.reportError("drive 1",  false);
+//						DriverStation.reportError("drive 1",  false);
 						// exactly five iterations with no commanded turn, 
 						// get current heading as desired heading
 						m_desiredHeading = getHeading();
@@ -474,11 +474,11 @@ public class Drive extends Subsystem {
 						m_HeadingPid.enable();  // need to re-enable the PID controller after a reset()
 						rotation = 0.0;
 					} else if (m_iterationsSinceRotationCommanded < LOOPS_GYRO_DELAY) {
-						DriverStation.reportError("drive 2",  false);
+//						DriverStation.reportError("drive 2",  false);
 						// just start driving straight without special heading maintenance
 						rotation = 0.0;
 					} else if (m_iterationsSinceRotationCommanded > LOOPS_GYRO_DELAY) {
-						DriverStation.reportError("drive 3",  false);
+//						DriverStation.reportError("drive 3",  false);
 						// after more then five iterations since commanded turn, maintain the target heading 
 						rotation = maintainHeading();
 					} 
