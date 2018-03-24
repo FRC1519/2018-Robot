@@ -85,6 +85,7 @@ public class ObjectListener extends Thread {
             // Check for out-of-date data
             if (timestamp <= lastTimestamp) {
                 System.err.println(name + ": timestamp for new frame #" + frame + " (" + timestamp + ") is not newer than that for previous frame #" + lastFrame + " (" + lastTimestamp + "); rejecting out-of-date data");
+                lastTimestamp = timestamp;
                 continue;
             }
             if (frame <= lastFrame) {

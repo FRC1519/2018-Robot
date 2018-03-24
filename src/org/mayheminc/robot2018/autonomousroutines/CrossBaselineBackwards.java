@@ -2,7 +2,6 @@ package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
-import org.mayheminc.robot2018.commands.SetHeadingOffset180;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 
@@ -15,8 +14,7 @@ public class CrossBaselineBackwards extends CommandGroup {
 
     public CrossBaselineBackwards() {    	
     	// presume that the robot is starting out backwards
-    	addSequential( new ZeroGyro() );
-    	addSequential(new SetHeadingOffset180());
+    	addSequential( new ZeroGyro(180.0) );
     	
     	// gently run the T-Rex motor inwards to hold cube better
     	addSequential(new ElevatorArmSetMotorAuto(0.2));

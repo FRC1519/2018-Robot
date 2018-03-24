@@ -17,8 +17,7 @@ public class DriveZeroGyro extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.drive.zeroHeadingGyro();
-        Robot.drive.setHeadingOffset(0.0);
+        Robot.drive.zeroHeadingGyro(0.0);
     }
 
     // Called repeatedly when this Command is scheduled to run

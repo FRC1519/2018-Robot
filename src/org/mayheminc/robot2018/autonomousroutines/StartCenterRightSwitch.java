@@ -12,7 +12,6 @@ import org.mayheminc.robot2018.commands.PivotMove;
 //import org.mayheminc.robot2018.commands.PivotToFloor;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.PrintToDriverStation;
-import org.mayheminc.robot2018.commands.SetHeadingOffset180;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;

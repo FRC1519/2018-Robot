@@ -16,7 +16,7 @@ public class AutoGatherCubeSeq extends CommandGroup {
     public AutoGatherCubeSeq() {
     	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new IntakeInInstant());
-    	addSequential(new GatherCube());
+    	addSequential(new AIGatherCube());
     	addSequential(new IntakeOff());
     	addSequential(new PivotMove(Pivot.UPRIGHT_POSITION));
     	addSequential(new WaitForever());

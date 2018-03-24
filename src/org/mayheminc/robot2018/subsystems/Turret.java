@@ -27,6 +27,7 @@ public class Turret extends Subsystem implements PidTunerObject {
 	//   Encoder is set up so that + rotation is clockwise (right) when "forward" motor power is applied.
 
 	private static final int ENCODER_COUNTS_PER_REVOLUTION = 4096*84/20; // 17203.2
+	public static final int ENCODER_COUNTS_PER_DEGREE = ENCODER_COUNTS_PER_REVOLUTION / 360;
 	public static final int FRONT_POSITION = 0;
 	public static final int ZERO_POSITION = FRONT_POSITION;
 	public static final int RIGHT_POSITION = ENCODER_COUNTS_PER_REVOLUTION/4;
@@ -139,7 +140,7 @@ public class Turret extends Subsystem implements PidTunerObject {
     	// if the operator is requesting manual turret power
     	if (Math.abs(manualPowerRequested) > 0.01)
     	{
-    		m_turretMode = TurretMode.MANUAL_MODE;
+//    		m_turretMode = TurretMode.MANUAL_MODE;
     	}
     	else // not commanding a manual mode request...
     	{

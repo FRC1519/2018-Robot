@@ -6,7 +6,7 @@ import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
-import org.mayheminc.robot2018.commands.GatherCube;
+import org.mayheminc.robot2018.commands.AIGatherCube;
 import org.mayheminc.robot2018.commands.IntakeInInstant;
 import org.mayheminc.robot2018.commands.IntakeOff;
 import org.mayheminc.robot2018.commands.IntakeOut;
@@ -84,7 +84,7 @@ public class StartCenterRightSwitchPyramid extends CommandGroup {
     	// eat the cube
     	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new IntakeInInstant());
-    	addSequential(new GatherCube());
+    	addSequential(new AIGatherCube());
     	
     	// backup with the cube
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 300.0)); // was .5
@@ -120,7 +120,7 @@ public class StartCenterRightSwitchPyramid extends CommandGroup {
     	// eat a cube
     	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new IntakeInInstant());
-    	addSequential(new GatherCube());
+    	addSequential(new AIGatherCube());
     	
     	// backup with the cube
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 300.0)); // was .5

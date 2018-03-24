@@ -17,7 +17,7 @@ public class AllJawsOpen extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.intake.OpenJaws();
+    	Robot.intake.openJaws();
     	Robot.elevatorArms.setJaw(JawPosition.OPEN);
     }
 

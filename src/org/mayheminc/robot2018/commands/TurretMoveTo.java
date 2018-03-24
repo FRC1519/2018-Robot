@@ -34,7 +34,7 @@ public class TurretMoveTo extends Command {
     		else
     			m_position = Turret.LEFT_REAR;
     	}
-    	System.out.println("TurretMoveTo: setPosition" + m_position);
+//    	System.out.println("TurretMoveTo: setPosition" + m_position);
     	Robot.turret.setDesiredPosition(m_position);
     }
     

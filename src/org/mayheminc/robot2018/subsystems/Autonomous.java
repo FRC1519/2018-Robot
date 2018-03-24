@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.mayheminc.robot2018.autonomousroutines.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 /**
  *
  * @author Team1519
@@ -20,50 +22,35 @@ public class Autonomous extends Subsystem {
 			
 			/* 0 */   new StayStill()  // do nothing	
 			, new CrossBaselineBackwards()
-			, new Week5StartRight()
+			, new StartRightScaleAndSwitch()
+			, new StartCenterSwitchPyramid()
+			, new StartLeftScaleAndSwitch()
+			, new StartRightMultiScale()
+			, new StartLeftMultiScale()
 			, new TestAuto()
-			, new Week5StartCenterSwitchPyramid()
-			, new StartCenterRightSwitch()
-			, new StartCenterLeftSwitch()
-			, new StartRightBackRRR()
-			, new StartRightBackRLR()
-			, new StartRightBackLRL()
-			, new StartRightBackLLL()
-
-/*			
-			, new Auto2CubeFromRight()
-			, new Auto2CubeFromMid()
-			, new Auto2CubeFromLeft()
 			
-			, new Auto1CubeFromLeft()
-
-			, new StartRightLeftSwitchLeftScale()
-			, new StartRightLeftSwitchLeftScale()
-			, new StartRightRightSwitchLeftScale()
-			, new StartRightRightSwitchRightScale()
-			
-			, new StartMidLeftSwitchLeftScale()
-			, new StartMidLeftSwitchLeftScale()
-			, new StartMidRightSwitchLeftScale()
-			, new StartMidRightSwitchRightScale()
-			, new StartMidRightSwitchRightScale()
-					
-			, new StartLeftLeftSwitchLeftScale()
-			, new StartLeftLeftSwitchLeftScale()
-			, new StartLeftRightSwitchLeftScale()
-			, new StartLeftRightSwitchRightScale()
-			, new StartLeftRightSwitchRightScale()
-					
-			, new StartRightLeftSwitch()
-			, new StartRightRightSwitch()
-			, new StartLeftLeftSwitch()
-			, new StartLeftRightSwitch()
-*/			
 	};
 
 	private static int programNumber = 2; // 1 = cross baseline backwards
 	private static int delay = 0;
 
+	public enum StartOn { RIGHT, LEFT };
+	
+	/**
+	 * Convert a right-sided angle to either left or right.
+	 * @param startSide RIGHT or LEFT
+	 * @param angle 0 - 360 for the right side
+	 * @return
+	 */
+	public static double chooseAngle(StartOn startSide, double angle) {
+		
+		// if startSide is left, convert angle, otherwise, leave as-is
+		if (startSide == StartOn.LEFT ) {
+			angle = 360.0 - angle;
+		}
+		return (angle);
+	}
+	
 	public Autonomous() {
 	}
 

@@ -1,7 +1,7 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
-import org.mayheminc.robot2018.commands.GatherCube;
+import org.mayheminc.robot2018.commands.AIGatherCube;
 import org.mayheminc.robot2018.commands.IntakeInInstant;
 import org.mayheminc.robot2018.commands.IntakeOff;
 import org.mayheminc.robot2018.commands.IntakeOutForTime;
@@ -77,7 +77,7 @@ public class StartCenterLeftSwitchPyramid extends CommandGroup {
 //    	addSequential(new AutoGatherCubeSeq());
     	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new IntakeInInstant());
-    	addSequential(new GatherCube());
+    	addSequential(new AIGatherCube());
     	
     	// backup with the cube
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 60.0)); // was .5 // was 300 for right
@@ -112,7 +112,7 @@ public class StartCenterLeftSwitchPyramid extends CommandGroup {
 //    	addSequential(new AutoGatherCubeSeq());
     	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new IntakeInInstant());
-    	addSequential(new GatherCube());
+    	addSequential(new AIGatherCube());
     	
     	// backup with the cube
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 60.0)); // was .5// was 300 for right

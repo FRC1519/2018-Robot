@@ -272,7 +272,7 @@ public class OI {
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_NINE", OPERATOR_PAD_BUTTON_NINE);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TEN", OPERATOR_PAD_BUTTON_TEN);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_ELEVEN", OPERATOR_PAD_BUTTON_ELEVEN);
-//     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWELVE", OPERATOR_PAD_BUTTON_TWELVE);
+     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWELVE", OPERATOR_PAD_BUTTON_TWELVE);
 //
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_LEFT", OPERATOR_PAD_D_PAD_LEFT);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_RIGHT", OPERATOR_PAD_D_PAD_RIGHT);

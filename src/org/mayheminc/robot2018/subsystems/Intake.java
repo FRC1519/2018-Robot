@@ -69,11 +69,12 @@ public class Intake extends Subsystem {
     	setMotors(OUTTAKE_SPEED);
     }
     
-    public void OpenJaws()
+    public void openJaws()
     {
     	m_solenoid.set(true);
     }
-    public void CloseJaws()
+    
+    public void closeJaws()
     {
     	m_solenoid.set(false);
     }

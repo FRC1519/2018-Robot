@@ -117,16 +117,16 @@ public class Drive extends Subsystem {
 
 	public void init() {
 		// reset the NavX
-		zeroHeadingGyro();
+		zeroHeadingGyro(0.0);
 
 		// talon closed loop config	
 		configureCanTalon(leftFrontTalon);
 		configureCanTalon(rightFrontTalon);
 	}
 
-	public void zeroHeadingGyro() {
+	public void zeroHeadingGyro(double headingOffset) {
 		Navx.zeroYaw();
-		setHeadingOffset(0.0);
+		setHeadingOffset(headingOffset);
 
 		DriverStation.reportError("heading immediately after zero = " + getHeading() + "\n", false);
 

@@ -29,6 +29,7 @@ public class IntakeInAndLiftTheCube extends Command {
 	    protected void initialize() {
 	    	m_doneEnough = false;
 	    	m_handoffStarted = false;
+	    	Robot.intake.closeJaws();
 	    	Robot.intake.takeInCube();
 	    	Robot.elevatorArms.setMotor(ElevatorArms.MOTOR_IN_FAST);
 	    }

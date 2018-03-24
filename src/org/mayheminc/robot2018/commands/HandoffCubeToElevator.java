@@ -35,7 +35,7 @@ public class HandoffCubeToElevator extends CommandGroup {
 
     	// before moving the elevator up, turn on the T-Rex motors to hold the cube gently
     	// and also open up the intake jaws to make sure that the intake is no longer holding the cube
-    	addSequential(new ElevatorArmSetMotorAuto(0.2));
+    	addSequential(new ElevatorArmSetMotorAuto(0.25));  // was 0.20 before 24 March 2018 
     	addSequential(new IntakeOpenJaw());
 
     	// move the elevator up a bit to the scoring height for the switch

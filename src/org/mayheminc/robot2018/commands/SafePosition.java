@@ -14,9 +14,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class SafePosition extends CommandGroup {
 
     public SafePosition() {
-
-    	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
+    	addParallel(new ElevatorSetPosition(Elevator.REST_NEAR_BOTTOM));
     	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
-//    	addSequential(new PivotToUpright());
+    	addSequential(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
     }
 }

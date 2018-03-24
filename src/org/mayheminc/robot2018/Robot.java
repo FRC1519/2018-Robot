@@ -164,7 +164,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		//    "Zero" the arm/pivot, which will initiate finding zero by using hard stop
 
 		// zero the drive base gyro at current position
-		drive.zeroHeadingGyro();		
+		drive.zeroHeadingGyro(0.0);		
 		
 		// zero the elevator at current position
 		// this presumes the elevator is down due to gravity

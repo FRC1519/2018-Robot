@@ -194,7 +194,7 @@ public class Pivot extends Subsystem implements PidTunerObject {
     		// command the arm appropriately depending upon mode
     		if ( m_manualMode )
     		{
-    			m_pivotMotor.set(ControlMode.PercentOutput, manualPowerRequested);
+//    			m_pivotMotor.set(ControlMode.PercentOutput, manualPowerRequested);
     		}
     		else // positioning mode
     		{

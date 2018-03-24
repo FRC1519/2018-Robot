@@ -11,15 +11,20 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class ZeroGyro extends InstantCommand {
 
+	private double m_headingOffset = 0.0;
     public ZeroGyro() {
+    	this(0.0);
+    }
+    
+    public ZeroGyro(double headingOffset) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	setRunWhenDisabled(true);
+    	m_headingOffset = headingOffset;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drive.zeroHeadingGyro();
-    	Robot.drive.setHeadingOffset(0.0);   	
+    	Robot.drive.zeroHeadingGyro(m_headingOffset);  	
     }
 }

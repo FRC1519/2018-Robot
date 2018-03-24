@@ -34,7 +34,7 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	
 	public static final int SCALE_LOW = 15000;	
 	public static final int SCALE_MID = 19700; // was 18700;    // normally used by "scale button" on OI
-	public static final int SCALE_HIGH = 21000;   // also used by the autonomous programs
+	public static final int SCALE_HIGH = 23500;   // also used by the autonomous programs
 	public static final int CEILING = 28500; 	  // was 24100 at start of Week 1
 	public static final int TOP_SAFETY_LIMIT = 30000;  // should really be 30000
 	

@@ -13,16 +13,16 @@ public class FlipACube extends CommandGroup {
     public FlipACube(int degrees) {
     	
     	//pivot to flip Position.
-    	addSequential(new PrintToDriverStation("Pivot"));
+//    	addSequential(new PrintToDriverStation("Pivot"));
     	addSequential(new PivotMove(Pivot.FLIP_CUBE_POSITION));
     	
     	addSequential(new IntakeOutInstant());
     	
 		//    	turn 45 degrees
-    	addSequential(new PrintToDriverStation("Rotate"));
+//    	addSequential(new PrintToDriverStation("Rotate"));
     	addSequential(new DriveRotateDegrees(degrees));
 		//    	back up 
-    	addSequential(new PrintToDriverStation("Backup"));
+//    	addSequential(new PrintToDriverStation("Backup"));
     	
     	addSequential(new IntakeOff());
     	addSequential(new DriveStraight(-0.5, DriveStraight.DistanceUnits.INCHES, 5.0));
