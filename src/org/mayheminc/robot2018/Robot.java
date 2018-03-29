@@ -218,6 +218,9 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 	public void teleopInit() {
 	
+		// before doing anything else in teleop, kill any existing commands
+		Scheduler.getInstance().removeAll();
+		
 		// where ever the pivot, turret, and elevator are, hold them there.
 		pivot.holdCurrentPosition();
 		turret.holdCurrentPosition();
@@ -240,13 +243,14 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// where ever the pivot is, hold it there.
 		pivot.holdCurrentPosition();
 
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (autonomousCommand != null) {
-			autonomousCommand.cancel();
-		}
+		// NOTE:  BELOW SHOULD BE OBE WITH above Scheduler.getInstance().removeAll();
+//		// This makes sure that the autonomous stops running when
+//		// teleop starts running. If you want the autonomous to
+//		// continue until interrupted by another command, remove
+//		// this line or comment it out.
+//		if (autonomousCommand != null) {
+//			autonomousCommand.cancel();
+//		}
 
 		DriverStation.reportError("Entering Teleop.\n", false);
 		

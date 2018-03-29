@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class StartCenterSwitchPyramid extends SmartAutoChooserBase {
+public class StartCenterSmartSwitchPyramid extends SmartAutoChooserBase {
 
 	protected Command GetAutoroutine() {
     	boolean ourSwitchOnRight = Robot.gameData.getNearSwitchOnRight();

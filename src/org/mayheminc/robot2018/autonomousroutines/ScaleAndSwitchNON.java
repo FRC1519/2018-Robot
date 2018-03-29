@@ -1,7 +1,6 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.AIGatherCube;
-import org.mayheminc.robot2018.commands.BackupAndHandOff;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
@@ -26,6 +25,7 @@ import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
 import org.mayheminc.robot2018.subsystems.Turret;
+import org.mayheminc.robot2018.subsystems.Autonomous.StartOn;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -38,30 +38,47 @@ public class ScaleAndSwitchNON extends CommandGroup {
 			 	
     	// presume that the robot is starting out backwards
     	addSequential(new ZeroGyro(180.0) );
-    	
+  
     	// gently run the T-Rex motor inwards to hold cube better
     	addSequential(new ElevatorArmSetMotorAuto(0.2));
     	
-    	// raise cube to a good carrying height while turning turret
+    	// raise cube to a good carrying height
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-
-    	// start the turret to shift to the right  (really want it to be off the back)
-    	addParallel(new TurretMoveTo(Turret.RIGHT_POSITION));
     	
     	// drive by the switch and deliver the cube (total straight distance before turn is 175 inches)
     	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 80.0,
     			Autonomous.chooseAngle(startSide, 180.0)));
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 70.0,
-    			Autonomous.chooseAngle(startSide, 150.0)));
+
+    	// turn the turret to the scoring angle
+    	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 90.0)));    	
+    	
+    	if ( startSide == StartOn.LEFT) {
+    		addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 70.0,
+    			Autonomous.chooseAngle(startSide, 160.0)));
+    	} else {
+        	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 70.0,
+        			Autonomous.chooseAngle(startSide, 150.0)));		
+    	}
     	addParallel(new ElevatorArmSetMotorAuto(-0.5));    // spit out the cube as driving by
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 30.0,
-    			Autonomous.chooseAngle(startSide, 180.0)));
-    
+    	if( startSide == StartOn.LEFT) {
+	    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 40.0,
+	    			Autonomous.chooseAngle(startSide, 180.0)));
+    	} else {
+	    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 30.0,
+	    			Autonomous.chooseAngle(startSide, 180.0)));
+    	}
+    	
     	// driving down the alley
     	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
+    	
+    	if( startSide == StartOn.LEFT) {
+        	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 100.0,
+        			Autonomous.chooseAngle(startSide, 90.0)));
+    	} else {
     	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 105.0,
     			Autonomous.chooseAngle(startSide, 90.0)));
+    	}
     	
     	// prepare for getting a cube soon
     	addParallel(new ElevatorArmOpen());
@@ -80,10 +97,10 @@ public class ScaleAndSwitchNON extends CommandGroup {
     	addSequential(new AIGatherCube());
     	addSequential(new IntakeOff());
 
-    	addSequential(new BackupAndHandOff());
+    	addSequential(new HandoffCubeToElevator());
     	
     	// we just picked up a cube -- now score the cube onto the scale...
-    	addSequential(new ScorePickedUpCubeFromFenceOntoScale(startSide));
+    	addSequential(new ScorePickedUpCubeFromFenceOntoOppositeScale(startSide));
     	
     	
 	}

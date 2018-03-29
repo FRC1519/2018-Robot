@@ -6,6 +6,7 @@ import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
+import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.AIGatherCube;
 import org.mayheminc.robot2018.commands.IntakeInInstant;
 import org.mayheminc.robot2018.commands.IntakeOff;
@@ -30,117 +31,72 @@ public class StartCenterRightSwitchPyramid extends CommandGroup {
 
     public StartCenterRightSwitchPyramid() {
     	
+    	// start by putting one cube into the right switch
+    	addSequential(new StartCenterRightSwitch());
     	
-    	addSequential(new PrintToDriverStation("ZeroGyro"));
-    	// presume that the robot is starting out forwards
-    	addSequential(new ZeroGyro() );
-    	   	
-//    	addSequential(new PrintToDriverStation("Wait"));
-//    	addSequential(new Wait(0.5));
+    	// above routine just delivered the first cube!!!
     	
-    	// gently run the T-Rex motor inwards to hold cube better
-    	addSequential(new PrintToDriverStation("ElevatorArmSetMotorAuto"));
-//    	addSequential(new ElevatorArmSetMotorAuto(0.2));
-    	
-    	// raise cube to a good carrying height while starting to drive
-    	addSequential(new PrintToDriverStation("ElevatorSetPosition"));
-//    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-    	
-    	// go straight a little, and then almost due east
-    	addSequential(new PrintToDriverStation("DriveStraightOnHeading"));
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 5.0, 0.0));
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 40.0, 80.0));
-    	// drive to near-side of fence
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 65.0, 0.0));
-    	
-    	// drive gently for a little longer to make sure we're against the fence    	
-      	addSequential(new PrintAutonomousTimeRemaining("Spitting Out Cube"));
-
-    	// spit out the first (starting) cube
-      	addSequential(new ElevatorArmOpen());
-      		
-       	// wait for the robot to fully stop before we back up
-    	addSequential(new Wait(0.3)); 
-    	
-    	addParallel(new ElevatorArmSetMotorAuto(0.0));
-    	
-    	// just delivered the first cube!!!
-    	// turn off the T-Rex spit and back away from the fence a bit
-    	addParallel(new ElevatorArmSetMotorAuto(0.0));
-    	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 20.0, 0.0)); // was .5
-
-    	addSequential(new PrintAutonomousTimeRemaining("StartCenterRightSwitch Done"));
-
-    	addSequential(new PrintToDriverStation("StartCenter Right switch done."));
-    	
-    	// prepare to go get a 2nd cube
+    	// pivot is already down from end of 1st cube; prepare to go get a 2nd cube
     	// put the pivot down and backup K-turn face the pyramid
+    	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 40.0, 300.0)); // was .5
     	 
     	// drive to the front cube of pyramid (a little more slowly to not crash into pyramid)
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 40.0, 300.0)); // was .5
+    	addSequential(new Wait(0.3));
+    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0, 300.0)); // was .5
  	
     	// eat the cube
-    	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential(new IntakeInInstant());
     	addSequential(new AIGatherCube());
     	
-    	// backup with the cube
+    	// backup with the cube a little to get out of pyramid before doing handoff
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 300.0)); // was .5
-    	
-    	// turn off the intake and lift
-    	addParallel(new IntakeOff());
-    	addParallel(new PivotMove(Pivot.SPIT_POSITION));
-    	// TEMP: Spit the cube
-//    	addParallel(new IntakeOutForTime(1.0));
+    	addSequential(new HandoffCubeToElevator());
     	
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5
 
     	// drive forward to kiss the switch
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 50.0, 0.0)); // was .5
+    	addSequential(new Wait(0.3));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 55.0, 0.0)); // was .5
     	
     	// SHOULD DELIVER THE 2nd CUBE HERE
     	// spit out the the 2nd cube
-//    	addSequential(new ElevatorArmOpen());
-    	addSequential(new IntakeOutInstant());
+    	addSequential(new ElevatorArmOpen());
 
-  		
     	// wait for the robot to fully stop before we back up
     	addSequential(new Wait(0.3)); 
+       	addSequential(new PrintAutonomousTimeRemaining("Just delivered the 2nd cube!"));
     	
-    	// back up
+    	// back up after delivering the 2nd cube
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 15.0, 0.0)); // was .5
+    	
+    	// prepare to get a third cube
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 40.0, 320.0)); // was .5
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 30.0, 320.0)); // was .5
 
     	// attack the pyramid to get a 3rd cube (2nd from pyramid)
+    	addSequential(new Wait(0.3));
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 25.0, 315.0)); // was .5
 
-    	// eat a cube
-    	addSequential(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
+    	// eat the cube (the 3rd one total)
     	addSequential(new IntakeInInstant());
     	addSequential(new AIGatherCube());
     	
-    	// backup with the cube
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 300.0)); // was .5
+    	// backup with the cube a little to get out of pyramid before doing handoff
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 315.0)); // was .5
+    	addSequential(new HandoffCubeToElevator());
 
-    	// turn off the intake and lift
-    	addParallel(new IntakeOff());
-    	addParallel(new PivotMove(Pivot.SPIT_POSITION));
-    	
-       	// TEMP: Spit the cube
-//    	addParallel(new IntakeOutForTime(1.0));
-    	
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5
+//    	
+//    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5
+//
+//    	// drive forward to kiss the switch
+//    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 55.0, 0.0)); // was .5
+//
+//    	// SHOULD DELIVER THE 3rd CUBE HERE
+//    	// spit out the the 3rd cube
+//    	addSequential(new ElevatorArmOpen());
 
-    	// drive forward to kiss the switch
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 50.0, 0.0)); // was .5
-
-    	// spit the cube
-    	addSequential(new IntakeOutInstant());
-
-       	addSequential(new PrintAutonomousTimeRemaining("StartCenterRightSwitch Done"));
+       	addSequential(new PrintAutonomousTimeRemaining("StartCenterRightSwitchPyramid Done"));
 
         
     }

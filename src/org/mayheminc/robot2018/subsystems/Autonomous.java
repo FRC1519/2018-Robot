@@ -23,12 +23,12 @@ public class Autonomous extends Subsystem {
 			/* 0 */   new StayStill()  // do nothing	
 			, new CrossBaselineBackwards()
 			, new StartRightScaleAndSwitch()
-			, new StartCenterSwitchPyramid()
-			, new StartLeftScaleAndSwitch()
 			, new StartRightMultiScale()
+			, new StartCenterSmartSwitch()
+			, new StartCenterSmartSwitchPyramid()
+			, new StartLeftScaleAndSwitch()
 			, new StartLeftMultiScale()
 			, new TestAuto()
-			
 	};
 
 	private static int programNumber = 2; // 1 = cross baseline backwards

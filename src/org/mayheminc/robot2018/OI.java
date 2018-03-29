@@ -168,8 +168,8 @@ public class OI {
 	public static PidTuner pidTuner;
 	public OI() {
 		
-		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
-				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.turret);
+//		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
+//				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.turret);
 		
     	DriverStation.reportError("OI constructor.\n", false);
 
@@ -210,9 +210,12 @@ public class OI {
      	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotMove(Pivot.FLIP_CUBE_POSITION));
      	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
      	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
-     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotMove(Pivot.UPRIGHT_POSITION));// PivotToUpright());
      	
+     	// OPERATPR_PAD_BUTTON_FOUR does two different command simultaneously!
+     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new TurretMoveTo(Turret.FRONT_POSITION)); // Center turret
+     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotMove(Pivot.UPRIGHT_POSITION));// PivotToUpright());
 
+     	
      	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
      	
      	//BUTTONS FIVE AND SEVEN ARE For Operating pneumatics

@@ -1,10 +1,10 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.AIGatherCube;
-import org.mayheminc.robot2018.commands.BackupAndHandOff;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
+import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.IntakeInInstant;
 import org.mayheminc.robot2018.commands.IntakeOff;
 import org.mayheminc.robot2018.commands.PivotMove;
@@ -31,21 +31,21 @@ public class AfterScoringScaleGetClosestCube extends CommandGroup {
 
     	// back away from the scale a bit and head towards the cube at the fence
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addParallel(new ElevatorArmSetMotorAuto(0.0));
-       	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 20.0,
+       	addSequential(new DriveStraightOnHeading(0.6, DistanceUnits.INCHES, 35.0,
        			Autonomous.chooseAngle(startSide, 180.0))); // was .5
        	
     	// prepare for getting a cube soon
     	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
     	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
     	addParallel(new ElevatorArmOpen());
+    	addParallel(new ElevatorArmSetMotorAuto(0.0));
     	
     	// drive the last little bit and engage the (second) cube
     	addSequential(new IntakeInInstant());
     	addSequential(new AIGatherCube());
     	addSequential(new IntakeOff());
 
-    	addSequential(new BackupAndHandOff());
+    	addSequential(new HandoffCubeToElevator());
     	
     }
 }

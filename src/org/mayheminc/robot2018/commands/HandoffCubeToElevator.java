@@ -26,11 +26,12 @@ public class HandoffCubeToElevator extends CommandGroup {
     	
     	addSequential(new IntakeCloseJaw());
     	addSequential(new PivotMove(Pivot.UPRIGHT_POSITION));
+    	addSequential(new Wait(0.1)); // wait a fraction of a second for arm pivot "bounce" to stop
     	addSequential(new ElevatorArmSetMotorAuto(0.5));   // sucks in at half speed
     	addSequential(new IntakeOutInstant());
-    	addSequential(new Wait(0.05));
+//    	addSequential(new Wait(0.03));  
     	addSequential(new ElevatorArmClose());
-    	addSequential(new Wait(0.2));
+    	addSequential(new Wait(0.2));    // wait for the pistons to close
     	addSequential(new IntakeOff());
 
     	// before moving the elevator up, turn on the T-Rex motors to hold the cube gently

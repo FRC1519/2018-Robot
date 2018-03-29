@@ -12,6 +12,7 @@ import org.mayheminc.robot2018.commands.ElevatorArmClose;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
+import org.mayheminc.robot2018.subsystems.Autonomous.StartOn;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -42,17 +43,23 @@ public class ScoreOnNearScale extends CommandGroup {
     	// raise elevator to scoring height on normal scale
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
     	
-    	// continue driving backwards, angling towards the scale
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0,
-    			Autonomous.chooseAngle(startSide, 145.0)));
+    	if( startSide == StartOn.LEFT) {
+    		// continue driving backwards, angling towards the scale
+    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,
+    				Autonomous.chooseAngle(startSide, 145.0)));  // was 155.0 for pract robot 
+    	} else {
+    		// continue driving backwards, angling towards the scale
+    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,   // was 95.0
+    				Autonomous.chooseAngle(startSide, 145.0)));
+    	}
     	
     	// straighten out again to be perpendicular to side of scale
-    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 45.0,
+    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 50.0,      // was 45.0
     			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	// lower the intake arm to get ready to harvest a 2nd cube soon
        	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential (new Wait(0.2));  // pause briefly before placing cube
+    	addSequential (new Wait(0.4));  // pause briefly before placing cube
     	
     	// spit out the the cube
     	addSequential(new ElevatorArmSetMotorAuto(-0.5));

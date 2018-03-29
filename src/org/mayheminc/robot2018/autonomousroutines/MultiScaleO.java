@@ -1,7 +1,6 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.AIGatherCube;
-import org.mayheminc.robot2018.commands.BackupAndHandOff;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
@@ -41,7 +40,7 @@ public class MultiScaleO extends CommandGroup {
     	addSequential(new ScoreOnOppositeScaleAndGetNextCube(startSide));
     	    	
     	// we just picked up a cube -- now ready to score the cube onto the scale again...
-    	addSequential(new ScorePickedUpCubeFromFenceOntoScale(startSide));
+    	addSequential(new ScorePickedUpCubeFromFenceOntoOppositeScale(startSide));
     	
 	}
 }

@@ -23,7 +23,7 @@ public class IntakeInAndLiftTheCube extends Command {
 	        super();
 	        
 	        m_inAuto = inAuto;
-	    	m_handoffCommand = new BackupAndHandOff();
+	    	m_handoffCommand = new HandoffCubeToElevator();
 	    }
 
 	    protected void initialize() {

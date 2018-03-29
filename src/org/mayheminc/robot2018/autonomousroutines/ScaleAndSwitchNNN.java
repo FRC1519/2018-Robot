@@ -1,6 +1,5 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
-import org.mayheminc.robot2018.commands.BackupAndHandOff;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotor;
@@ -38,7 +37,7 @@ public class ScaleAndSwitchNNN extends CommandGroup {
     	addSequential(new ScoreOnNearScaleAndGetNextCube(startSide));
     	
     	// drive forward again to the fence so we can score into the switch
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 30.0, 
+    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0, 
     			Autonomous.chooseAngle(startSide, 200.0)));
 
     	// spit out the the cube

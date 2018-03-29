@@ -16,6 +16,7 @@ import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
+import org.mayheminc.robot2018.commands.ElevatorArmClose;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
@@ -30,51 +31,34 @@ public class StartCenterRightSwitch extends CommandGroup {
 
     public StartCenterRightSwitch() {
     	
-    	addSequential(new PrintToDriverStation("ZeroGyro"));
     	// presume that the robot is starting out forwards
     	addSequential(new ZeroGyro() );
-    	addSequential(new PrintToDriverStation("Wait"));
-    	addSequential(new Wait(0.5));
-    	
+    	   	
     	// gently run the T-Rex motor inwards to hold cube better
-    	addSequential(new PrintToDriverStation("ElevatorArmSetMotorAuto"));
-    	addSequential(new ElevatorArmSetMotorAuto(0.2));
-    	
-    	// raise cube to a good carrying height while starting to drive
-    	addSequential(new PrintToDriverStation("ElevatorSetPosition"));
-    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-    	
-//    	addSequential(new Wait(2.0)); 
-    	
-    	// go almost due east
+      	addSequential(new ElevatorArmClose());
+    	addSequential(new ElevatorArmSetMotorAuto(0.2));    	
+
+    	// go straight a little, and then almost due east
     	addSequential(new PrintToDriverStation("DriveStraightOnHeading"));
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 5.0, 0.0));
+    	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 40.0, 80.0));
     	// drive to near-side of fence
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 70.0, 0.0));
-    	
-    	// drive gently for a little longer to make sure we're against the fence
-//    	addSequential(new DriveStraightOnHeadingForTime(0.4, DistanceUnits.INCHES, 60.0, 0.0));
-    	
-      	addSequential(new PrintAutonomousTimeRemaining("Spitting Out Cube"));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 65.0, 0.0));
 
-//      	addSequential(new Wait(1.0));
-    	// spit out the the cube
-//    	addSequential(new ElevatorArmSetMotorAuto(-0.8));
+    	// spit out the first (starting) cube
       	addSequential(new ElevatorArmOpen());
       		
        	// wait for the robot to fully stop before we back up
-    	addSequential(new Wait(0.5)); 
-    	
-    	addParallel(new ElevatorArmSetMotorAuto(0.0));
-    	
+    	addSequential(new Wait(0.3)); 
+
+    	// just delivered the first cube!!!
     	// turn off the T-Rex spit and back away from the fence a bit
     	addParallel(new ElevatorArmSetMotorAuto(0.0));
-    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 20.0, 0.0)); // was .5
+    	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 20.0, 0.0)); // was .5
 
     	addSequential(new PrintAutonomousTimeRemaining("StartCenterRightSwitch Done"));
-
-    	addSequential(new PrintToDriverStation("StartCenter Right switch done."));
     	
     }
 }

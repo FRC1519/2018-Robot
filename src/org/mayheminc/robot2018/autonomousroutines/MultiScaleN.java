@@ -1,6 +1,5 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
-import org.mayheminc.robot2018.commands.BackupAndHandOff;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotor;
@@ -40,7 +39,7 @@ public class MultiScaleN extends CommandGroup {
     	addSequential(new ScoreOnNearScaleAndGetNextCube(startSide));
     	
     	// Score the just-picked up cube onto the scale
-    	addSequential(new ScorePickedUpCubeFromFenceOntoScale(startSide));
+    	addSequential(new ScorePickedUpCubeFromFenceOntoNearScale(startSide));
 
     }
 }
