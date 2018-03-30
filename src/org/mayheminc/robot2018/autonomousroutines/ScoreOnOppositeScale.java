@@ -53,12 +53,12 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
     	if( startSide == StartOn.LEFT)
     	{
-	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,  // was 75.0
+	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0,  // was 75.0
 	    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	}
     	else
     	{
-	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0,   // was 105.0
+	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0,   // was 95.0 at start of UNH, was 105.0
 	    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	}
 

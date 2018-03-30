@@ -53,18 +53,18 @@ public class ScaleAndSwitchNON extends CommandGroup {
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 90.0)));    	
     	
     	if ( startSide == StartOn.LEFT) {
-    		addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 70.0,
+    		addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 65.0,
     			Autonomous.chooseAngle(startSide, 160.0)));
     	} else {
-        	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 70.0,
-        			Autonomous.chooseAngle(startSide, 150.0)));		
+        	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 65.0,
+        			Autonomous.chooseAngle(startSide, 160.0)));		// was 150.00 before UNH 
     	}
     	addParallel(new ElevatorArmSetMotorAuto(-0.5));    // spit out the cube as driving by
     	if( startSide == StartOn.LEFT) {
-	    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 40.0,
+	    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 45.0,
 	    			Autonomous.chooseAngle(startSide, 180.0)));
     	} else {
-	    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 30.0,
+	    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 45.0,   // was 30.0 before UNH
 	    			Autonomous.chooseAngle(startSide, 180.0)));
     	}
     	

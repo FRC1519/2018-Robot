@@ -47,7 +47,7 @@ public class StartCenterLeftSwitch extends CommandGroup {
     	// go almost due west
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 50.0, 280.0));
     	// drive to near-side of fence
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 70.0, 0.0));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 75.0, 0.0));  // was 70.0 before UNH
     	
       	addSequential(new PrintAutonomousTimeRemaining("Dropping the 1st Cube"));
       	addSequential(new ElevatorArmOpen());
