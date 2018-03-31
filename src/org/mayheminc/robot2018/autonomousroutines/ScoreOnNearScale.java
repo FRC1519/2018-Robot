@@ -50,12 +50,12 @@ public class ScoreOnNearScale extends CommandGroup {
     				Autonomous.chooseAngle(startSide, 145.0)));  // was 155.0 for pract robot 
     	} else {
     		// continue driving backwards, angling towards the scale
-    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 75.0,   // was 90 at start of UNH was 95.0
+    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 80.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
     				Autonomous.chooseAngle(startSide, 145.0)));
     	}
     	
     	// straighten out again to be perpendicular to side of scale
-    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 60.0,      // was 45.0
+    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 55.0,      // was 60 on Day 1 of UNH; before was 45.0
     			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	// lower the intake arm to get ready to harvest a 2nd cube soon

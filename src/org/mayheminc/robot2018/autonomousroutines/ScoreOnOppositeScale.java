@@ -70,7 +70,7 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	}
     	else
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0,
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 63.0,  // was 58.0 at Day 1 of UNH
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	
