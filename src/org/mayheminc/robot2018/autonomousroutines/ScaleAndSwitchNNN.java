@@ -42,7 +42,7 @@ public class ScaleAndSwitchNNN extends CommandGroup {
 
     	// spit out the the cube
     	addSequential(new ElevatorArmSetMotorAuto(-1.0));
-    	addSequential(new Wait(0.5));
+    	addSequential(new Wait(0.7));   // spit out the cube forcefully!
     	
     	// back away from the switch two feet
     	addParallel(new ElevatorArmSetMotorAuto(0.0));

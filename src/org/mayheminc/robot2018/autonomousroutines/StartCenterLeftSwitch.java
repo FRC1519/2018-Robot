@@ -38,6 +38,9 @@ public class StartCenterLeftSwitch extends CommandGroup {
       	addSequential(new ElevatorArmClose());
     	addSequential(new ElevatorArmSetMotorAuto(0.2));
 
+    	// ensure the turret is pointed straight forward
+    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
+    	
     	// start driving straight forwards
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 5.0, 0.0));
     	

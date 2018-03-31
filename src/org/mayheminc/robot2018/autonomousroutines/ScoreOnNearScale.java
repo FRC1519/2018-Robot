@@ -9,6 +9,7 @@ import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.commands.ElevatorArmClose;
+import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
@@ -61,11 +62,11 @@ public class ScoreOnNearScale extends CommandGroup {
        	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addSequential (new Wait(0.4));  // pause briefly before placing cube
     	
-    	// spit out the the cube
+    	// spit out the the cube and open the arms, too -- belt and suspenders!
     	addSequential(new ElevatorArmSetMotorAuto(-0.4));
-//    	addSequential(new ElevatorArmOpen());
+    	addSequential(new ElevatorArmOpen());
     	
     	// wait for the robot to fully eject cube before we back up
-    	addSequential(new Wait(0.2)); 
+    	addSequential(new Wait(0.4)); 
     }
 }

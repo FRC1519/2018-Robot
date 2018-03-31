@@ -39,7 +39,7 @@ public class ScaleAndSwitchOOO extends CommandGroup {
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0,
     			Autonomous.chooseAngle(startSide, 170.0)));
     	addSequential(new ElevatorArmSetMotorAuto(-1.0));
-    	addSequential(new Wait(0.5));  // wait for half a second to get the cube out
+    	addSequential(new Wait(0.7));  // wait for a bit to get the cube out
     	
     	// back away from the switch two feet
     	addParallel(new ElevatorArmSetMotorAuto(0.0));

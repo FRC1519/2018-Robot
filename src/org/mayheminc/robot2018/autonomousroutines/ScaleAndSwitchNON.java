@@ -46,20 +46,20 @@ public class ScaleAndSwitchNON extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	
     	// drive by the switch and deliver the cube (total straight distance before turn is 175 inches)
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 80.0,
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 75.0,  // was 80 mid-way through UNH
     			Autonomous.chooseAngle(startSide, 180.0)));
 
     	// turn the turret to the scoring angle
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 90.0)));    	
     	
     	if ( startSide == StartOn.LEFT) {
-    		addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 65.0,
-    			Autonomous.chooseAngle(startSide, 160.0)));
+    		addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 70.0,  // was 65 mid-way through UNH
+     			Autonomous.chooseAngle(startSide, 160.0)));
     	} else {
-        	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 65.0,
+        	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 70.0,
         			Autonomous.chooseAngle(startSide, 160.0)));		// was 150.00 before UNH 
     	}
-    	addParallel(new ElevatorArmSetMotorAuto(-0.5));    // spit out the cube as driving by
+    	addParallel(new ElevatorArmSetMotorAuto(-1.0));    // spit out the cube as driving by
     	if( startSide == StartOn.LEFT) {
 	    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 45.0,
 	    			Autonomous.chooseAngle(startSide, 180.0)));
@@ -83,7 +83,7 @@ public class ScaleAndSwitchNON extends CommandGroup {
     	// prepare for getting a cube soon
     	addParallel(new ElevatorArmOpen());
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 92.5,
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 95.0,
     			Autonomous.chooseAngle(startSide, 90.0)));
 
     	// K-turn towards the cube that we want to pick up

@@ -183,10 +183,10 @@ public class OI {
 //        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
-        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq());
-//        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new FlipACubeRight());
+//        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq());
+        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn());
+        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new AllRollersOut());
 
-		
      	//******************************* DRIVER STICK ****************************************************************************
 		
      	DRIVER_STICK_BUTTON_ONE_DISABLED.whenPressed(new TurretZero());
@@ -443,8 +443,7 @@ public class OI {
 	// returns true if any of the autoInTeleop buttons are held
 	public boolean autoInTeleop() {
 		return ( DRIVER_PAD_BLUE_BUTTON.get() ||
-				 DRIVER_PAD_RED_BUTTON.get() ||
-				 DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.get() );
+				 DRIVER_PAD_RED_BUTTON.get() );
 	}
 
 	public double getTurretManualPower() {

@@ -14,6 +14,12 @@ public class AllRollersIn extends Command {
     	Robot.intake.takeInCube();
     	Robot.elevatorArms.setMotor(0.5);
     }
+    
+    protected void execute() {
+    	Robot.intake.takeInCube();
+    	Robot.elevatorArms.setMotor(0.5);
+    }
+    
     protected boolean isFinished() {return false;}
     protected void end()
     {

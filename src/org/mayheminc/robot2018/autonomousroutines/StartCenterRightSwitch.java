@@ -36,7 +36,10 @@ public class StartCenterRightSwitch extends CommandGroup {
     	   	
     	// gently run the T-Rex motor inwards to hold cube better
       	addSequential(new ElevatorArmClose());
-    	addSequential(new ElevatorArmSetMotorAuto(0.2));    	
+    	addSequential(new ElevatorArmSetMotorAuto(0.2));    
+    	
+    	// ensure the turret is pointed straight forward
+    	addSequential(new TurretMoveTo(Turret.FRONT_POSITION));
 
     	// go straight a little, and then almost due east
     	addSequential(new PrintToDriverStation("DriveStraightOnHeading"));

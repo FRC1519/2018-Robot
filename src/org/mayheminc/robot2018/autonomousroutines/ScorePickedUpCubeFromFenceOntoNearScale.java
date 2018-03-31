@@ -10,6 +10,7 @@ import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.commands.ElevatorArmClose;
+import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
@@ -34,11 +35,13 @@ public class ScorePickedUpCubeFromFenceOntoNearScale extends CommandGroup {
     	
     	// wait for the robot to stop before spitting out the cube
     	addSequential(new Wait(0.5)); 
-    	// spit cube.
-    	addSequential(new ElevatorArmSetMotorAuto(-0.5));
     	
-    	// wait for the robot to fully eject cube before we drive away from the scale
-    	addSequential(new Wait(0.2)); 
+    	// spit out the the cube and open the arms, too - belt and suspenders!
+    	addSequential(new ElevatorArmSetMotorAuto(-0.5));
+    	addSequential(new ElevatorArmOpen());
+
+    	// wait for the robot to fully eject cube before we back up
+    	addSequential(new Wait(0.4)); 
     	
     	// drive forward a bit to disengage the scale
     	addSequential(new DriveStraightOnHeading(0.4, DistanceUnits.INCHES, 20.0,

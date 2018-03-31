@@ -85,7 +85,7 @@ public class ScaleAndSwitchONO extends CommandGroup {
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0,
     			Autonomous.chooseAngle(startSide, 170.0)));
     	addSequential(new ElevatorArmSetMotorAuto(-1.0));
-    	addSequential(new Wait(0.5));  // wait for half a second to get the cube out
+    	addSequential(new Wait(0.7));  // wait for a bit to get the cube out
     	
        	addSequential(new PrintAutonomousTimeRemaining("Just delivered the 2nd cube!"));
     	// back away from the switch two feet

@@ -40,6 +40,7 @@ public class Turret extends Subsystem implements PidTunerObject {
 	public static final int LEFT_REAR = -RIGHT_REAR;
 	
 	public static final int RIGHT_SAFETY_LIMIT = 10800; // approx +225 degrees
+//	public static final int RIGHT_SAFETY_LIMIT = 12900; // approx +270 degrees
 	public static final int LEFT_SAFETY_LIMIT = -RIGHT_SAFETY_LIMIT;
 
 	// 200 units is "close enough" to be at a position.  Based upon experiments in the Gray's

@@ -78,11 +78,12 @@ public class ScoreOnOppositeScale extends CommandGroup {
        	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
        	addSequential (new Wait(0.4));  // pause briefly before placing cube
     	
-    	// spit out the the cube
+    	// spit out the the cube and open the arms, too - belt and suspenders!
     	addSequential(new ElevatorArmSetMotorAuto(-0.5));
+    	addSequential(new ElevatorArmOpen());
 
     	// wait for the robot to fully eject cube before we back up
-    	addSequential(new Wait(0.2)); 
+    	addSequential(new Wait(0.4)); 
     	
     	///////////////////////////////////////////////////////////////////////
     	// just scored the 1st cube on the scale at the point above
