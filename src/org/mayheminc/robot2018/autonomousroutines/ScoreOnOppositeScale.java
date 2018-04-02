@@ -39,7 +39,7 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	
     	// drive straight backwards until near the end of the switch
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 175.0,
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 180.0,  // was 175.0 on Day 1 of UNH
     			Autonomous.chooseAngle(startSide, 180.0))); // was -.5
 
     	// put the turret to the scoring angle (was Turret.LEFT_ANGLED_BACK_POSITION)
@@ -65,12 +65,12 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	// turn towards the scale
     	if( startSide == StartOn.LEFT)
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 63.0,  // was 58.0 for right
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0,  // was 58.0 for right
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	else
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 63.0,  // was 58.0 at Day 1 of UNH
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0,  // was 58.0 at Day 1 of UNH
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	

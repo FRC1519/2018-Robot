@@ -35,7 +35,7 @@ public class ScoreOnNearScale extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	
     	// drive straight backwards until near the end of the switch
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 155.0,    // was 150 inches
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 160.0,    // was 155 on Day of UNH; was 150 inches
     			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	// put the turret to the scoring angle (was Turret.RIGHT_ANGLED_BACK_POSITION)
@@ -50,7 +50,7 @@ public class ScoreOnNearScale extends CommandGroup {
     				Autonomous.chooseAngle(startSide, 145.0)));  // was 155.0 for pract robot 
     	} else {
     		// continue driving backwards, angling towards the scale
-    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 80.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
+    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 70.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
     				Autonomous.chooseAngle(startSide, 145.0)));
     	}
     	
