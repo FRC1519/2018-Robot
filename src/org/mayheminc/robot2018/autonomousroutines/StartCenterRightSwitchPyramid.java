@@ -51,7 +51,7 @@ public class StartCenterRightSwitchPyramid extends CommandGroup {
     	
     	// backup with the cube a little to get out of pyramid before doing handoff
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 300.0)); // was .5
-    	addSequential(new HandoffCubeToElevator());
+    	addSequential(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
     	
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5
 
@@ -84,7 +84,7 @@ public class StartCenterRightSwitchPyramid extends CommandGroup {
     	
     	// backup with the cube a little to get out of pyramid before doing handoff
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 315.0)); // was .5
-    	addSequential(new HandoffCubeToElevator());
+    	addSequential(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
 
 //    	
 //    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5

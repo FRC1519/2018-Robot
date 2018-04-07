@@ -13,6 +13,7 @@ import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
+import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -42,7 +43,7 @@ public class StartCenterLeftSwitchPyramid extends CommandGroup {
     	
     	// backup with the cube a little to get out of pyramid before doing handoff
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 60.0)); // was .5
-    	addSequential(new HandoffCubeToElevator());
+    	addSequential(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
     	
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5
 
@@ -74,7 +75,7 @@ public class StartCenterLeftSwitchPyramid extends CommandGroup {
     	
     	// backup with the cube a little to get out of pyramid before doing handoff
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 45.0)); // was .5
-    	addSequential(new HandoffCubeToElevator());
+    	addSequential(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
 
 //    	// K-turn towards the switch
 //    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5

@@ -27,6 +27,7 @@ public class Autonomous extends Subsystem {
 			, new StartCenterSmartSwitch()
 //			, new StartCenterSmartSwitchPyramid()
 			, new StartLeftScaleAndSwitch()
+			, new MultiSwitchN(Autonomous.StartOn.RIGHT)
 			, new StartLeftMultiScale()
 			, new TestAuto()
 	};

@@ -1,6 +1,8 @@
 package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.Robot;
+import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
+import org.mayheminc.robot2018.subsystems.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,20 +44,21 @@ public class AIGatherCube extends Command {
     	double RobotDriveX = (cubex-0.5);//*2; // convert from the YOLO 0 to 1.0 to -.5 to +.5
     	float AutoDriveFWDSpeed;//(float) (Math.abs(1-cubew)/3 + 0.2);//cubew;
     	// if the cube is far away, then go fast.
-    	if (cubew <= 0.3)
-    	{
-    		AutoDriveFWDSpeed = 0.5f;
-    	}
-    	// if the cube is getting close, go a bit slower
-    	else if (cubew <= 0.66)
-    	{
-    		AutoDriveFWDSpeed = 0.4f;
-    	}
-    	// if the cube is close, keep crawling
-    	else //if (cubew <= 0.72)
-    	{
-    		AutoDriveFWDSpeed = 0.1f;
-    	}
+//    	if (cubew <= 0.3)
+//    	{
+//    		AutoDriveFWDSpeed = 0.5f;
+//    	}
+//    	// if the cube is getting close, go a bit slower
+//    	else if (cubew <= 0.66)
+//    	{
+//    		AutoDriveFWDSpeed = 0.4f;
+//    	}
+//    	// if the cube is close, keep crawling
+//    	else //if (cubew <= 0.72)
+//    	{
+//    		AutoDriveFWDSpeed = 0.1f;
+//    	}
+    	AutoDriveFWDSpeed = 0.2f;
 
 //    	if (Robot.cubeDetector.isCubeHalfIn() == true)
 //    	{
@@ -63,11 +66,22 @@ public class AIGatherCube extends Command {
 //    	}
     	// if we can see a cube, drive towards it
 //    	else 
-    		if (cubex != 1000) {
+    	if( Robot.cubeDetector.isCubeHalfIn())
+    	{
+    		Robot.drive.speedRacerDrive(-0.2, 0, false);    		
+    	}
+    	else 
+    	if (cubex != 1000) {
     		Robot.drive.speedRacerDrive(AutoDriveFWDSpeed, RobotDriveX, false);
     		SmartDashboard.putString("Cube???", "I see a cube!!!");
     		SmartDashboard.putNumber("RobotDriveX", RobotDriveX);
     		System.out.println("RobotDriveX" + RobotDriveX);
+//    		if (Robot.cubeDetector.getCenter() <= 0.7 && 
+//    			Robot.cubeDetector.getLeft() <= 0.7 && 
+//    			Robot.cubeDetector.getRight() <= 0.7) {
+//    			DriveStraight(-0.5, DistanceUnits.INCHES, 5.0);
+//    			
+//    		}
     	}
     	// if we can't see it, crawl!
     	else

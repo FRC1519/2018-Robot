@@ -55,7 +55,7 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		m_elevatorMotor.configNominalOutputForward(0.0,  0);
 		m_elevatorMotor.configNominalOutputReverse(0.0, 0);
 		m_elevatorMotor.configPeakOutputForward(1.0,  0);
-		m_elevatorMotor.configPeakOutputReverse(-0.5,  0);  // full speed of -1.0 going down was too fast
+		m_elevatorMotor.configPeakOutputReverse(-0.7,  0);    // was -0.5 at UNH
 
 		// TODO: need to tune the PIDF parameters
 		m_elevatorMotor.config_kP(0, 1.0, 0);

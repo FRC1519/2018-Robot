@@ -125,9 +125,17 @@ public class Turret extends Subsystem implements PidTunerObject {
     	setDesiredPosition(m_turretMotor.getSelectedSensorPosition(0));
     }
     
+    public void zeroEncoder(int actualPosition)
+    {
+    	m_turretMotor.setEncPosition(actualPosition);
+    	m_desiredPosition = actualPosition;
+    	m_turretMode = TurretMode.ROBOT_CENTERED_MODE;
+    	m_turretMotor.set(ControlMode.Position, m_desiredPosition);
+    }
+    
     public void zeroEncoder()
     {
-    	m_turretMotor.setEncPosition(ZERO_POSITION);
+    	zeroEncoder(ZERO_POSITION);
     }
     /**
      * 

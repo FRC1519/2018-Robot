@@ -6,6 +6,7 @@ import org.mayheminc.robot2018.commands.ElevatorArmSetMotor;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
+import org.mayheminc.robot2018.commands.IntakeCloseJaw;
 import org.mayheminc.robot2018.commands.IntakeInAndLiftTheCube;
 import org.mayheminc.robot2018.commands.IntakeInForTime;
 import org.mayheminc.robot2018.commands.PivotMove;
@@ -35,6 +36,10 @@ public class ScaleAndSwitchNNN extends CommandGroup {
     	// Used the "shared routine" for scoring on the near scale
     	// this routine ends up with the 1st cube scored and the 2nd cube picked up...
     	addSequential(new ScoreOnNearScaleAndGetNextCube(startSide));
+    	
+    	// after getting cube, need to raise it to switch height
+    	addSequential(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
+    	addParallel(new IntakeCloseJaw());
     	
     	// drive forward again to the fence so we can score into the switch
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0, 

@@ -255,7 +255,7 @@ public class OI {
 
      	OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
-     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator());
+     	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
      	
 //     	Robot.blackbox.addButton("DRIVER_PAD_BLUE_BUTTON", DRIVER_PAD_BLUE_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_GREEN_BUTTON", DRIVER_PAD_GREEN_BUTTON);

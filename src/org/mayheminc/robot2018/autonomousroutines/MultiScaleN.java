@@ -40,6 +40,10 @@ public class MultiScaleN extends CommandGroup {
     	
     	// Score the just-picked up cube onto the scale
     	addSequential(new ScorePickedUpCubeFromFenceOntoNearScale(startSide));
+    	
+    	// Either disengage from the scale, or get a third cube
+    	//addSequential(new DisengageFromScale());
+    	addSequential(new AfterScoringScaleGetThirdCube(startSide));
 
     }
 }

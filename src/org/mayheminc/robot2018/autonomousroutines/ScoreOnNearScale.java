@@ -1,10 +1,13 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
+import org.mayheminc.robot2018.commands.DriveSetShifter;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.PivotMove;
+import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.TurretMoveToDegree;
+import org.mayheminc.robot2018.commands.TurretZero;
 import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
@@ -13,6 +16,8 @@ import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
+import org.mayheminc.robot2018.subsystems.Shifter;
+import org.mayheminc.robot2018.subsystems.Turret;
 import org.mayheminc.robot2018.subsystems.Autonomous.StartOn;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -24,49 +29,60 @@ public class ScoreOnNearScale extends CommandGroup {
 
     public ScoreOnNearScale(Autonomous.StartOn startSide) {
     	// presume that the robot is starting out backwards
-    	addSequential(new ZeroGyro(180.0) );
+    	// the turret is rotated towards the center of the field to face down field.
+    	addParallel(new TurretZero((startSide == Autonomous.StartOn.RIGHT) ? Turret.RIGHT_REAR : Turret.LEFT_REAR));
+    	addSequential(new ZeroGyro(180.0) );  	
+
+    	// ensure we're holding the cube firmly by closing the arms and running the T-rex motors inwards
+    	addParallel(new ElevatorArmClose());    	
+    	addParallel(new ElevatorArmSetMotorAuto(0.2));
     	
-    	addParallel(new ElevatorArmClose());
+    	// drive straight backwards 10 inches in low gear to get rolling
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 10.0,  // was 175.0 on Day 1 of UNH
+    			Autonomous.chooseAngle(startSide, 180.0))); // was -.5
     	
-    	// gently run the T-Rex motor inwards to hold cube better
-    	addSequential(new ElevatorArmSetMotorAuto(0.2));
+    	// shift into high gear to go FAST!
+    	addParallel(new DriveSetShifter(Shifter.HIGH_GEAR)); 
     	
-    	// raise cube to a good carrying height before turning turret
-    	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-    	
-    	// drive straight backwards until near the end of the switch
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 160.0,    // was 155 on Day of UNH; was 150 inches
-    			Autonomous.chooseAngle(startSide, 180.0)));
-    	
-    	// put the turret to the scoring angle (was Turret.RIGHT_ANGLED_BACK_POSITION)
+    	// prepare for scoring by 
+    	// 1 - putting the turret to the scoring angle (was Turret.RIGHT_ANGLED_BACK_POSITION)
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 170)));
-    	
-    	// raise elevator to scoring height on normal scale
+    	// 2 - raising elevator to scoring height for potentially raised scale
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
+    	
+    	// continue driving to near the end of the switch
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 135.0,    // was 155 on Day of UNH; was 150 inches
+    			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	if( startSide == StartOn.LEFT) {
     		// continue driving backwards, angling towards the scale
-    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,
-    				Autonomous.chooseAngle(startSide, 145.0)));  // was 155.0 for pract robot 
+    		addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 90.0,
+    				Autonomous.chooseAngle(startSide, 140.0)));  // was 155.0 for pract robot 
     	} else {
     		// continue driving backwards, angling towards the scale
-    		addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 70.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
-    				Autonomous.chooseAngle(startSide, 145.0)));
+    		addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 75.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
+    				Autonomous.chooseAngle(startSide, 140.0)));
     	}
     	
-    	// straighten out again to be perpendicular to side of scale
-    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 55.0,      // was 60 on Day 1 of UNH; before was 45.0
+    	// straighten out again to be perpendicular to side of scale; do first part in high gear
+    	addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 40.0,      // was 60 on Day 1 of UNH; before was 45.0
+    			Autonomous.chooseAngle(startSide, 180.0)));
+    	
+    	// do final approach to scale in low gear to shed some speed
+    	addParallel(new DriveSetShifter(Shifter.LOW_GEAR)); 
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 25.0,      // was 60 on Day 1 of UNH; before was 45.0
     			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	// lower the intake arm to get ready to harvest a 2nd cube soon
        	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential (new Wait(0.4));  // pause briefly before placing cube
+    	addSequential (new Wait(0.5));  // pause briefly before placing cube
     	
     	// spit out the the cube and open the arms, too -- belt and suspenders!
+    	addParallel(new PrintAutonomousTimeRemaining("Spitting out 1st cube."));
     	addSequential(new ElevatorArmSetMotorAuto(-0.4));
     	addSequential(new ElevatorArmOpen());
     	
-    	// wait for the robot to fully eject cube before we back up
+    	// wait for the robot to fully eject cube before we change to low gear to back up
     	addSequential(new Wait(0.4)); 
     }
 }

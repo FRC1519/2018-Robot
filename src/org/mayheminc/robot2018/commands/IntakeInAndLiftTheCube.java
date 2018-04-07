@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class IntakeInAndLiftTheCube extends Command {
 	
-		private boolean m_inAuto;
+		private boolean m_inAutonomous;
 		private boolean m_doneEnough;
 		private boolean m_handoffStarted;
 		private Command m_handoffCommand;
@@ -22,8 +22,8 @@ public class IntakeInAndLiftTheCube extends Command {
 	    public IntakeInAndLiftTheCube(boolean inAuto) {
 	        super();
 	        
-	        m_inAuto = inAuto;
-	    	m_handoffCommand = new HandoffCubeToElevator();
+	        m_inAutonomous = inAuto;
+	    	m_handoffCommand = new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT);
 	    }
 
 	    protected void initialize() {
@@ -45,7 +45,7 @@ public class IntakeInAndLiftTheCube extends Command {
 		    		Robot.elevator.setDesiredPosition(Elevator.PICK_UP_CUBE);
 		    	}
 	    	
-    		if (m_inAuto) {
+    		if (m_inAutonomous) {
     			// in auto, creep forward a little bit while getting the cube
         		Robot.drive.speedRacerDrive(0.1, 0, false);
     		}
@@ -54,16 +54,9 @@ public class IntakeInAndLiftTheCube extends Command {
 	    	if( Robot.pivot.getCurrentPosition() < Pivot.DOWNWARD_POSITION + Pivot.PIVOT_TOLERANCE &&
 	    		Robot.cubeDetector.isCubeSquare() )
 	    	{
-	    		// want to backup and then automatically lift the cube.
-	    		// There is a special command we made for this to back up two inches and then handoff
-	    		
-	    		
-	    		// automatically lift the cube
-// NOTE:  Temporarily commenting this out to experiment with auto-handoff	    		
-//	    		Robot.pivot.setDesiredPosition(Pivot.UPRIGHT_POSITION);
-	    		
-	    		if (m_inAuto) {
-	    			// this is done enough for autonomous operation
+	    		// we have a cube - now automatically lift it!
+	    		if (m_inAutonomous) {
+	    			// the autonomous programs do their own handoff, just stop driving
 	    			m_doneEnough = true;
 	    			// stop creeping forward
 	        		Robot.drive.speedRacerDrive(0.0, 0, false);
@@ -80,7 +73,7 @@ public class IntakeInAndLiftTheCube extends Command {
 	    
 	    protected boolean isFinished() {
 	    	// this command will never finish in teleop, but that's what we want...
-	    	return (m_inAuto && m_doneEnough);
+	    	return (m_inAutonomous && m_doneEnough);
 	    }
 	    
 	    protected void end()

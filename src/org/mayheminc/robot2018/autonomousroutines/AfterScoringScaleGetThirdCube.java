@@ -26,16 +26,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AfterScoringScaleGetClosestCube extends CommandGroup {
+public class AfterScoringScaleGetThirdCube extends CommandGroup {
 
-    public AfterScoringScaleGetClosestCube(Autonomous.StartOn startSide) {
+    public AfterScoringScaleGetThirdCube(Autonomous.StartOn startSide) {
 
     	// back away from the scale a bit and head towards the cube at the fence
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
     	addParallel(new IntakeInInstant());
     	
     	// drive a little bit away from the scale before lowering the upper assembly
-       	addSequential(new DriveStraightOnHeading(0.9, DistanceUnits.INCHES, 10.0,
+       	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 30.0,
        			Autonomous.chooseAngle(startSide, 180.0))); // was .5
        	
     	// prepare upper assembly for getting a cube soon
@@ -45,10 +45,12 @@ public class AfterScoringScaleGetClosestCube extends CommandGroup {
     	addParallel(new ElevatorArmSetMotorAuto(0.0));
        	
     	// drive the remaining distance while the upper assembly is going down
-       	addSequential(new DriveStraightOnHeading(0.9, DistanceUnits.INCHES, 40.0,
-       			Autonomous.chooseAngle(startSide, 180.0))); // was .5
+       	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 50.0,
+       			Autonomous.chooseAngle(startSide, 205.0))); // was .5
        	
     	// drive the last little bit and engage the (second) cube
+//       	addSequential(new DriveStraightOnHeading(0.4, DistanceUnits.INCHES, 20.0,
+//       			Autonomous.chooseAngle(startSide, 180.0))); // was .5
     	addSequential(new AIGatherCube());
     	addParallel(new IntakeOff());
     	

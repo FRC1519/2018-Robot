@@ -99,7 +99,7 @@ public class CubeDetector extends Subsystem {
     
     public boolean isCubeHalfIn()
     {
-    	if (getLeft() >= 0.7 || getRight() >= 0.7 || getCenter() >= 0.7)
+    	if (getLeft() >= 0.7 || getRight() >= 0.7)
     	{
     		return true;
     	}

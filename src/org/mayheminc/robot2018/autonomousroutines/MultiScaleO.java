@@ -42,5 +42,7 @@ public class MultiScaleO extends CommandGroup {
     	// we just picked up a cube -- now ready to score the cube onto the scale again...
     	addSequential(new ScorePickedUpCubeFromFenceOntoOppositeScale(startSide));
     	
+    	addSequential(new DisengageFromScale());
+    	
 	}
 }

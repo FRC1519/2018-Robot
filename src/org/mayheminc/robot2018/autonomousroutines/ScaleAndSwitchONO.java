@@ -79,7 +79,7 @@ public class ScaleAndSwitchONO extends CommandGroup {
     	addSequential(new IntakeInInstant());
     	addSequential(new AIGatherCube());
     	addSequential(new IntakeOff());
-    	addSequential(new HandoffCubeToElevator());
+    	addSequential(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
    
     	// drive a little closer to the switch and spit it over the fence
     	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0,
