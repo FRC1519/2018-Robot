@@ -13,6 +13,7 @@ public class ClimberSet extends Command {
 	public ClimberSet(double value) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
+		requires(Robot.climber);
 		m_value = value;
 	}
 
