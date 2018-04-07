@@ -169,7 +169,7 @@ public class OI {
 	public OI() {
 		
 //		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
-//				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.turret);
+//				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.elevator);
 		
     	DriverStation.reportError("OI constructor.\n", false);
 
@@ -182,6 +182,9 @@ public class OI {
         DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45));
 //        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
+        
+        DRIVER_PAD_D_PAD_UP.whileHeld(new ClimberSet(1.0));
+        DRIVER_PAD_D_PAD_DOWN.whileHeld(new ClimberSet(-1.0));
         
 //        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq());
         DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn());

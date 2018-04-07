@@ -48,6 +48,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static Turret turret = new Turret();
 	public static BlackBox blackbox = new BlackBox();
 	public static Shifter shifter = new Shifter();
+	public static Climber climber = new Climber();
 
 	// allocate the "virtual" subsystems; wait to construct these until
 	// robotInit()

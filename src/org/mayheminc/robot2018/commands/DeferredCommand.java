@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DeferredCommand extends Command {
 	Class<? extends Command> m_CommandType;
-	boolean m_CommandStarted;
+	protected boolean m_CommandStarted;
 	
     public DeferredCommand(Class<? extends Command> Cmd) {
         // Use requires() here to declare subsystem dependencies
