@@ -40,7 +40,9 @@ public class AfterScoringScaleGetThirdCube extends CommandGroup {
        			Autonomous.chooseAngle(startSide, 180.0))); // was .5
        	
     	// do a handoff, but without setting the new elevator height
-//    	addSequential(new HandoffCubeToElevatorWithoutRaisingElevator());	
-    	addSequential(new RunIfAutoTimeRemaining(2.0, HandoffCubeToElevatorWithoutRaisingElevator.class));
+//    	addSequential(new HandoffCubeToElevatorWithoutRaisingElevator());
+       	addParallel(new PrintAutonomousTimeRemaining("Starting Handoff of Cube #3"));
+    	addSequential(new RunIfAutoTimeRemaining(1.5, HandoffCubeToElevator.class));
+    	addParallel(new PrintAutonomousTimeRemaining("Completed Handoff of Cube #3"));
     }
 }

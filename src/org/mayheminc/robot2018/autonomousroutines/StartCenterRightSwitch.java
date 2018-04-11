@@ -45,7 +45,7 @@ public class StartCenterRightSwitch extends CommandGroup {
     	addSequential(new PrintToDriverStation("DriveStraightOnHeading"));
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 5.0, 0.0));
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 40.0, 80.0));
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 45.0, 80.0));
     	// drive to near-side of fence
     	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 65.0, 0.0));
 

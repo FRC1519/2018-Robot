@@ -44,15 +44,16 @@ public class AIGatherCube extends Command {
     	double RobotDriveX = (cubex-0.5);//*2; // convert from the YOLO 0 to 1.0 to -.5 to +.5
     	float AutoDriveFWDSpeed;//(float) (Math.abs(1-cubew)/3 + 0.2);//cubew;
     	// if the cube is far away, then go fast.
-//    	if (cubew <= 0.3)
+//    	if (cubew <= 0.3 && (cubex >= 0.8 || cubex <= 0.2))
 //    	{
 //    		AutoDriveFWDSpeed = 0.5f;
 //    	}
 //    	// if the cube is getting close, go a bit slower
-//    	else if (cubew <= 0.66)
+//    	else if (cubew <= 0.5 && (cubex >= 0.8 || cubex <= 0.2))
 //    	{
 //    		AutoDriveFWDSpeed = 0.4f;
-//    	}
+//    	}else if (cubew <= 0.9 && (cubex >= 0.8 || cubex <= 0.2))
+//    		AutoDriveFWDSpeed = 0.2f;
 //    	// if the cube is close, keep crawling
 //    	else //if (cubew <= 0.72)
 //    	{
@@ -60,28 +61,25 @@ public class AIGatherCube extends Command {
 //    	}
     	AutoDriveFWDSpeed = 0.2f;
 
-//    	if (Robot.cubeDetector.isCubeHalfIn() == true)
-//    	{
-//    		Robot.drive.speedRacerDrive(-0.3, 0, false);
-//    	}
-    	// if we can see a cube, drive towards it
-//    	else 
+    	//If the cube is half in backup
     	if( Robot.cubeDetector.isCubeHalfIn())
     	{
-    		Robot.drive.speedRacerDrive(-0.2, 0, false);    		
+    		Robot.drive.speedRacerDrive(-0.2, 0, false);
+    		
     	}
-    	else 
-    	if (cubex != 1000) {
+    	//if the cube is smashed against the intake.
+//    	else if (cubex >= 0.7 && cubew >= 0.7 && cubey >= 0.2 && cubey <= 0.4) {
+//    		Robot.drive.speedRacerDrive(-0.1, 0.5, false );	
+//    	}
+//    	else if (cubex <= 0.3 && cubew >= 0.7 && cubey >= 0.2 && cubey <= 0.4) {
+//    		Robot.drive.speedRacerDrive(-0.1, -0.5, false);	
+//    	}
+    	//If we see a cube then drive to get it
+    	else if (cubex != 1000) {
     		Robot.drive.speedRacerDrive(AutoDriveFWDSpeed, RobotDriveX, false);
     		SmartDashboard.putString("Cube???", "I see a cube!!!");
     		SmartDashboard.putNumber("RobotDriveX", RobotDriveX);
-    		System.out.println("RobotDriveX" + RobotDriveX);
-//    		if (Robot.cubeDetector.getCenter() <= 0.7 && 
-//    			Robot.cubeDetector.getLeft() <= 0.7 && 
-//    			Robot.cubeDetector.getRight() <= 0.7) {
-//    			DriveStraight(-0.5, DistanceUnits.INCHES, 5.0);
-//    			
-//    		}
+//    		System.out.println("RobotDriveX" + RobotDriveX);
     	}
     	// if we can't see it, crawl!
     	else

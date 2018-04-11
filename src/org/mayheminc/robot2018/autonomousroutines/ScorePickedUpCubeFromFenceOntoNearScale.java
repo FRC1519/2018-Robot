@@ -28,7 +28,7 @@ public class ScorePickedUpCubeFromFenceOntoNearScale extends CommandGroup {
 
     	// raise the elevator and turn the turret
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
-    	addSequential(new Wait(0.4));    // give the above commands a little time to get started before driving
+//    	addSequential(new Wait(0.4));    // give the above commands a little time to get started before driving
 
     	// start driving to the scale a bit before turning the turret
     	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 5.0,
@@ -36,11 +36,11 @@ public class ScorePickedUpCubeFromFenceOntoNearScale extends CommandGroup {
     	
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 155.0)));
     	addParallel(new IntakeCloseJaw());
-    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 50.0,
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 50.0,
     			Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	
     	// wait for the robot to stop before spitting out the cube
-    	addSequential(new Wait(0.3)); 
+    	addSequential(new Wait(0.8 /* 0.3 */ ));    // was 0.3 for "FAST"
     	
     	// spit out the the cube and open the arms, too - belt and suspenders!
     	addSequential(new ElevatorArmSetMotorAuto(-0.5));
@@ -49,7 +49,7 @@ public class ScorePickedUpCubeFromFenceOntoNearScale extends CommandGroup {
     	addSequential(new PrintAutonomousTimeRemaining("Dropping the 2nd Cube"));
 
     	// wait for the robot to fully eject cube before we back up
-    	addSequential(new Wait(0.4)); 
+    	addSequential(new Wait(0.2)); 
 
     }
 }

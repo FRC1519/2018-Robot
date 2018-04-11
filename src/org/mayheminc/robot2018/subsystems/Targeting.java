@@ -164,9 +164,15 @@ public class Targeting extends Subsystem {
 	
 	public float ScoreCube(ObjectLocation obj) 
 	{
+		if (obj.y <= 0.5) {
+			return 0;
+		}
+		else
+		{
 		float centerscore = (float) (1-Math.abs(obj.x-0.5));
 		float likeableness = obj.width*centerscore;
 		return likeableness;
+		}
 	}
 
 	public float ScoreExchange(ObjectLocation obj) 

@@ -16,11 +16,13 @@ import org.mayheminc.robot2018.commands.IntakeOutInstant;
 import org.mayheminc.robot2018.commands.PivotMove;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.PrintToDriverStation;
+import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
+import org.mayheminc.robot2018.subsystems.Turret;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -39,29 +41,46 @@ public class StartCenterRightSwitchPyramid extends CommandGroup {
     	// pivot is already down from end of 1st cube; prepare to go get a 2nd cube
     	// put the pivot down and backup K-turn face the pyramid
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 40.0, 300.0)); // was .5
+    	addParallel(new IntakeInInstant());
+    	
+    	// prepare upper assembly for getting a cube soon
+    	addParallel(new ElevatorSetPosition(Elevator.PICK_UP_CUBE));
+    	addParallel(new TurretMoveTo(Turret.FRONT_POSITION));
+    	addParallel(new ElevatorArmOpen());
+    	addParallel(new ElevatorArmSetMotorAuto(0.0));
+    	
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 35.0, 30.0)); // drive straight back a bit further
+    	
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 20.0, 330.0)); // was .5
     	 
     	// drive to the front cube of pyramid (a little more slowly to not crash into pyramid)
     	addSequential(new Wait(0.3));
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0, 300.0)); // was .5
+    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 30.0, 330.0)); // was .5
  	
     	// eat the cube
-    	addSequential(new IntakeInInstant());
+    	
     	addSequential(new AIGatherCube());
+    	addParallel(new IntakeOff());
     	
     	// backup with the cube a little to get out of pyramid before doing handoff
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 300.0)); // was .5
-    	addSequential(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 5.0, 330.0)); // was .5
+    	addParallel(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
     	
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 25.0, 0.0)); // was .5
-
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 40.0, 280.0)); // was .5
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 20.0, 0.0)); // was .5
+    	
     	// drive forward to kiss the switch
     	addSequential(new Wait(0.3));
-    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 55.0, 0.0)); // was .5
+    	// first part of drive at a slower speed to help assist turn
+    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 20.0, 0.0)); // was .5
+    	addSequential(new DriveStraightOnHeading(0.8, DistanceUnits.INCHES, 60.0, 0.0)); // was .5
     	
     	// SHOULD DELIVER THE 2nd CUBE HERE
     	// spit out the the 2nd cube
     	addSequential(new ElevatorArmOpen());
+    	addSequential(new Wait(1.0));
+    	// backup 
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 40.0, 0.0)); 
 
     	// commented out the below so we only do 2 cubes
     	
@@ -98,8 +117,9 @@ public class StartCenterRightSwitchPyramid extends CommandGroup {
 ////    	// spit out the the 3rd cube
 ////    	addSequential(new ElevatorArmOpen());
 //
-//       	addSequential(new PrintAutonomousTimeRemaining("StartCenterRightSwitchPyramid Done"));
+       	addSequential(new PrintAutonomousTimeRemaining("StartCenterRightSwitchPyramid Done"));
 
         
     }
 }
+

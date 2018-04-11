@@ -40,7 +40,7 @@ public class ScorePickedUpCubeFromFenceOntoOppositeScale extends CommandGroup {
     			Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	
     	// wait for the robot to stop moving before spitting out the cube
-    	addSequential(new Wait(0.5)); 
+    	addSequential(new Wait(0.8));    // was 0.5 for "FAST!" 
 
     	// spit out the the cube and open the arms, too - belt and suspenders!
     	addSequential(new ElevatorArmSetMotorAuto(-0.5));
@@ -49,7 +49,7 @@ public class ScorePickedUpCubeFromFenceOntoOppositeScale extends CommandGroup {
     	addSequential(new PrintAutonomousTimeRemaining("Dropping the 2nd Cube"));
     	
     	// wait for the robot to fully eject cube before we back up
-    	addSequential(new Wait(0.4)); 
+    	addSequential(new Wait(0.2));  // was 0.4 
     	
     	// drive forward a bit to disengage the scale
     	addSequential(new DriveStraightOnHeading(0.4, DistanceUnits.INCHES, 20.0,

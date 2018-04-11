@@ -60,7 +60,7 @@ public class ScoreOnNearScale extends CommandGroup {
     				Autonomous.chooseAngle(startSide, 140.0)));  // was 155.0 for pract robot 
     	} else {
     		// continue driving backwards, angling towards the scale
-    		addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 75.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
+    		addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 70.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
     				Autonomous.chooseAngle(startSide, 140.0)));
     	}
     	
@@ -75,7 +75,7 @@ public class ScoreOnNearScale extends CommandGroup {
     	
     	// lower the intake arm to get ready to harvest a 2nd cube soon
        	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
-    	addSequential (new Wait(0.5));  // pause briefly before placing cube
+    	addSequential (new Wait(0.9));  // pause briefly before placing cube (was 0.5 for "FAST!!!")
     	
     	// spit out the the cube and open the arms, too -- belt and suspenders!
     	addParallel(new PrintAutonomousTimeRemaining("Spitting out 1st cube."));
@@ -83,6 +83,6 @@ public class ScoreOnNearScale extends CommandGroup {
     	addSequential(new ElevatorArmOpen());
     	
     	// wait for the robot to fully eject cube before we change to low gear to back up
-    	addSequential(new Wait(0.4)); 
+    	addSequential(new Wait(0.2));
     }
 }

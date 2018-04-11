@@ -28,18 +28,19 @@ public class StartCenterLeftSwitchPyramid extends CommandGroup {
     	// start by putting one cube into the left switch
     	addSequential(new StartCenterLeftSwitch());
     	
-    	// prepare to go get a 2nd cube, by going a litle further back
-    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 20.0, 0.0)); // was .5
+    	// prepare to go get a 2nd cube, by going a little further back
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 25.0, 0.0)); // was .5
     	// put the pivot down and backup K-turn face the pyramid
     	addParallel(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
+    	addParallel(new IntakeInInstant());
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 40.0, 60.0)); // was .5 // was 300 for right
     	 
     	// drive to the front cube of pyramid (a little more slowly to not crash into pyramid)
-    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 45.0, 60.0)); // was .5 // was 300 for right
+    	addSequential(new DriveStraightOnHeading(0.5, DistanceUnits.INCHES, 45.0, 50.0)); // was .5 // was 300 for right
  	
     	// eat the cube
-    	addSequential(new IntakeInInstant());
     	addSequential(new AIGatherCube());
+    	addParallel(new IntakeOff());
     	
     	// backup with the cube a little to get out of pyramid before doing handoff
     	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 5.0, 60.0)); // was .5
@@ -53,7 +54,13 @@ public class StartCenterLeftSwitchPyramid extends CommandGroup {
     	// SHOULD DELIVER THE 2nd CUBE HERE
     	// spit out the the 2nd cube
     	addSequential(new ElevatorArmOpen());
+    	
+    	addSequential(new Wait(1.0));
+    	// backup 
+ 	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 40.0, 0.0)); 
+
   		// commented out the below so we only do 2 cubes.
+    	
     	
     	
 //    	// wait for the robot to fully stop before we back up

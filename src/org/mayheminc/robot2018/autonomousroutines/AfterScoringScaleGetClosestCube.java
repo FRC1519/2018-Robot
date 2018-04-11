@@ -53,8 +53,8 @@ public class AfterScoringScaleGetClosestCube extends CommandGroup {
     	addParallel(new IntakeOff());
     	
     	// back up a couple inches to avoid "stripping" cube when picking it up
-       	addParallel(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 2.0,
-       			Autonomous.chooseAngle(startSide, 180.0))); // was .5
+//       	addParallel(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 2.0,
+//       			Autonomous.chooseAngle(startSide, 180.0))); // was .5
        	
     	// do a handoff, but without setting the new elevator height
     	addSequential(new HandoffCubeToElevatorWithoutRaisingElevator());	

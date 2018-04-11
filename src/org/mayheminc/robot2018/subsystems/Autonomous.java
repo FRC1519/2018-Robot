@@ -21,14 +21,17 @@ public class Autonomous extends Subsystem {
 	private static Command autonomousPrograms[] = {
 			
 			/* 0 */   new StayStill()  // do nothing	
-			, new CrossBaselineBackwards()
+			, new StartRightCrossBaselineBackwards()
 			, new StartRightScaleAndSwitch()
 			, new StartRightMultiScale()
+			, new StartRightEndScale()
 			, new StartCenterSmartSwitch()
-//			, new StartCenterSmartSwitchPyramid()
+			, new StartCenterSmartSwitchPyramid()
+			, new StartLeftCrossBaselineBackwards()
 			, new StartLeftScaleAndSwitch()
-			, new MultiSwitchN(Autonomous.StartOn.RIGHT)
 			, new StartLeftMultiScale()
+			, new StartLeftEndScale()
+			, new MultiSwitchN(Autonomous.StartOn.RIGHT)
 			, new TestAuto()
 	};
 
@@ -86,6 +89,7 @@ public class Autonomous extends Subsystem {
 		} else if (delay > MAX_DELAY) {
 			delay = MAX_DELAY;
 		}
+		updateSmartDashboard();
 	}
 	
 	private static StringBuffer sb = new StringBuffer();
