@@ -180,11 +180,13 @@ public class OI {
 
         DRIVER_PAD_RED_BUTTON.whileHeld(new FlipACube(45));
         DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45));
+        DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(-0.2));
+        DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(1.0));
 //        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
-        DRIVER_PAD_D_PAD_UP.whileHeld(new ClimberSet(1.0));
-        DRIVER_PAD_D_PAD_DOWN.whileHeld(new ClimberSet(-1.0));
+//        DRIVER_PAD_D_PAD_UP.whileHeld(new ClimberSet(1.0));
+//        DRIVER_PAD_D_PAD_DOWN.whileHeld(new ClimberSet(-1.0));
         
 //        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq());
         DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn());
