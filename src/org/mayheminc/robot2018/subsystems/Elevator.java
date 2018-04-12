@@ -24,6 +24,7 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	public static final int REST_NEAR_BOTTOM = 1500;
 	public static final int PREPARE_FOR_HANDOFF_HEIGHT = 3500;
 	public static final int SWITCH_HEIGHT = 4500;  // was 3500 with 49:1 gearbox;  added 500
+	public static final int SWITCH_MAX_HEIGHT = 10000;
 	
 	// Below heights are for Gray's Basement
 //	public static final int SCALE_LOW = 7500;
@@ -35,7 +36,7 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	// NOTE: added 500 to each of the set points due to the 25:1 elevator gearbox allowing elevator to sag about 400 counts
 	
 	public static final int SCALE_LOW = 15800;	
-	public static final int SCALE_MID = 21300;  // was 20500 before NECMP   // normally used by "scale button" on OI
+	public static final int SCALE_MID = 21700;  // was 20500 before NECMP   // normally used by "scale button" on OI
 	public static final int SCALE_HIGH = 24300;   // also used by the autonomous programs
 	public static final int CEILING = 29000; 	  // was 24100 at start of Week 1
 	public static final int TOP_SAFETY_LIMIT = 30000;  // should really be 30000

@@ -21,7 +21,11 @@ public class ClimberSet extends Command {
 	protected void initialize() {
 		Robot.climber.set(m_value);
 	}
-
+	
+    protected void execute() {
+		Robot.climber.set(m_value);
+	}
+    
 	protected void end() {Robot.climber.set(0.0);}
 
 	protected void interrupted() {Robot.climber.set(0.0);}

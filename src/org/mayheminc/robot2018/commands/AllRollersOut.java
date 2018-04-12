@@ -12,8 +12,18 @@ public class AllRollersOut extends Command {
 
     protected void initialize() {
     	Robot.intake.spitOutCube();
-    	Robot.elevatorArms.setMotor(-0.7);  // had been at 1.0; spit less forcefully
+    	
+    	// we want a very forceful spit for into the switch, and a gentler spit for into the scale
+    	// Accordingly, we want the spit strength to vary according to elevator height.
+
+    	// if below the SWITCH_MAX_HEIGHT spit hard for the switch
+    	if (Robot.elevator.getCurrentPosition() < Robot.elevator.SWITCH_MAX_HEIGHT) {
+    		Robot.elevatorArms.setMotor(-1.0);  // spit at full power for the switch.
+    	} else {
+    		Robot.elevatorArms.setMotor(-0.7);  // spit at 70% power for the scale.
+		}
     }
+    
     protected boolean isFinished() {return false;}
     protected void end()
     {

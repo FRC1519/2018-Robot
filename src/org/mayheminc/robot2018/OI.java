@@ -180,8 +180,8 @@ public class OI {
 
         DRIVER_PAD_RED_BUTTON.whileHeld(new FlipACube(45));
         DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45));
-        DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(-0.2));
-        DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(1.0));
+        DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(1.0));    // Climb up
+        DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(-0.2));      // Descend down
 //        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
