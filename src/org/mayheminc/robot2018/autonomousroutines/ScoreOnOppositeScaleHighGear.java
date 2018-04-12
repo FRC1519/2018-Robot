@@ -1,12 +1,14 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.AIGatherCube;
+import org.mayheminc.robot2018.commands.DriveSetShifter;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.IntakeInInstant;
 import org.mayheminc.robot2018.commands.IntakeOff;
 import org.mayheminc.robot2018.commands.PivotMove;
+import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.TurretMoveToDegree;
 import org.mayheminc.robot2018.commands.TurretZero;
@@ -18,6 +20,7 @@ import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
+import org.mayheminc.robot2018.subsystems.Shifter;
 import org.mayheminc.robot2018.subsystems.Turret;
 import org.mayheminc.robot2018.subsystems.Autonomous.StartOn;
 
@@ -26,13 +29,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class ScoreOnOppositeScale extends CommandGroup {
+public class ScoreOnOppositeScaleHighGear extends CommandGroup {
 
-    public ScoreOnOppositeScale(Autonomous.StartOn startSide) {
+    public ScoreOnOppositeScaleHighGear(Autonomous.StartOn startSide) {
     	
     	// presume that the robot is starting out backwards
     	addSequential(new ZeroGyro(180.0) );
-    	  	
+    	
     	// the turret is rotated towards the center of the field to face down field.
     	addSequential(new TurretZero((startSide == Autonomous.StartOn.RIGHT) ? Turret.RIGHT_REAR : Turret.LEFT_REAR));
   
@@ -43,38 +46,45 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	
     	// drive straight backwards until near the end of the switch
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 180.0,  // was 175.0 on Day 1 of UNH
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 10.0,  // was 175.0 on Day 1 of UNH
     			Autonomous.chooseAngle(startSide, 180.0))); // was -.5
-
+    	
+    	addParallel(new DriveSetShifter(Shifter.HIGH_GEAR));
+    	
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 170.0,  // was 175.0 on Day 1 of UNH
+    			Autonomous.chooseAngle(startSide, 180.0))); // was -.5
+    	
     	// put the turret to the scoring angle (was Turret.LEFT_ANGLED_BACK_POSITION)
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 200.0)));
    	
     	// driving down the alley
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 125.0,
+    	addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 50.0,
+    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 65.0,  // was 75.0 before NECMP
     			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	
     	// raise elevator to scoring height on normal scale
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
     	if( startSide == StartOn.LEFT)
     	{
-	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0,  // was 75.0
+	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,  // was 75.0
 	    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	}
     	else
     	{
-	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0,   // was 95.0 at start of UNH, was 105.0
+	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,   // was 95.0 at start of UNH
 	    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	}
-
+    	addParallel(new DriveSetShifter(Shifter.LOW_GEAR));
     	// turn towards the scale
     	if( startSide == StartOn.LEFT)
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0,  // was 58.0 for right
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 63.0,  // was 58.0 for right
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	else
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0,  // was 58.0 at Day 1 of UNH
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 73.0,  // was 63.0 at start of NECMP practice
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	
