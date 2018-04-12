@@ -60,7 +60,7 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	// driving down the alley
     	addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 50.0,
     			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 75.0,
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 65.0,  // was 75.0 before NECMP
     			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	
     	// raise elevator to scoring height on normal scale
@@ -72,7 +72,7 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	}
     	else
     	{
-	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,   // was 95.0 at start of UNH, was 105.0
+	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,   // was 95.0 at start of UNH
 	    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	}
     	addParallel(new DriveSetShifter(Shifter.LOW_GEAR));
@@ -84,7 +84,7 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	}
     	else
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 63.0,  // was 58.0 at Day 1 of UNH
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 73.0,  // was 63.0 at start of NECMP practice
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	

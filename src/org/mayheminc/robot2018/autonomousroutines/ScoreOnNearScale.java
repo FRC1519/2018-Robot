@@ -57,11 +57,11 @@ public class ScoreOnNearScale extends CommandGroup {
     	if( startSide == StartOn.LEFT) {
     		// continue driving backwards, angling towards the scale
     		addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 90.0,
-    				Autonomous.chooseAngle(startSide, 140.0)));  // was 155.0 for pract robot 
+    				Autonomous.chooseAngle(startSide, 150.0)));  // was 140.0 before NECMP 
     	} else {
     		// continue driving backwards, angling towards the scale
     		addSequential(new DriveStraightOnHeading(-0.7, DistanceUnits.INCHES, 70.0,   // was 75 on Day 1 of UNH; was 90 at start of UNH was 95.0
-    				Autonomous.chooseAngle(startSide, 140.0)));
+    				Autonomous.chooseAngle(startSide, 150.0)));  // was 140.0 before NECMP 
     	}
     	
     	// straighten out again to be perpendicular to side of scale; do first part in high gear
@@ -70,7 +70,7 @@ public class ScoreOnNearScale extends CommandGroup {
     	
     	// do final approach to scale in low gear to shed some speed
     	addParallel(new DriveSetShifter(Shifter.LOW_GEAR)); 
-    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 25.0,      // was 60 on Day 1 of UNH; before was 45.0
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 30.0,      // was 25.0 before NECMP
     			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	// lower the intake arm to get ready to harvest a 2nd cube soon
