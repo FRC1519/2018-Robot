@@ -44,14 +44,14 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	
     	// drive straight backwards until near the end of the switch
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 180.0,  // was 175.0 on Day 1 of UNH
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 185.0,  // was 180.0 before NECMP; was 175.0 on Day 1 of UNH
     			Autonomous.chooseAngle(startSide, 180.0))); // was -.5
 
     	// put the turret to the scoring angle (was Turret.LEFT_ANGLED_BACK_POSITION)
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 200.0)));
    	
     	// driving down the alley
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 125.0,
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 130.0,  // was 125.0 before NECMP
     			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	
     	// raise elevator to scoring height on normal scale
