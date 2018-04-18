@@ -70,12 +70,12 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	// turn towards the scale
     	if( startSide == StartOn.LEFT)
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0,  // was 58.0 for right
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 65.0,  // was 58.0 for right
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	else
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 58.0,  // was 58.0 at Day 1 of UNH
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 65.0,  // was 58.0 until NECMP Quarters; was 58.0 at Day 1 of UNH
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	
