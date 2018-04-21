@@ -222,27 +222,16 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		// before doing anything else in teleop, kill any existing commands
 		Scheduler.getInstance().removeAll();
 		
-		// where ever the pivot, turret, and elevator are, hold them there.
+		// Safety measures:
+				// KBS: When commencing teleop, we want to make sure "position-controlled" subsystems don't
+				//      try to move immediately upon enabling the robot.  
+		// Where ever the pivot, turret, and elevator are, hold them there.
 		pivot.holdCurrentPosition();
 		turret.holdCurrentPosition();
 		elevator.holdCurrentPosition();
 		
 		// turn on the compressor
 		compressor.start();
-
-		// Safety measures:
-		// KBS: When commencing teleop, we want to make sure "position-controlled" subsystems don't
-		//      try to move immediately upon enabling the robot.  Currently think the best way to do
-		//      this is to put all "position-controlled" subsystems into a mode that relaxes the motor
-		//      for each.  However, we want to be sure this doesn't "break things" during matches
-		//      when transitioning from autonomous to teleop.
-		
-		// elevator.relaxForSafety();
-		// turret.relaxForSafety();
-		// pivot.relaxForSafety();
-		
-		// where ever the pivot is, hold it there.
-		pivot.holdCurrentPosition();
 
 		// NOTE:  BELOW SHOULD BE OBE WITH above Scheduler.getInstance().removeAll();
 //		// This makes sure that the autonomous stops running when

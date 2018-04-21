@@ -25,14 +25,20 @@ public class Autonomous extends Subsystem {
 			, new StartRightScaleAndSwitch()
 			, new StartRightMultiScale()
 			, new StartRightEndScale()
+			, new StartRightStayRightUnlessLLLAlley()
+			, new StartRightStayRightUnlessLLLScale()
+			, new StartRightStayRightUnlessLLLSwitch()
 			, new StartCenterSmartSwitch()
 			, new StartCenterSmartSwitchPyramid()
 			, new StartLeftCrossBaselineBackwards()
 			, new StartLeftScaleAndSwitch()
 			, new StartLeftMultiScale()
 			, new StartLeftEndScale()
-			, new MultiSwitchN(Autonomous.StartOn.RIGHT)
+			, new StartLeftStayLeftUnlessRRRAlley()
+			, new StartLeftStayLeftUnlessRRRScale()
+			, new StartLeftStayLeftUnlessRRRSwitch()
 			, new TestAuto()
+
 	};
 
 	private static int programNumber = 2; // 1 = cross baseline backwards
