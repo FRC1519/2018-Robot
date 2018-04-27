@@ -34,10 +34,11 @@ public class HandoffCubeToElevatorWithoutRaisingElevator extends CommandGroup {
     	addSequential(new Wait(0.05)); // wait a fraction of a second for arm pivot "bounce" to stop
     	
     	addSequential(new IntakeOutInstant());  // spit the cube (upwards) out of the intake
-    	
-    	addSequential(new Wait(0.1)); 
     	addSequential(new ElevatorArmClose());
+//    	addSequential(new ElevatorArmSetMotorAuto(0.25));
     	
+// this belongs here for spring-extend cylinders, because they close faster
+    	addSequential(new Wait(0.03));     // was 0.1 for spring-extend cylinders
     	addSequential(new Wait(0.05));    // wait for the pistons to close
 //    	addParallel(new IntakeOff());
 

@@ -58,24 +58,24 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SCALE_HIGH));
     	if( startSide == StartOn.LEFT)
     	{
-	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 90.0,  // was 95.0 at CMP practice match
+	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 85.0,  // was 95.0 at CMP practice match
 	    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	}
     	else
     	{
-	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 95.0,
+	    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 85.0,  // was 95.0 at NECMP
 	    			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	}
 
     	// turn towards the scale
     	if( startSide == StartOn.LEFT)
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 65.0,  // looked good at CMP practice match
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 68.0,  // was 65.0 at start of CMP; looked good at CMP practice match
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	else
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 65.0,  // was 58.0 until NECMP Quarters; was 58.0 at Day 1 of UNH
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 68.0,  // was 65.0 at start of CMP; 58.0 until NECMP Quarters; was 58.0 at Day 1 of UNH
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	

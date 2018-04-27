@@ -147,6 +147,10 @@ public class OI {
 	private static final Button DRIVER_PAD_BUTTON_FIVE = new JoystickButton(DRIVER_PAD, 5); // Left Top Trigger
 	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_BUTTON_SIX = new JoystickButton(DRIVER_PAD, 6); // Right Top Trigger
+	@SuppressWarnings("unused")
+	private static final Button DRIVER_PAD_LEFT_STICK_BUTTON = new JoystickButton(DRIVER_PAD, GAMEPAD_F310_LEFT_STICK_BUTTON); // Left Stick Trigger
+	@SuppressWarnings("unused")
+	private static final Button DRIVER_PAD_RIGHT_STICK_BUTTON = new JoystickButton(DRIVER_PAD, GAMEPAD_F310_RIGHT_STICK_BUTTON); // Right Stick Trigger
 	
 	@SuppressWarnings("unused")
 	private static final JoystickPOVButton DRIVER_PAD_D_PAD_UP = new JoystickPOVButton(DRIVER_PAD, 0);
@@ -182,6 +186,7 @@ public class OI {
         DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45));
         DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(1.0));    // Climb up
         DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(-0.2));      // Descend down
+        
 //        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
         
@@ -192,6 +197,9 @@ public class OI {
         DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn());
         DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new AllRollersOut());
 
+//        DRIVER_PAD_LEFT_STICK_BUTTON.whileHeld(new AllRollersIn());
+        DRIVER_PAD_RIGHT_STICK_BUTTON.whileHeld(new TurretMoveTo(Turret.RIGHT_REAR));
+        
      	//******************************* DRIVER STICK ****************************************************************************
 		
      	DRIVER_STICK_BUTTON_ONE_DISABLED.whenPressed(new TurretZero());
@@ -212,8 +220,10 @@ public class OI {
      	
      	//*************************OPERATOR PAD*******************************
      	
-     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotMove(Pivot.FLIP_CUBE_POSITION));
-     	OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
+//     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotMove(Pivot.FLIP_CUBE_POSITION));
+
+     	OPERATOR_PAD_BUTTON_ONE.whileHeld(new TurretMoveTo(Turret.RIGHT_REAR));
+        OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
      	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
      	
      	// OPERATPR_PAD_BUTTON_FOUR does two different command simultaneously!
