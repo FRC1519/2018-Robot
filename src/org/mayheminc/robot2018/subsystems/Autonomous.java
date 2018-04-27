@@ -24,6 +24,7 @@ public class Autonomous extends Subsystem {
 			, new StartRightCrossBaselineBackwards()
 			, new StartRightScaleAndSwitch()
 			, new StartRightMultiScale()
+			, new StartRightScaleAndOnlyRightSwitch()
 			, new StartRightEndScale()
 			, new StartRightStayRightUnlessLLLAlley()
 			, new StartRightStayRightUnlessLLLScale()
@@ -37,8 +38,7 @@ public class Autonomous extends Subsystem {
 			, new StartLeftStayLeftUnlessRRRAlley()
 			, new StartLeftStayLeftUnlessRRRScale()
 			, new StartLeftStayLeftUnlessRRRSwitch()
-			, new TestAuto()
-
+//			, new TestAuto()
 	};
 
 	private static int programNumber = 2; // 1 = cross baseline backwards
