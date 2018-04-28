@@ -36,7 +36,7 @@ public class ScorePickedUpCubeFromFenceOntoNearScale extends CommandGroup {
     	
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 155.0)));
     	addParallel(new IntakeCloseJaw());
-    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 45.0,   // was 50.0 before NECMP
+    	addSequential(new DriveStraightOnHeading(-0.8, DistanceUnits.INCHES, 40.0,   // was 45.0 at start of CMP; was 50.0 before NECMP
     			Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	
     	// wait for the robot to stop before spitting out the cube

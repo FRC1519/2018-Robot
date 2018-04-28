@@ -79,7 +79,7 @@ public class ScoreOnNearScale extends CommandGroup {
     	
     	// spit out the the cube and open the arms, too -- belt and suspenders!
     	addParallel(new PrintAutonomousTimeRemaining("Spitting out 1st cube."));
-    	addSequential(new ElevatorArmSetMotorAuto(-0.4));
+    	addSequential(new ElevatorArmSetMotorAuto(-0.6));
     	addSequential(new ElevatorArmOpen());
     	
     	// wait for the robot to fully eject cube before we change to low gear to back up

@@ -12,7 +12,8 @@ public class StartRightStayRightUnlessLLLAlley extends SmartAutoChooserBase{
     	boolean scaleOnRight = Robot.gameData.getScaleOnRight();
     	
     	if (ourSwitchOnRight && scaleOnRight) {  // RRR
-    		return new ScaleAndSwitchNNN(Autonomous.StartOn.RIGHT);
+//    		return new ScaleAndSwitchNNN(Autonomous.StartOn.RIGHT);
+    		return new MultiScaleN(Autonomous.StartOn.RIGHT);
     	} else if (ourSwitchOnRight && !scaleOnRight) {  // RLR
     		return new MultiSwitchN(Autonomous.StartOn.RIGHT);
     	} else if (!ourSwitchOnRight && scaleOnRight) {  // LRL
@@ -22,3 +23,4 @@ public class StartRightStayRightUnlessLLLAlley extends SmartAutoChooserBase{
     	}
 	}
 }
+
