@@ -39,8 +39,8 @@ public class Elevator extends Subsystem implements PidTunerObject {
 	public static final int SCALE_MID = 21700;  // was 20500 before NECMP   // normally used by "scale button" on OI
 	public static final int SCALE_HIGH = 24300;   // also used by the autonomous programs
 	public static final int CEILING = 29000; 	  // was 24100 at start of Week 1
-//	public static final int TOP_SAFETY_LIMIT = 30000;  // should really be 30000
-	public static final int TOP_SAFETY_LIMIT = 32000;  // should really be 30000 (changed at CMP for a little MORE)
+	public static final int TOP_SAFETY_LIMIT = 30000;  // should really be 30000
+//	public static final int TOP_SAFETY_LIMIT = 32000;  // should really be 30000 (changed at CMP for a little MORE) This is the real one. 
 	
 	boolean m_SafetyOn = true;
 

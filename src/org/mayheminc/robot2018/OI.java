@@ -182,23 +182,23 @@ public class OI {
      	
      	//*******************************DRIVER PAD**************************************
 
-        DRIVER_PAD_RED_BUTTON.whileHeld(new FlipACube(45));
-        DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45));
-        DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(1.0));    // Climb up
-        DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(-0.2));      // Descend down
+        DRIVER_PAD_RED_BUTTON.whileHeld(new FlipACube(45)); // Taken out for ribfest
+        DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45)); // Taken out for ribfest
+        DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(1.0));    // Climb up  // Taken out for ribfest
+        DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(-0.2));      // Descend down // Taken out for ribfest
         
 //        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
 //     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
-        
+//        
 //        DRIVER_PAD_D_PAD_UP.whileHeld(new ClimberSet(1.0));
 //        DRIVER_PAD_D_PAD_DOWN.whileHeld(new ClimberSet(-1.0));
         
-//        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq());
-        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn());
-        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new AllRollersOut());
+//        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq()); // Put in for ribfest
+        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn()); // Taken out for ribfest
+        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new AllRollersOut()); // Taken out for ribfest
 
 //        DRIVER_PAD_LEFT_STICK_BUTTON.whileHeld(new AllRollersIn());
-        DRIVER_PAD_RIGHT_STICK_BUTTON.whileHeld(new TurretMoveTo(Turret.RIGHT_REAR));
+//        DRIVER_PAD_RIGHT_STICK_BUTTON.whileHeld(new TurretMoveTo(Turret.RIGHT_REAR));
         
      	//******************************* DRIVER STICK ****************************************************************************
 		
@@ -318,6 +318,13 @@ public class OI {
          if( DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
             throttleVal = throttleVal / 3.0;
         }
+         
+// Added for ribfest
+//         if (throttleVal > 0.6) {
+//        	 throttleVal = 0.6;
+//         }else if (throttleVal < -0.6) {
+//        	 throttleVal = -0.6;
+//         }
         return(throttleVal);
     }
     
@@ -384,6 +391,14 @@ public class OI {
         if (Math.abs(value) < 0.05) {
         	value = 0.0;
         }
+//      //Put in for demo
+//        if (value > 0.7) {
+//        	value = 0.7;
+//        }
+//      //Put in for demo
+//        if (value < -0.7) { 
+//        	value = -0.7;
+//        }
         
         if (DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
             value = value / 2.0;
@@ -457,8 +472,10 @@ public class OI {
 
 	// returns true if any of the autoInTeleop buttons are held
 	public boolean autoInTeleop() {
-		return ( DRIVER_PAD_BLUE_BUTTON.get() ||
-				 DRIVER_PAD_RED_BUTTON.get() );
+		return ( //DRIVER_PAD_GREEN_BUTTON.get()  // added for ribfest
+				 DRIVER_PAD_BLUE_BUTTON.get() ||  // removed for ribfest
+				 DRIVER_PAD_RED_BUTTON.get()  // removed for ribfest
+				);
 	}
 
 	public double getTurretManualPower() {

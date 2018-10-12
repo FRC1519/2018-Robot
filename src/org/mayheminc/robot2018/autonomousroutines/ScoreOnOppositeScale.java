@@ -51,7 +51,7 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	addParallel(new TurretMoveToDegree(Autonomous.chooseAngle(startSide, 200.0)));
    	
     	// driving down the alley
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 140.0,  // was 130.0 on Friday of NECMP; was 125.0 before NECMP
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 130.0,  // was 130.0 on Friday of NECMP; was 125.0 before NECMP Changed from 140.0 on Mayhem in Merimack
     			Autonomous.chooseAngle(startSide, 90.0))); // was -0.5
     	
     	// raise elevator to scoring height on normal scale
