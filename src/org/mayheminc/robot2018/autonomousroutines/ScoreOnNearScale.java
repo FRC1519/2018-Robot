@@ -70,7 +70,7 @@ public class ScoreOnNearScale extends CommandGroup {
     	
     	// do final approach to scale in low gear to shed some speed
     	addParallel(new DriveSetShifter(Shifter.LOW_GEAR)); 
-    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 30.0,      // was 25.0 before NECMP
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 27.0,      // was 25.0 before NECMP; was 30.0 at CMP
     			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	// lower the intake arm to get ready to harvest a 2nd cube soon
