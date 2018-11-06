@@ -169,7 +169,7 @@ public class OI {
     // variable to maintain state of whether or not we've "checked in" with the field
 	private boolean m_CheckedInWithFieldManagement = false;
 	
-	public static PidTuner pidTuner;
+	public static PidTuner pidTuner = null;
 	public OI() {
 		
 //		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,

@@ -4,7 +4,9 @@ package org.mayheminc.robot2018;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,6 +17,7 @@ import edu.wpi.first.networktables.*;
 import org.mayheminc.robot2018.commands.RunAutonomous;
 import org.mayheminc.robot2018.subsystems.*;
 import org.mayheminc.util.PidTuner;
+import org.mayheminc.util.Utils;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +26,7 @@ import org.mayheminc.util.PidTuner;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
+public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterativeRobot
 	static NetworkTable table;
 
 	public static final boolean DEBUG = true;
@@ -58,6 +61,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	// autonomous start time monitoring
 	private static long autonomousStartTime;
 	private static boolean printAutoElapsedTime = false;
+	private static final double LOOP_TIME = 0.020;    // The duration of our periodic timed loop, in seconds.  0.020 gives 50 loops/sec
 
 	public static final double BROWNOUT_VOLTAGE_LOWER_THRESHOLD = 10.0;
 	public static final double BROWNOUT_VOLTAGE_UPPER_THRESHOLD = 11.0;
@@ -68,7 +72,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public static final boolean DONT_UPDATE_AUTO_SETUP_FIELDS = false;
 
 	public Robot() {
-
+		super(LOOP_TIME);    // construct a TimedRobot with a timeout of "LOOP_TIME"
 	}
 
 	/**
@@ -76,6 +80,7 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
+
 		table = NetworkTableInstance.getDefault().getTable("datatable");
 
 		System.out.println("robotInit");
@@ -84,6 +89,21 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 		System.out.println("About to DriverStation.reportError for 'Initializing...'");
 		DriverStation.reportError("Initializing... ", false);
 		System.out.println("Done with DriverStation.reportError for 'Initializing...'");
+
+		// // Turn off LiveWindow reporting to avoid appearance of "ERROR 1 CTRE CAN Receive Timeout" messages on concole.
+		// // This fix is documented in section 4.7 of the CTRE PDP User's Guide:
+		// // http://www.ctr-electronics.com/downloads/pdf/PDP%20User's%20Guide.pdf
+		
+		// // The CAN Receive Timeout occurs when the requested data has not been received within the timeout.
+		// // This is usually caused when the PDP is not connected to the CAN bus.
+		// // However, with the 2018 version of WPILib, having a PDP object in robot code can result in a
+		// // CTRE CAN Timeout error being reported in the console/DriverStation.
+		// // This seems to be a result of automatic LiveWindow behavior with the PDP and can be fixed by
+		// // disabling LiveWindow telemetry.  LiveWindow can either be disabled for the PDP object…
+		// LiveWindow.disableTelemetry(pdp);
+		// // … or by disabling all LiveWindow telemetry:
+		LiveWindow.disableAllTelemetry();
+		
 
 		DriverStation.reportError("About to construct Autonomous Subsystem... \n", false);
 		autonomous = new Autonomous();
@@ -119,24 +139,23 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 			printAutoElapsedTime = false;
 		}	   
 		
-		// print the blackbox.
-		blackbox.print();
+		// // print the blackbox.
+		// blackbox.print();
 		
-		// reset the blackbox.
-		blackbox.reset();
+		// // reset the blackbox.
+		// blackbox.reset();
 	}
 
 	public void disabledPeriodic() {
 		// update sensors that need periodic update
-//		targeting.periodic();
 		cubeDetector.periodic();
-		pivot.UpdateSmartDashboard();
+		// // KBS: Not sure why this needs to be in every loop -- it's in the general updateSmartDashboard() below
+		// pivot.UpdateSmartDashboard();
 
 		Scheduler.getInstance().run();
 
 		// update Smart Dashboard, including fields for setting up autonomous operation
 		updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
-		//		System.out.println("disale P");
 		Robot.drive.updateHistory();
 
 		PrintPeriodicPeriod();
@@ -252,14 +271,29 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	 */
 	boolean teleopOnce = false;
 
-	static double teleopTimer = 0;
+	static double periodicTimer = 0;
+	static int periodicLoops = 0;
+	static String periodicOutputString = "periodic: ";
 	void PrintPeriodicPeriod()
 	{
 		double timer = Timer.getFPGATimestamp();
+		double elapsed = timer-periodicTimer;
 
-		//DriverStation.reportWarning("teleop: " + (timer-teleopTimer), false);
-		//System.out.println("periodic: " + (timer-teleopTimer));
-		teleopTimer = timer;		
+		// add a timing figure to the printout, but only if we're too slow
+		if ( elapsed <= (LOOP_TIME + 0.002) ) {
+			periodicOutputString = periodicOutputString + "* ";
+		} else {
+			periodicOutputString = periodicOutputString +  Utils.threeDecimalPlaces(elapsed) + " ";
+		}
+		// DriverStation.reportWarning("periodic: " + (timer-periodicTimer), false);
+		if ((periodicLoops % 50) == 1) {
+			// System.out.println("periodic: " + Utils.threeDecimalPlaces(timer-periodicTimer));
+			periodicOutputString = Utils.threeDecimalPlaces(timer) + " " + periodicOutputString;
+			System.out.println(periodicOutputString);
+			periodicOutputString = "periodic: ";
+		}
+		periodicLoops++;
+		periodicTimer = timer;		
 	}
 
 	public void teleopPeriodic() {
@@ -306,12 +340,16 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 	public void testPeriodic() {
 	}
 
-	private long SMART_DASHBOARD_UPDATE_INTERVAL = 250;
-	private long nextSmartDashboardUpdate = System.currentTimeMillis();
+	private double SMART_DASHBOARD_UPDATE_INTERVAL = 0.250;   // was 0.250;
+	// private long nextSmartDashboardUpdate = System.currentTimeMillis();
+	private double nextSmartDashboardUpdate = Timer.getFPGATimestamp();
 
 	public void updateSmartDashboard(boolean updateAutoFields) {
-		try {
-			if (System.currentTimeMillis() > nextSmartDashboardUpdate) {
+		double currentTime = Timer.getFPGATimestamp();
+
+			if (currentTime > nextSmartDashboardUpdate) {
+
+				// System.out.println("updateSmartDashboard: current: " + currentTime + " next: " + nextSmartDashboardUpdate);
 
 				this.updateSmartDashboard();
 
@@ -321,10 +359,11 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 				elevatorArms.updateSmartDashboard();
 				intake.updateSmartDashboard();
 				pivot.UpdateSmartDashboard();
-//				targeting.updateSmartDashboard();
 				turret.updateSmartDashboard();
 
-				OI.pidTuner.updateSmartDashboard();
+				if (OI.pidTuner != null) {
+					OI.pidTuner.updateSmartDashboard();
+				}
 
 				if (updateAutoFields) {
 					Autonomous.updateSmartDashboard();
@@ -332,9 +371,6 @@ public class Robot extends IterativeRobot { //FRCWaitsForIterativeRobot
 
 				nextSmartDashboardUpdate += SMART_DASHBOARD_UPDATE_INTERVAL;
 			}
-		} catch (Exception e) {
-			return;
-		}
 	}
 
 	void updateSmartDashboard() {

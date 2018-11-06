@@ -97,9 +97,6 @@ public class PidTuner extends InstantCommand{
 	double calculateAmount()
 	{
 		double retval = Math.pow(10,  m_position);
-		
-//		System.out.println("Position = " + m_position);
-
 		return retval;
 	}
 	
@@ -169,7 +166,7 @@ public class PidTuner extends InstantCommand{
 		SmartDashboard.putNumber("PID Tuner I",  m_pidObj.getI());
 		SmartDashboard.putNumber("PID Tuner D",  m_pidObj.getD());
 		SmartDashboard.putNumber("PID Tuner F",  m_pidObj.getF());
-		
+
 		SmartDashboard.putString("PID Tuner Cycle", getCycleStr());
 		SmartDashboard.putNumber("PID Tuner Amount", calculateAmount());
 	}

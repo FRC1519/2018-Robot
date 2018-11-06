@@ -596,7 +596,8 @@ public class Drive extends Subsystem {
 	public void updateSmartDashboard(){
 		displayGyroInfo();
 
-		updateSdbPdp();
+		// ***** KBS:  Uncommenting below, as it takes a LONG time to get PDP values
+		// updateSdbPdp();
 
 //		SmartDashboard.putNumber("ultrasonicDistance", (ultrasonic.getDistance() * 0.393701));
 

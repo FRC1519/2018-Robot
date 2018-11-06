@@ -1,7 +1,5 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
-import javax.annotation.Resource.AuthenticationType;
-
 import org.mayheminc.robot2018.commands.DriveSetShifter;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;

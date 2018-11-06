@@ -64,8 +64,6 @@ public class RangeFinder_GP2D120 {
 	// had been 1.65 on iteration 1 robot
 //	private static final double OBJECT_IS_FLUSH_VOLTAGE = 2.00;  // was 2.05 night before Week Zero
 	
-	
-	
 	public boolean isObjectFlush() {
 		return getFilteredVoltage() >= RobotPreferences.getIRThreshold(m_index);   
 	}

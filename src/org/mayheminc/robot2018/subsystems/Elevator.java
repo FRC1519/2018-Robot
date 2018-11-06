@@ -175,11 +175,11 @@ public class Elevator extends Subsystem implements PidTunerObject {
     public void updateSmartDashboard()
     {
     	SmartDashboard.putNumber("Elevator Pos", m_elevatorMotor.getPosition());
-    	SmartDashboard.putNumber("Elevator V", m_elevatorMotor.getMotorOutputVoltage());
-    	SmartDashboard.putNumber("Elevator I", m_elevatorMotor.getOutputCurrent());
-    	SmartDashboard.putNumber("Elevator Watts", m_elevatorMotor.getMotorOutputVoltage() * m_elevatorMotor.getOutputCurrent());
+    	// SmartDashboard.putNumber("Elevator V", m_elevatorMotor.getMotorOutputVoltage());
+    	// SmartDashboard.putNumber("Elevator I", m_elevatorMotor.getOutputCurrent());
+    	// SmartDashboard.putNumber("Elevator Watts", m_elevatorMotor.getMotorOutputVoltage() * m_elevatorMotor.getOutputCurrent());
     	
-    	SmartDashboard.putNumber("Elevator V PDP", Robot.pdp.getCurrent(3));
+    	// SmartDashboard.putNumber("Elevator V PDP", Robot.pdp.getCurrent(3));
     }
 
 	@Override
