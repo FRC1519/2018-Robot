@@ -78,7 +78,7 @@ public class Shifter extends Subsystem {
 
 			if ((!Robot.oi.forceLowGear() && Math.abs(currentSpeed) > SHIFT_TO_HIGH) &&
 					(Math.abs(Robot.oi.driveThrottle()) > 0.9)) {
-				setGear(HIGH_GEAR);
+				setGear(HIGH_GEAR); // Taken out for ribfest
 			} else if (Robot.oi.forceLowGear() || 
 					Math.abs(currentSpeed) < SHIFT_TO_LOW) {
 				setGear(LOW_GEAR);

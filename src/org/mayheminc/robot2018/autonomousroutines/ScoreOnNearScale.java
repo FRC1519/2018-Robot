@@ -70,7 +70,7 @@ public class ScoreOnNearScale extends CommandGroup {
     	
     	// do final approach to scale in low gear to shed some speed
     	addParallel(new DriveSetShifter(Shifter.LOW_GEAR)); 
-    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 30.0,      // was 25.0 before NECMP
+    	addSequential(new DriveStraightOnHeading(-0.5, DistanceUnits.INCHES, 27.0,      // was 25.0 before NECMP; was 30.0 at CMP
     			Autonomous.chooseAngle(startSide, 180.0)));
     	
     	// lower the intake arm to get ready to harvest a 2nd cube soon
@@ -79,7 +79,7 @@ public class ScoreOnNearScale extends CommandGroup {
     	
     	// spit out the the cube and open the arms, too -- belt and suspenders!
     	addParallel(new PrintAutonomousTimeRemaining("Spitting out 1st cube."));
-    	addSequential(new ElevatorArmSetMotorAuto(-0.4));
+    	addSequential(new ElevatorArmSetMotorAuto(-0.6));
     	addSequential(new ElevatorArmOpen());
     	
     	// wait for the robot to fully eject cube before we change to low gear to back up

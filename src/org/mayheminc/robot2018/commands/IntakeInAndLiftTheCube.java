@@ -67,7 +67,6 @@ public class IntakeInAndLiftTheCube extends Command {
 	    				m_handoffCommand.start();
 	    			}
 	    		}
-
 	    	}
 	    }
 	    

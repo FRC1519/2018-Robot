@@ -62,7 +62,7 @@ public class AIGatherCube extends Command {
     	AutoDriveFWDSpeed = 0.2f;
 
     	//If the cube is half in backup
-    	if( Robot.cubeDetector.isCubeHalfIn())
+    	if( false ) // GOVERNOR'S Cup, no camera: Should really be Robot.cubeDetector.isCubeHalfIn())
     	{
     		Robot.drive.speedRacerDrive(-0.2, 0, false);
     		
@@ -75,12 +75,13 @@ public class AIGatherCube extends Command {
 //    		Robot.drive.speedRacerDrive(-0.1, -0.5, false);	
 //    	}
     	//If we see a cube then drive to get it
-    	else if (cubex != 1000) {
-    		Robot.drive.speedRacerDrive(AutoDriveFWDSpeed, RobotDriveX, false);
-    		SmartDashboard.putString("Cube???", "I see a cube!!!");
-    		SmartDashboard.putNumber("RobotDriveX", RobotDriveX);
-//    		System.out.println("RobotDriveX" + RobotDriveX);
-    	}
+//// ***** Commented out the below block of code at Governor's Cup, since no camera
+//    	else if (cubex != 1000) {
+//    		Robot.drive.speedRacerDrive(AutoDriveFWDSpeed, RobotDriveX, false);
+//    		SmartDashboard.putString("Cube???", "I see a cube!!!");
+//    		SmartDashboard.putNumber("RobotDriveX", RobotDriveX);
+////    		System.out.println("RobotDriveX" + RobotDriveX);
+//    	}
     	// if we can't see it, crawl!
     	else
     	{
