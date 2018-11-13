@@ -44,7 +44,7 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	addParallel(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
     	
     	// drive straight backwards until near the end of the switch
-    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 172.0,  // was 182.0 at start of RR; was 180.0 before NECMP; was 175.0 on Day 1 of UNH
+    	addSequential(new DriveStraightOnHeading(-0.9, DistanceUnits.INCHES, 177.0,  // was 182.0 at start of RR; was 180.0 before NECMP; was 175.0 on Day 1 of UNH
     			Autonomous.chooseAngle(startSide, 180.0))); // was -.5
 
     	// put the turret to the scoring angle (was Turret.LEFT_ANGLED_BACK_POSITION)
@@ -70,12 +70,12 @@ public class ScoreOnOppositeScale extends CommandGroup {
     	// turn towards the scale
     	if( startSide == StartOn.LEFT)
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 78.0,  // was 68.0 at start of RR; was 65.0 at start of CMP; looked good at CMP practice match
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 73.0,  // was 68.0 at start of RR; was 65.0 at start of CMP; looked good at CMP practice match
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	else
     	{
-    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 78.0,  // was 68.0 at start of RR; was 65.0 at start of CMP; 58.0 until NECMP Quarters; was 58.0 at Day 1 of UNH
+    		addSequential(new DriveStraightOnHeading(-0.4, DistanceUnits.INCHES, 73.0,  // was 68.0 at start of RR; was 65.0 at start of CMP; 58.0 until NECMP Quarters; was 58.0 at Day 1 of UNH
     				Autonomous.chooseAngle(startSide, 180.0))); // was -0.5
     	}
     	
