@@ -4,7 +4,6 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.nio.*;
-import org.mayheminc.util.*;
 
 public class ObjectListener extends Thread {
     protected static final int MAX_OBJECTS_PER_FRAME = 20;
@@ -43,7 +42,7 @@ public class ObjectListener extends Thread {
         return lastFrame;
     }
 
-    public List getObjectList() {
+    public List<ObjectLocation> getObjectList() {
         return objList;
     }
 
@@ -68,7 +67,7 @@ public class ObjectListener extends Thread {
             }
 
             // Abort if told to do so
-            if (this.interrupted())
+            if (Thread.interrupted())
                 break;
 
             // Validate packet

@@ -4,18 +4,14 @@ import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.IntakeCloseJaw;
-import org.mayheminc.robot2018.commands.PivotMove;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
 import org.mayheminc.robot2018.commands.SafePosition;
 import org.mayheminc.robot2018.commands.TurretMoveToDegree;
 import org.mayheminc.robot2018.commands.Wait;
-import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
-import org.mayheminc.robot2018.commands.ElevatorArmClose;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
-import org.mayheminc.robot2018.subsystems.Pivot;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

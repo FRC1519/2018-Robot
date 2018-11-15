@@ -25,17 +25,12 @@ public class DeferredCommand extends Command {
     protected void initialize() {
     	Command c = null;
     	try {
-    		c = m_CommandType.newInstance();
+    		c = m_CommandType.getConstructor().newInstance();
 
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	if( c != null)
-    	{
+		} catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
+    	if( c != null) {
     		c.start();
     	}
 		m_CommandStarted = true;

@@ -3,14 +3,12 @@ package org.mayheminc.robot2018.commands;
 import org.mayheminc.robot2018.Robot;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  *
  */
 public class ElevatorArmSetMotorAuto extends InstantCommand {
 
-	private static double EJECT_TIMEOUT = 1.0;
 	double m_motorSpeed;
 	
     public ElevatorArmSetMotorAuto(double motorSpeed) {

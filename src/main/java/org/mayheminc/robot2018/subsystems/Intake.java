@@ -1,7 +1,6 @@
 package org.mayheminc.robot2018.subsystems;
 
 import org.mayheminc.robot2018.RobotMap;
-import org.mayheminc.robot2018.commands.IntakeOpenJaw;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;

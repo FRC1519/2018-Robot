@@ -1,10 +1,6 @@
 package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.Robot;
-import org.mayheminc.robot2018.commands.DriveStraight.DistanceUnits;
-import org.mayheminc.robot2018.subsystems.CubeDetector;
-
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
@@ -12,7 +8,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveStraightIfCubeHalfIn extends DriveStraight {
 public DriveStraightIfCubeHalfIn(double arg_targetSpeed, DistanceUnits units, double arg_distance) {
 		super(arg_targetSpeed, units, arg_distance);
-		// TODO Auto-generated constructor stub
 	}
 
 //private double targetSpeed;

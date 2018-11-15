@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-//import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 import org.mayheminc.robot2018.commands.*;
 import org.mayheminc.robot2018.subsystems.*;
@@ -56,11 +55,15 @@ public class OI {
 	private static final Button DRIVER_STICK_BUTTON_THREE = new DisabledOnlyJoystickButton(DRIVER_STICK, 3);	
 	private static final Button DRIVER_STICK_BUTTON_FOUR = new DisabledOnlyJoystickButton(DRIVER_STICK, 4);
 	private static final Button DRIVER_STICK_BUTTON_FIVE = new DisabledOnlyJoystickButton(DRIVER_STICK, 5);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_SIX = new DisabledOnlyJoystickButton(DRIVER_STICK, 6);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_SEVEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 7);	
 	private static final Button DRIVER_STICK_BUTTON_EIGHT= new DisabledOnlyJoystickButton(DRIVER_STICK, 8);
 	private static final Button DRIVER_STICK_BUTTON_NINE = new JoystickButton(DRIVER_STICK, 9);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_TEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 10);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_ELEVEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 11);
 	
 	// operator pad and stick
@@ -71,16 +74,14 @@ public class OI {
 	private static final Button OPERATOR_PAD_BUTTON_FOUR = new JoystickButton(OPERATOR_PAD, 4);
 	private static final Button OPERATOR_PAD_BUTTON_FIVE = new JoystickButton(OPERATOR_PAD, 5);
 	private static final Button OPERATOR_PAD_BUTTON_SIX = new JoystickButton(OPERATOR_PAD, 6);
-	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_SEVEN = new JoystickButton(OPERATOR_PAD, 7);
 	private static final Button OPERATOR_PAD_BUTTON_EIGHT = new JoystickButton(OPERATOR_PAD, 8);
-	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_NINE = new JoystickButton(OPERATOR_PAD, 9);
 	private static final Button OPERATOR_PAD_BUTTON_TEN = new JoystickButton(OPERATOR_PAD, 10);
-	private static final Button OPERATOR_PAD_BUTTON_ELEVEN = new JoystickButton(OPERATOR_PAD, 11);
 	@SuppressWarnings("unused")
+	private static final Button OPERATOR_PAD_BUTTON_ELEVEN = new JoystickButton(OPERATOR_PAD, 11);
 	private static final Button OPERATOR_PAD_BUTTON_TWELVE = new JoystickButton(OPERATOR_PAD, 12);
-	
+	@SuppressWarnings("unused")
 	private static final Button FORCE_FIRE_BUTTON = new AndJoystickButton(OPERATOR_PAD, 5, OPERATOR_PAD, 7);
 	
 	public static final int OPERATOR_PAD_LEFT_X_AXIS = 0;
@@ -127,6 +128,7 @@ public class OI {
 	public static final int GAMEPAD_F310_RIGHT_STICK_BUTTON = 10;
 	
 	// Driver Control Modes
+	@SuppressWarnings("unused")
     private static final Button TOGGLE_CLOSED_LOOP_MODE_BUTTON = new DisabledOnlyJoystickButton(DRIVER_PAD, 7); 
 	@SuppressWarnings("unused")
 	private static final Button TOGGLE_FOD_BUTTON = new DisabledOnlyJoystickButton(DRIVER_PAD, 8);  
@@ -137,11 +139,9 @@ public class OI {
 	
 	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_START_BUTTON = new JoystickButton(DRIVER_PAD, GAMEPAD_F310_START_BUTTON);
-	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_GREEN_BUTTON = new JoystickButton(DRIVER_PAD, 1); // Green "A" button
 	private static final Button DRIVER_PAD_RED_BUTTON = new JoystickButton(DRIVER_PAD, 2); // RED 'B" button
 	private static final Button DRIVER_PAD_BLUE_BUTTON = new JoystickButton(DRIVER_PAD, 3); // BLUE 'X' button
-	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_YELLOW_BUTTON = new JoystickButton(DRIVER_PAD, 4); // YELLOW 'Y' button
 	@SuppressWarnings("unused")
 	private static final Button DRIVER_PAD_BUTTON_FIVE = new JoystickButton(DRIVER_PAD, 5); // Left Top Trigger
@@ -165,9 +165,6 @@ public class OI {
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_RIGHT = new JoystickPOVButton(OPERATOR_PAD, 90);
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_UP = new JoystickPOVButton(OPERATOR_PAD, 0);
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_DOWN = new JoystickPOVButton(OPERATOR_PAD, 180);
-
-    // variable to maintain state of whether or not we've "checked in" with the field
-	private boolean m_CheckedInWithFieldManagement = false;
 	
 	public static PidTuner pidTuner = null;
 	public OI() {

@@ -1,12 +1,10 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.commands.DriveStraight;
-//import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorWaitUntilAtPosition;
 import org.mayheminc.robot2018.commands.IntakeInAndLiftTheCube;
 import org.mayheminc.robot2018.commands.PivotMove;
 import org.mayheminc.robot2018.commands.Wait;
-import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;
 
