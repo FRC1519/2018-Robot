@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.mayheminc.robot2018.subsystems;
 
 import com.kauailabs.navx.frc.*;
@@ -11,16 +7,11 @@ import edu.wpi.first.wpilibj.*;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-//import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-//import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//import java.util.Arrays;
-
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
-import org.mayheminc.util.MB1340Ultrasonic;
 import org.mayheminc.util.MayhemTalonSRX;
 import org.mayheminc.util.Utils;
 
@@ -45,22 +36,17 @@ public class Drive extends Subsystem {
 	private final MayhemTalonSRX rightRearTalon = new MayhemTalonSRX(RobotMap.BACK_RIGHT_TALON);
 
 	// Sensors
-	private final MB1340Ultrasonic ultrasonic = new MB1340Ultrasonic(0);
 	private AHRS Navx;
-
-//	// Solenoid
-//	Solenoid m_shifter;
 
 	// Driving mode
 	private boolean m_speedRacerDriveMode = true; // set by default
+
 	// NavX parameters
 	private double m_desiredHeading = 0.0;
 	private boolean m_useHeadingCorrection = true;
 	private static final double kToleranceDegreesPIDControl = 0.2;
 
 	// Drive parameters
-	// Todo: check gear ratio and final wheel size
-	// RJD : the numbers have not been checked for 2018.
 	public static final double DISTANCE_PER_PULSE = 3.14 * 6.26 * 36 / 42 / (250*4); // pi * diameter * (gear ratio) / (counts per rev) 
 	private boolean m_closedLoopMode = false;
 	private double m_maxWheelSpeed = 130;
@@ -87,14 +73,10 @@ public class Drive extends Subsystem {
 		// create a PID Controller that reads the heading error and outputs the heading correction.
 		m_HeadingError = new PIDHeadingError();
 		m_HeadingCorrection = new PIDHeadingCorrection();
-//		m_HeadingPid = new PIDController(0.015, 0.001, 0.05, m_HeadingError, m_HeadingCorrection);  // values from Week Zero tournament
-//RJD		m_HeadingPid = new PIDController(0.015, 0.001, 0.04, m_HeadingError, m_HeadingCorrection);  // vales from NECMP and Pine Tree
-//		m_HeadingPid = new PIDController(0.02, 0.0015, 0.05, m_HeadingError, m_HeadingCorrection);
-
 		m_HeadingPid = new PIDController(0.015, 0.000, 0.04, m_HeadingError, m_HeadingCorrection);  // vales from NECMP and Pine Tree
 		m_HeadingPid.setInputRange(-180.0f, 180.0f);
-		m_HeadingPid.setContinuous(true);             // treats the input range as "continous" with wrap-around
-		m_HeadingPid.setOutputRange(-.50, .50); // set the maximum power to correct twist
+		m_HeadingPid.setContinuous(true);             	// treats the input range as "continous" with wrap-around
+		m_HeadingPid.setOutputRange(-.50, .50); 		// set the maximum power to correct twist
 		m_HeadingPid.setAbsoluteTolerance(kToleranceDegreesPIDControl);
 
 		// confirm all four drive talons are in coast mode
@@ -232,24 +214,20 @@ public class Drive extends Subsystem {
 		// assume linear motion only
 		return x;
 	}
-	public int getRightEncoder(){
-//		return (int) rightFrontTalon.getPosition();
+	public int getRightEncoder() {
 		return rightFrontTalon.getSelectedSensorPosition(0);
 	}
 
-	public int getLeftEncoder(){
-//		return (int) leftFrontTalon.getPosition();
+	public int getLeftEncoder() {
 		return leftFrontTalon.getSelectedSensorPosition(0);
 	}
 
 	// speed is in inches per second
-	public double getRightSpeed(){
-//		return rightFrontTalon.getSpeed();
+	public double getRightSpeed() {
 		return rightFrontTalon.getSelectedSensorVelocity(0);
 	}
 
 	public double getLeftSpeed() {
-//		return leftFrontTalon.getSpeed();
 		return leftFrontTalon.getSelectedSensorVelocity(0);
 	}
 
@@ -595,8 +573,6 @@ public class Drive extends Subsystem {
 		// ***** KBS:  Uncommenting below, as it takes a LONG time to get PDP values
 		// updateSdbPdp();
 
-//		SmartDashboard.putNumber("ultrasonicDistance", (ultrasonic.getDistance() * 0.393701));
-
 		SmartDashboard.putNumber("Current Heading",  getHeading());
 
 //		SmartDashboard.putNumber("yaw",  Navx.getYaw());
@@ -605,8 +581,8 @@ public class Drive extends Subsystem {
 		
 		SmartDashboard.putNumber("Left Front Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Front Encoder Counts", rightFrontTalon.getSelectedSensorPosition(0));
-//		SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));
-//		SmartDashboard.putNumber("Right Rear Encoder Counts", rightRearTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Rear Encoder Counts", rightRearTalon.getSelectedSensorPosition(0));
 
 		// Note:  getSpeed() returns ticks per 0.1 seconds
 		SmartDashboard.putNumber("Left Encoder Speed", leftFrontTalon.getSelectedSensorVelocity(0));
@@ -653,11 +629,6 @@ public class Drive extends Subsystem {
 
 
 //		SmartDashboard.putNumber("Tilt", getTilt());
-	}
-
-	//**********************************ULTRASONICS***********************************************
-	public double getUltrasonicDistance() {
-		return ultrasonic.getDistanceInInches();
 	}
 
 //	//**********************************SHIFTER PISTONS***********************************************
