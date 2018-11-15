@@ -1,17 +1,14 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
-import org.mayheminc.robot2018.commands.DriveSetShifter;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
 import org.mayheminc.robot2018.commands.ElevatorSetPosition;
 import org.mayheminc.robot2018.commands.TurretMoveToDegree;
 import org.mayheminc.robot2018.commands.TurretZero;
-import org.mayheminc.robot2018.commands.Wait;
 import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 import org.mayheminc.robot2018.subsystems.Elevator;
-import org.mayheminc.robot2018.subsystems.Shifter;
 import org.mayheminc.robot2018.subsystems.Turret;
 import org.mayheminc.robot2018.subsystems.Autonomous.StartOn;
 

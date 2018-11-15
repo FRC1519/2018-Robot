@@ -4,11 +4,8 @@ import java.net.SocketException;
 import java.util.List;
 
 import org.mayheminc.util.*;
-//import org.mayheminc.ObjectLocation;
 import org.mayheminc.util.ObjectLocation.ObjectTypes;
 
-//import org.mayheminc.robot2018.Robot;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
