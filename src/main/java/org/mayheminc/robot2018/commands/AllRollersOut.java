@@ -2,6 +2,7 @@ package org.mayheminc.robot2018.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.mayheminc.robot2018.Robot;
+import org.mayheminc.robot2018.subsystems.*;
 //import org.mayheminc.robot2018.subsystems.Intake;
 
 public class AllRollersOut extends Command {
@@ -17,7 +18,7 @@ public class AllRollersOut extends Command {
     	// Accordingly, we want the spit strength to vary according to elevator height.
 
     	// if below the SWITCH_MAX_HEIGHT spit hard for the switch
-    	if (Robot.elevator.getCurrentPosition() < Robot.elevator.SWITCH_MAX_HEIGHT) {
+    	if (Robot.elevator.getCurrentPosition() < Elevator.SWITCH_MAX_HEIGHT) {
     		Robot.elevatorArms.setMotor(-1.0);  // spit at full power for the switch.
     	} else {
     		Robot.elevatorArms.setMotor(-0.7);  // spit at 70% power for the scale.

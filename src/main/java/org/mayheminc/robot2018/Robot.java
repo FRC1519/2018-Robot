@@ -3,7 +3,6 @@ package org.mayheminc.robot2018;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -16,7 +15,6 @@ import edu.wpi.first.networktables.*;
 
 import org.mayheminc.robot2018.commands.RunAutonomous;
 import org.mayheminc.robot2018.subsystems.*;
-import org.mayheminc.util.PidTuner;
 import org.mayheminc.util.Utils;
 
 /**

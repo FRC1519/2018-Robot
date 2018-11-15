@@ -4,7 +4,6 @@ import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.subsystems.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class StartLeftMultiScale extends SmartAutoChooserBase {
 
 	protected Command GetAutoroutine() {
-    	boolean ourSwitchOnRight = Robot.gameData.getNearSwitchOnRight();
     	boolean scaleOnRight = Robot.gameData.getScaleOnRight();
     	
     	// for the multi-scale autos, we don't even care where the switch is

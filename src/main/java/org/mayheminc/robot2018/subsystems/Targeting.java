@@ -4,11 +4,8 @@ import java.net.SocketException;
 import java.util.List;
 
 import org.mayheminc.util.*;
-//import org.mayheminc.ObjectLocation;
 import org.mayheminc.util.ObjectLocation.ObjectTypes;
 
-//import org.mayheminc.robot2018.Robot;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -77,7 +74,6 @@ public class Targeting extends Subsystem {
 			
 			ObjectLocation bestCube = null;
 			float maxScore = 0.0f;
-			ObjectLocation bestExchange = null;
 			float maxScoreExchange = 0.0f;
 //			SmartDashboard.putNumber("Number of Targets", objects.size());
 			
@@ -106,7 +102,6 @@ public class Targeting extends Subsystem {
 						if( score > maxScoreExchange)
 						{
 							maxScoreExchange = score;
-							bestExchange = obj;
 						}
 					}
 			}

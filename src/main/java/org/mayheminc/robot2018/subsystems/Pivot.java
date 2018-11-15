@@ -6,11 +6,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
 import org.mayheminc.util.MayhemTalonSRX;
-//import org.mayheminc.util.MayhemTalonSRX;
 import org.mayheminc.util.PidTunerObject;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.*;
 
 /**
@@ -31,7 +29,6 @@ public class Pivot extends Subsystem implements PidTunerObject {
 	private static final int DOWN_TOLERANCE = 10;
 	private static final int UP_TOLERANCE = 10;
 	
-	private static final double ZERO_MAX_CURRENT = 1.0; // Amps
 	private static final double ZERO_MOTOR_POWER = 0.20; // was 0.25 at Week 1; KBS trying to lower this a bit
 	private static final double HOLD_DOWN_MOTOR_POWER = -0.10;  // was -0.15 at Week 1; KBS trying to lower this a bit
 	private static final double HOLD_UP_MOTOR_POWER = 0.10;

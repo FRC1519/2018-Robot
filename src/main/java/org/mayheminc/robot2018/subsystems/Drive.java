@@ -53,8 +53,6 @@ public class Drive extends Subsystem {
 
 	// Driving mode
 	private boolean m_speedRacerDriveMode = true; // set by default
-	private boolean m_autoDrivingInTeleop = false; // set by default
-
 	// NavX parameters
 	private double m_desiredHeading = 0.0;
 	private boolean m_useHeadingCorrection = true;
@@ -111,8 +109,6 @@ public class Drive extends Subsystem {
 
 		rightRearTalon.changeControlMode(ControlMode.Follower);
 		rightRearTalon.set(rightFrontTalon.getDeviceID());
-
-		m_autoDrivingInTeleop = false;
 	}
 
 	public void init() {
@@ -382,7 +378,7 @@ public class Drive extends Subsystem {
 	 * updateSdbPdp
 	 * Update the Smart Dashboard with the Power Distribution Panel currents.
 	 */
-	private void updateSdbPdp()
+	public void updateSdbPdp()
 	{
 		double lf;
 		double rf;
@@ -793,13 +789,10 @@ public class Drive extends Subsystem {
 //		SmartDashboard.putNumber("Auto Aim: Drive Adjustment", adjustment);
 	}
 	
-	private int m_loopsOnTarget = 0;
-	private static final int AIM_PIXEL_TOLERANCE = 5;   // was 4 at UNH
 	public static final int AIM_REQUIRED_LOOPS_ON_TARGET_TELEOP = 9;       // was 6 on first day of UNH; 9 on second day
 	public static final int AIM_REQUIRED_LOOPS_ON_TARGET_AUTONOMOUS = 18;   // was 6 on first day of UNH; 9 on second day
 	
 	public void resetLoopsOnTarget(){
-		m_loopsOnTarget = 0;
 	}
 	public boolean isAlignedToTarget(int requiredLoopsOnTarget) {
 //		int diff = Math.abs(Robot.targeting.getCubeCenterOffset());
