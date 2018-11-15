@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.mayheminc.robot2018.autonomousroutines.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 /**
  *
  * @author Team1519

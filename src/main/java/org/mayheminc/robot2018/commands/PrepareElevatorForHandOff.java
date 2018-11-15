@@ -1,6 +1,5 @@
 package org.mayheminc.robot2018.commands;
 
-import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Turret;
 

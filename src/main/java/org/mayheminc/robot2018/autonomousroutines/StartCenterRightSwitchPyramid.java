@@ -1,7 +1,5 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
-import org.mayheminc.robot2018.commands.AllRollersOut;
-import org.mayheminc.robot2018.commands.AutoGatherCubeSeq;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading;
 import org.mayheminc.robot2018.commands.ElevatorArmOpen;
 import org.mayheminc.robot2018.commands.ElevatorArmSetMotorAuto;
@@ -10,15 +8,10 @@ import org.mayheminc.robot2018.commands.HandoffCubeToElevator;
 import org.mayheminc.robot2018.commands.AIGatherCube;
 import org.mayheminc.robot2018.commands.IntakeInInstant;
 import org.mayheminc.robot2018.commands.IntakeOff;
-import org.mayheminc.robot2018.commands.IntakeOut;
-import org.mayheminc.robot2018.commands.IntakeOutForTime;
-import org.mayheminc.robot2018.commands.IntakeOutInstant;
 import org.mayheminc.robot2018.commands.PivotMove;
 import org.mayheminc.robot2018.commands.PrintAutonomousTimeRemaining;
-import org.mayheminc.robot2018.commands.PrintToDriverStation;
 import org.mayheminc.robot2018.commands.TurretMoveTo;
 import org.mayheminc.robot2018.commands.Wait;
-import org.mayheminc.robot2018.commands.ZeroGyro;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.subsystems.Elevator;
 import org.mayheminc.robot2018.subsystems.Pivot;

@@ -3,7 +3,6 @@ package org.mayheminc.robot2018.autonomousroutines;
 import org.mayheminc.robot2018.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *

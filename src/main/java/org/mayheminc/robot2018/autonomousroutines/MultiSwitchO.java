@@ -1,8 +1,6 @@
 package org.mayheminc.robot2018.autonomousroutines;
 
 import org.mayheminc.robot2018.subsystems.Autonomous;
-import org.mayheminc.robot2018.subsystems.Elevator;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class MultiSwitchO extends CommandGroup{

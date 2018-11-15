@@ -4,7 +4,6 @@ import org.mayheminc.robot2018.commands.*;
 import org.mayheminc.robot2018.commands.DriveRotate.DesiredHeadingForm;
 import org.mayheminc.robot2018.commands.DriveStraightOnHeading.DistanceUnits;
 import org.mayheminc.robot2018.subsystems.*;
-import org.mayheminc.robot2018.subsystems.Autonomous.StartOn;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

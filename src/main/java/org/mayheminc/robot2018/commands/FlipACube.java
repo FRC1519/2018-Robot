@@ -1,7 +1,6 @@
 package org.mayheminc.robot2018.commands;
 
 import org.mayheminc.robot2018.Robot;
-import org.mayheminc.robot2018.commands.DriveRotate.DesiredHeadingForm;
 import org.mayheminc.robot2018.subsystems.Pivot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

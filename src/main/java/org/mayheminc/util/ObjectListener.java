@@ -4,7 +4,6 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.nio.*;
-import org.mayheminc.util.*;
 
 public class ObjectListener extends Thread {
     protected static final int MAX_OBJECTS_PER_FRAME = 20;

@@ -1,9 +1,5 @@
 package org.mayheminc.robot2018.commands;
 
-import org.mayheminc.robot2018.subsystems.Elevator;
-import org.mayheminc.robot2018.subsystems.Pivot;
-import org.mayheminc.robot2018.subsystems.Turret;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**

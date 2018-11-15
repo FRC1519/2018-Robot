@@ -6,11 +6,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.mayheminc.robot2018.Robot;
 import org.mayheminc.robot2018.RobotMap;
 import org.mayheminc.util.MayhemTalonSRX;
-//import org.mayheminc.util.MayhemTalonSRX;
 import org.mayheminc.util.PidTunerObject;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.*;
 
 /**

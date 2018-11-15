@@ -1,6 +1,5 @@
 package org.mayheminc.robot2018.subsystems;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.DriverStation;

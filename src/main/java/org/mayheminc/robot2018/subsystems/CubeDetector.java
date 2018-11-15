@@ -1,8 +1,6 @@
 package org.mayheminc.robot2018.subsystems;
 
 import org.mayheminc.robot2018.RobotMap;
-import org.mayheminc.robot2018.commands.DriveStraight;
-import org.mayheminc.robot2018.commands.DriveStraight.DistanceUnits;
 import org.mayheminc.util.RangeFinder_GP2D120;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
