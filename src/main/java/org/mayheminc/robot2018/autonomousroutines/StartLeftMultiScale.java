@@ -5,9 +5,6 @@ import org.mayheminc.robot2018.subsystems.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class StartLeftMultiScale extends SmartAutoChooserBase {
 
 	protected Command GetAutoroutine() {
