@@ -378,7 +378,7 @@ public class Drive extends Subsystem {
 	 * updateSdbPdp
 	 * Update the Smart Dashboard with the Power Distribution Panel currents.
 	 */
-	private void updateSdbPdp()
+	public void updateSdbPdp()
 	{
 		double lf;
 		double rf;
