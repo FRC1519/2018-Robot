@@ -36,7 +36,6 @@ public class Targeting extends Subsystem {
 		try {
 			listener = new ObjectListener();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		listener.start();
@@ -125,7 +124,6 @@ public class Targeting extends Subsystem {
 	}
 	
 	private void SaveBestCube(ObjectLocation obj, float Score) {
-		// TODO Auto-generated method stub
 		m_probability = obj.probability;
 		// get its center
 		cubex = obj.x;

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveStraightIfCubeHalfIn extends DriveStraight {
 public DriveStraightIfCubeHalfIn(double arg_targetSpeed, DistanceUnits units, double arg_distance) {
 		super(arg_targetSpeed, units, arg_distance);
-		// TODO Auto-generated constructor stub
 	}
 
 //private double targetSpeed;

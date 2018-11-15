@@ -13,20 +13,17 @@ public class PIDHeadingError implements PIDSource
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		// TODO Auto-generated method stub
-		return PIDSourceType.kDisplacement;
+			return PIDSourceType.kDisplacement;
 	}
 
 	@Override
 	public double pidGet() {
-		// TODO Auto-generated method stub
-		return m_Error;
+			return m_Error;
 	}
 	public double m_Error;
 }

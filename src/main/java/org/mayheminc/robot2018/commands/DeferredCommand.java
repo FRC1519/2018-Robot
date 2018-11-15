@@ -28,10 +28,8 @@ public class DeferredCommand extends Command {
     		c = m_CommandType.newInstance();
 
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	if( c != null)
