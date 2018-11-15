@@ -51,11 +51,7 @@ public class DriveStraightOnHeading extends Command {
 		
 		displacement = Math.abs(displacement);
 //		System.out.println("displacement" + displacement);
-		
-		double heading = Robot.drive.getHeading();
-		double desiredHeading = Robot.drive.getDesiredHeading();
-//		System.out.println("Drive heading:" + heading + " " + desiredHeading);
-		
+				
 		return (displacement >= m_desiredDisplacement);
 	}
 

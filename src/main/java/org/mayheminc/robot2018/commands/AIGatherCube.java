@@ -18,8 +18,7 @@ public class AIGatherCube extends Command {
 	private float cubew;
 	private float cubeh;
 	private float cubep;
-	private float AutoDriveFWDSpeed;
-	
+		
     public AIGatherCube() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

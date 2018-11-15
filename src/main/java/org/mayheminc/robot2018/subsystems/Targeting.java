@@ -78,7 +78,6 @@ public class Targeting extends Subsystem {
 			
 			ObjectLocation bestCube = null;
 			float maxScore = 0.0f;
-			ObjectLocation bestExchange = null;
 			float maxScoreExchange = 0.0f;
 //			SmartDashboard.putNumber("Number of Targets", objects.size());
 			
@@ -107,7 +106,6 @@ public class Targeting extends Subsystem {
 						if( score > maxScoreExchange)
 						{
 							maxScoreExchange = score;
-							bestExchange = obj;
 						}
 					}
 			}

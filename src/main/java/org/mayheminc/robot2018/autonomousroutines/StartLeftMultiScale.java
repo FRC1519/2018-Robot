@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class StartLeftMultiScale extends SmartAutoChooserBase {
 
 	protected Command GetAutoroutine() {
-    	boolean ourSwitchOnRight = Robot.gameData.getNearSwitchOnRight();
     	boolean scaleOnRight = Robot.gameData.getScaleOnRight();
     	
     	// for the multi-scale autos, we don't even care where the switch is

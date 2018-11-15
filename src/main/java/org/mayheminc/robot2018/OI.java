@@ -56,11 +56,15 @@ public class OI {
 	private static final Button DRIVER_STICK_BUTTON_THREE = new DisabledOnlyJoystickButton(DRIVER_STICK, 3);	
 	private static final Button DRIVER_STICK_BUTTON_FOUR = new DisabledOnlyJoystickButton(DRIVER_STICK, 4);
 	private static final Button DRIVER_STICK_BUTTON_FIVE = new DisabledOnlyJoystickButton(DRIVER_STICK, 5);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_SIX = new DisabledOnlyJoystickButton(DRIVER_STICK, 6);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_SEVEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 7);	
 	private static final Button DRIVER_STICK_BUTTON_EIGHT= new DisabledOnlyJoystickButton(DRIVER_STICK, 8);
 	private static final Button DRIVER_STICK_BUTTON_NINE = new JoystickButton(DRIVER_STICK, 9);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_TEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 10);
+	@SuppressWarnings("unused")
 	private static final Button DRIVER_STICK_BUTTON_ELEVEN = new DisabledOnlyJoystickButton(DRIVER_STICK, 11);
 	
 	// operator pad and stick
@@ -77,10 +81,11 @@ public class OI {
 	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_NINE = new JoystickButton(OPERATOR_PAD, 9);
 	private static final Button OPERATOR_PAD_BUTTON_TEN = new JoystickButton(OPERATOR_PAD, 10);
+	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_ELEVEN = new JoystickButton(OPERATOR_PAD, 11);
 	@SuppressWarnings("unused")
 	private static final Button OPERATOR_PAD_BUTTON_TWELVE = new JoystickButton(OPERATOR_PAD, 12);
-	
+	@SuppressWarnings("unused")
 	private static final Button FORCE_FIRE_BUTTON = new AndJoystickButton(OPERATOR_PAD, 5, OPERATOR_PAD, 7);
 	
 	public static final int OPERATOR_PAD_LEFT_X_AXIS = 0;
@@ -127,6 +132,7 @@ public class OI {
 	public static final int GAMEPAD_F310_RIGHT_STICK_BUTTON = 10;
 	
 	// Driver Control Modes
+	@SuppressWarnings("unused")
     private static final Button TOGGLE_CLOSED_LOOP_MODE_BUTTON = new DisabledOnlyJoystickButton(DRIVER_PAD, 7); 
 	@SuppressWarnings("unused")
 	private static final Button TOGGLE_FOD_BUTTON = new DisabledOnlyJoystickButton(DRIVER_PAD, 8);  
@@ -165,9 +171,6 @@ public class OI {
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_RIGHT = new JoystickPOVButton(OPERATOR_PAD, 90);
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_UP = new JoystickPOVButton(OPERATOR_PAD, 0);
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_DOWN = new JoystickPOVButton(OPERATOR_PAD, 180);
-
-    // variable to maintain state of whether or not we've "checked in" with the field
-	private boolean m_CheckedInWithFieldManagement = false;
 	
 	public static PidTuner pidTuner = null;
 	public OI() {

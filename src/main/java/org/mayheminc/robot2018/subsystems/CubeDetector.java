@@ -85,7 +85,6 @@ public class CubeDetector extends Subsystem {
     public boolean isCubeSquare()
     {
     	double left = getLeft();
-    	double center = getCenter();
     	double right = getRight();
     	
     	if( left > CUBE_FULLY_IN &&

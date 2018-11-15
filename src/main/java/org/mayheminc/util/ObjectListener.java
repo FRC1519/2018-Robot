@@ -43,7 +43,7 @@ public class ObjectListener extends Thread {
         return lastFrame;
     }
 
-    public List getObjectList() {
+    public List<ObjectLocation> getObjectList() {
         return objList;
     }
 
@@ -68,7 +68,7 @@ public class ObjectListener extends Thread {
             }
 
             // Abort if told to do so
-            if (this.interrupted())
+            if (Thread.interrupted())
                 break;
 
             // Validate packet
