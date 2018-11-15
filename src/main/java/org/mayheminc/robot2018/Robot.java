@@ -143,20 +143,80 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 		// // reset the blackbox.
 		// blackbox.reset();
 	}
-
+	
+	private double dpTime0 = 0.0;
+	private double dpTime1 = 0.0;
+	private double dpTime2 = 0.0;
+	private double dpTime3 = 0.0;
+	private double dpTime4 = 0.0;
+	private double dpTime5 = 0.0;
+	private int dpWaitLoops = 0;
+	private int dpLoops = 0;
+	
+	private double dpElapsed1 = 0.0;
+	private double dpElapsed2 = 0.0;
+	private double dpElapsed3 = 0.0;
+	private double dpElapsed4 = 0.0;
+	private double dpElapsed5 = 0.0;
+	
 	public void disabledPeriodic() {
-		// update sensors that need periodic update
-		cubeDetector.periodic();
-		// // KBS: Not sure why this needs to be in every loop -- it's in the general updateSmartDashboard() below
-		// pivot.UpdateSmartDashboard();
+		
+		dpWaitLoops++;
+		if (dpWaitLoops > (10.0 * 1.0/LOOP_TIME)) {
+			dpLoops++;
+			dpTime0 = Timer.getFPGATimestamp();
+		
+			// update sensors that need periodic update
+			cubeDetector.periodic();
+			Scheduler.getInstance().run();
 
-		Scheduler.getInstance().run();
 
-		// update Smart Dashboard, including fields for setting up autonomous operation
-		updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
-		Robot.drive.updateHistory();
+			cubeDetector.updateSmartDashboard();	
+			
+			dpTime1 = Timer.getFPGATimestamp();
+			dpElapsed1 = dpElapsed1 + dpTime1 - dpTime0;
+			
+			drive.updateSmartDashboard();
 
-		PrintPeriodicPeriod();
+			dpTime2 = Timer.getFPGATimestamp();
+			dpElapsed2 = dpElapsed2 + dpTime2 - dpTime1;
+			
+			// update Smart Dashboard, including fields for setting up autonomous operation
+			// updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
+
+			elevator.updateSmartDashboard();
+			elevatorArms.updateSmartDashboard();
+
+			pivot.UpdateSmartDashboard();
+
+			dpTime3 = Timer.getFPGATimestamp();
+			dpElapsed3 = dpElapsed3 + dpTime3 - dpTime2;
+			
+			intake.updateSmartDashboard();
+			turret.updateSmartDashboard();
+
+			// PrintPeriodicPeriod();
+			dpTime4 = Timer.getFPGATimestamp();
+			dpElapsed4 = dpElapsed4 + dpTime4 - dpTime3;
+		
+			if (OI.pidTuner != null) {
+				OI.pidTuner.updateSmartDashboard();
+			}
+
+			Autonomous.updateSmartDashboard();
+
+			Robot.drive.updateHistory();
+			
+			if ((dpLoops % 40) == 0) {
+				System.out.println(
+				"dp1: " + dpElapsed1/dpLoops + 
+				"   dp2: " + dpElapsed2/dpLoops +
+				"   dp3: " + dpElapsed3/dpLoops +
+				"   dp4: " + dpElapsed4/dpLoops
+				);
+			}
+		}
+		
 	}
 
 	public void autonomousInit() {
@@ -343,9 +403,9 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double nextSmartDashboardUpdate = Timer.getFPGATimestamp();
 
 	public void updateSmartDashboard(boolean updateAutoFields) {
-		double currentTime = Timer.getFPGATimestamp();
+		// double currentTime = Timer.getFPGATimestamp();
 
-			if (currentTime > nextSmartDashboardUpdate) {
+			// if (currentTime > nextSmartDashboardUpdate) {
 
 				// System.out.println("updateSmartDashboard: current: " + currentTime + " next: " + nextSmartDashboardUpdate);
 
@@ -367,8 +427,8 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 					Autonomous.updateSmartDashboard();
 				}
 
-				nextSmartDashboardUpdate += SMART_DASHBOARD_UPDATE_INTERVAL;
-			}
+				// nextSmartDashboardUpdate += SMART_DASHBOARD_UPDATE_INTERVAL;
+			// }
 	}
 
 	void updateSmartDashboard() {
@@ -376,7 +436,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 		double freeMemoryInKB = runtime.freeMemory() / 1024;
 		SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
 
-		SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
+		// SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
 		//			SmartDashboard.putBoolean("FRC Comm Checked In", oi.IsCheckedInWithFieldManagement());
 
 		SmartDashboard.putString("Game Data",  gameData.toString());
@@ -384,12 +444,11 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	}
 
 
-	public static boolean getBrownoutLowerThreshold() {
-		return (pdp.getVoltage() < BROWNOUT_VOLTAGE_LOWER_THRESHOLD);
-	}
+	// public static boolean getBrownoutLowerThreshold() {
+	// 	return (pdp.getVoltage() < BROWNOUT_VOLTAGE_LOWER_THRESHOLD);
+	// }
 
-	public static boolean getBrownoutUpperThreshold() {
-		return (pdp.getVoltage() > BROWNOUT_VOLTAGE_UPPER_THRESHOLD);
-
-	}
+	// public static boolean getBrownoutUpperThreshold() {
+	// 	return (pdp.getVoltage() > BROWNOUT_VOLTAGE_UPPER_THRESHOLD);
+	// }
 }
