@@ -57,16 +57,14 @@ public class Elevator extends Subsystem implements PidTunerObject {
 		m_elevatorMotor.configNominalOutputForward(0.0,  0);
 		m_elevatorMotor.configNominalOutputReverse(0.0, 0);
 		m_elevatorMotor.configPeakOutputForward(1.0,  0);
-		m_elevatorMotor.configPeakOutputReverse(-0.7,  0);    // was -0.5 at UNH
+		m_elevatorMotor.configPeakOutputReverse(-0.7,  0);		// was -0.5 at UNH
 
-		// TODO: need to tune the PIDF parameters
-		m_elevatorMotor.config_kP(0, 0.7, 0); // was 1.0
+		m_elevatorMotor.config_kP(0, 0.7, 0); 					// was previously 1.0
 		m_elevatorMotor.config_kI(0, 0.0, 0);
 		m_elevatorMotor.config_kD(0, 100.0, 0);
 		m_elevatorMotor.config_kF(0, 0.0, 0);
 		
 		m_elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		// RJD !@!#@!#12
 		
 		m_elevatorMotor.setInverted(false); 		
 		m_elevatorMotor.setSensorPhase(true); 		
@@ -114,8 +112,6 @@ public class Elevator extends Subsystem implements PidTunerObject {
     	int position = m_elevatorMotor.getSelectedSensorPosition(0);
     	int diff = Math.abs(position - m_desiredPosition);
     	
-//    	System.out.println("IsElevatorAtPosition Diff " + diff);
-    	
     	return (diff < POSITION_TOLERANCE);
     }
     
@@ -145,9 +141,6 @@ public class Elevator extends Subsystem implements PidTunerObject {
     public void periodic()
     {
     	double manualPowerRequested = Robot.oi.getElevatorPower();
-
-//    	System.out.println("Elevator Manual Mode: " + m_manualMode);
-//		System.out.println("Elevator Auto: " + m_autoSetpoint);
     	
     	if ( Math.abs(manualPowerRequested) > 0.01 ) {
     		m_manualMode = true;

@@ -149,7 +149,6 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double dpTime2 = 0.0;
 	private double dpTime3 = 0.0;
 	private double dpTime4 = 0.0;
-	private double dpTime5 = 0.0;
 	private int dpWaitLoops = 0;
 	private int dpLoops = 0;
 	
@@ -157,7 +156,6 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double dpElapsed2 = 0.0;
 	private double dpElapsed3 = 0.0;
 	private double dpElapsed4 = 0.0;
-	private double dpElapsed5 = 0.0;
 	
 	public void disabledPeriodic() {
 		
@@ -399,7 +397,6 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	}
 
 	private double SMART_DASHBOARD_UPDATE_INTERVAL = 0.250;   // was 0.250;
-	// private long nextSmartDashboardUpdate = System.currentTimeMillis();
 	private double nextSmartDashboardUpdate = Timer.getFPGATimestamp();
 
 	public void updateSmartDashboard(boolean updateAutoFields) {

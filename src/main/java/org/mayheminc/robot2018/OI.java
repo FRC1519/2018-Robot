@@ -89,7 +89,7 @@ public class OI {
 	public static final int OPERATOR_PAD_RIGHT_X_AXIS = 2;
 	public static final int OPERATOR_PAD_RIGHT_Y_AXIS = 3;
 	
-//	Operator Control Buttons
+	//	Operator Control Buttons
 	@SuppressWarnings("unused")
 	private static final JoystickAxisButton OPERATOR_PAD_LEFT_Y_AXIS_UP = new JoystickAxisButton(OPERATOR_PAD, OPERATOR_PAD_LEFT_Y_AXIS, JoystickAxisButton.NEGATIVE_ONLY);
 	@SuppressWarnings("unused")
@@ -166,42 +166,34 @@ public class OI {
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_UP = new JoystickPOVButton(OPERATOR_PAD, 0);
     private static final JoystickPOVButton OPERATOR_PAD_D_PAD_DOWN = new JoystickPOVButton(OPERATOR_PAD, 180);
 	
+	private static boolean USE_PID_TUNER = false;
 	public static PidTuner pidTuner = null;
+
 	public OI() {
 		
-//		pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
-//				DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.elevator);
+		DriverStation.reportError("OI constructor.\n", false);
 		
-    	DriverStation.reportError("OI constructor.\n", false);
+		//****************************** PID_TUNER **************************************/
 
-    	// Mode initialization
-//        TOGGLE_CLOSED_LOOP_MODE_BUTTON.whenPressed(new ToggleClosedLoopMode()); 
+		if ( USE_PID_TUNER ) {
+			pidTuner = new PidTuner(DRIVER_STICK_BUTTON_SIX, DRIVER_STICK_BUTTON_SEVEN,
+					DRIVER_STICK_BUTTON_ELEVEN, DRIVER_STICK_BUTTON_TEN, Robot.elevator);
+		}
      	
      	//*******************************DRIVER PAD**************************************
 
-        DRIVER_PAD_RED_BUTTON.whileHeld(new FlipACube(45)); // Taken out for ribfest
-        DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45)); // Taken out for ribfest
-        DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(1.0));    // Climb up  // Taken out for ribfest
-        DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(-0.2));      // Descend down // Taken out for ribfest
+        DRIVER_PAD_RED_BUTTON.whileHeld(new FlipACube(45));
+        DRIVER_PAD_BLUE_BUTTON.whileHeld(new FlipACube(-45)); 
+        DRIVER_PAD_YELLOW_BUTTON.whileHeld(new ClimberSet(1.0));    // Climb up
+        DRIVER_PAD_GREEN_BUTTON.whileHeld(new ClimberSet(-0.2));      // Descend down
         
-//        DRIVER_PAD_GREEN_BUTTON.whileHeld(new AutoGatherCubeSeq());
-//     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
-//        
-//        DRIVER_PAD_D_PAD_UP.whileHeld(new ClimberSet(1.0));
-//        DRIVER_PAD_D_PAD_DOWN.whileHeld(new ClimberSet(-1.0));
-        
-//        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AutoGatherCubeSeq()); // Put in for ribfest
-        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn()); // Taken out for ribfest
-        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new AllRollersOut()); // Taken out for ribfest
-
-//        DRIVER_PAD_LEFT_STICK_BUTTON.whileHeld(new AllRollersIn());
-//        DRIVER_PAD_RIGHT_STICK_BUTTON.whileHeld(new TurretMoveTo(Turret.RIGHT_REAR));
+        DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON.whileHeld(new AllRollersIn());
+        DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.whileHeld(new AllRollersOut());
         
      	//******************************* DRIVER STICK ****************************************************************************
 		
      	DRIVER_STICK_BUTTON_ONE_DISABLED.whenPressed(new TurretZero());
      	DRIVER_STICK_BUTTON_ONE_ENABLED.whenPressed(new ElevatorZero());
-//        DRIVER_STICK_BUTTON_ONE.whenPressed(new CheckInWithFieldManagement());
 
     	// adjust auto parameters
      	DRIVER_STICK_BUTTON_THREE.whenPressed(new SelectAutonomousProgram(1));
@@ -209,33 +201,27 @@ public class OI {
      	DRIVER_STICK_BUTTON_FOUR.whenPressed(new SelectAutonomousDelay(-1));
      	DRIVER_STICK_BUTTON_FIVE.whenPressed(new SelectAutonomousDelay(1));
      	
-		// Note:  buttons SIX, SEVEN, TEN, ELEVEN are reserved for PidTuner
+		// NOTE:  buttons SIX, SEVEN, TEN, ELEVEN are reserved for PidTuner
 		
     	// zero elements that require zeroing
      	DRIVER_STICK_BUTTON_EIGHT.whenPressed(new DriveZeroGyro());
      	DRIVER_STICK_BUTTON_NINE.whenPressed(new PivotZeroEncoder());
      	
      	//*************************OPERATOR PAD*******************************
-     	
-//     	OPERATOR_PAD_BUTTON_ONE.whenPressed(new PivotMove(Pivot.FLIP_CUBE_POSITION));
 
      	OPERATOR_PAD_BUTTON_ONE.whileHeld(new TurretMoveTo(Turret.RIGHT_REAR));
-        OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotMove(Pivot.DOWNWARD_POSITION));// PivotToFloor());
+        OPERATOR_PAD_BUTTON_TWO.whenPressed(new PivotMove(Pivot.DOWNWARD_POSITION));   // PivotToFloor());
      	OPERATOR_PAD_BUTTON_THREE.whenPressed(new PivotMove(Pivot.SPIT_POSITION));
      	
-     	// OPERATPR_PAD_BUTTON_FOUR does two different command simultaneously!
+     	// OPERATOR_PAD_BUTTON_FOUR does two different commands simultaneously!
      	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new TurretMoveTo(Turret.FRONT_POSITION)); // Center turret
-     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotMove(Pivot.UPRIGHT_POSITION));// PivotToUpright());
-
-     	
-     	//     	OPERATOR_PAD_BUTTON_ELEVEN.whenPressed(new SetArmPosition(Robot.arm.BATTER_FIRE_POSITION_COUNT, Arm.REQUIRE_ARM_SUBSYSTEM));   	  
+     	OPERATOR_PAD_BUTTON_FOUR.whenPressed(new PivotMove(Pivot.UPRIGHT_POSITION));   // PivotToUpright()); 	  
      	
      	//BUTTONS FIVE AND SEVEN ARE For Operating pneumatics
      	OPERATOR_PAD_BUTTON_FIVE.whenPressed(new AllJawsClose());     	
      	OPERATOR_PAD_BUTTON_SEVEN.whenPressed(new AllJawsOpen()); 
      	
      	// Button Six and Eight currently control rollers of intake or elevator
-     	//OPERATOR_PAD_BUTTON_SIX.whileHeld(new AllRollersIn());
      	OPERATOR_PAD_BUTTON_SIX.whileHeld(new IntakeInAndLiftTheCube(false));     	
      	OPERATOR_PAD_BUTTON_EIGHT.whileHeld(new AllRollersOut());
 
@@ -244,38 +230,18 @@ public class OI {
      	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(new ElevatorSetPosition(Elevator.SWITCH_HEIGHT));
      	OPERATOR_PAD_D_PAD_LEFT.whenPressed(new ElevatorSetPosition(Elevator.SCALE_MID));
 
-//     	OPERATOR_PAD_D_PAD_UP.whenPressed(
-//     			new ShiftCommand(OPERATOR_PAD_BUTTON_FIVE, 
-//     			new TurretMoveTo(Turret.FRONT_POSITION),
-//     			new ElevatorSetPosition(Elevator.CEILING)));
-//
-//     	OPERATOR_PAD_D_PAD_DOWN.whenPressed(
-//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
-//     			new TurretMoveTo(Turret.RIGHT_REAR), 
-//     			new ElevatorSetPosition(Elevator.PICK_UP_CUBE)));
-//
-//     	OPERATOR_PAD_D_PAD_RIGHT.whenPressed(
-//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
-//     			new TurretMoveTo(Turret.RIGHT_POSITION), 
-//     			new ElevatorSetPosition(Elevator.SWITCH_HEIGHT)));
-//
-//     	OPERATOR_PAD_D_PAD_LEFT.whenPressed(
-//     			new ShiftCommand(OPERATOR_PAD_BUTTON_SIX, 
-//     			new TurretMoveTo(Turret.LEFT_POSITION), 
-//     			new ElevatorSetPosition(Elevator.SCALE_MID)));
-
-
      	OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
-//     	OPERATOR_PAD_BUTTON_NINE.whenPressed(new IntakeEscapeDeathGrip());
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
-     	
+		 
+		 // TODO:  KBS - figure out what to do with this "blackbox" code so that it is
+		 // neither just commented out or generating warnings.
 //     	Robot.blackbox.addButton("DRIVER_PAD_BLUE_BUTTON", DRIVER_PAD_BLUE_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_GREEN_BUTTON", DRIVER_PAD_GREEN_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_RED_BUTTON", DRIVER_PAD_RED_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_YELLOW_BUTTON", DRIVER_PAD_YELLOW_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON", DRIVER_PAD_LEFT_UPPER_TRIGGER_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON", DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON);
-//	
+
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_ONE", OPERATOR_PAD_BUTTON_ONE);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWO", OPERATOR_PAD_BUTTON_TWO);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_THREE", OPERATOR_PAD_BUTTON_THREE);
@@ -287,8 +253,8 @@ public class OI {
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_NINE", OPERATOR_PAD_BUTTON_NINE);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TEN", OPERATOR_PAD_BUTTON_TEN);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_ELEVEN", OPERATOR_PAD_BUTTON_ELEVEN);
-     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWELVE", OPERATOR_PAD_BUTTON_TWELVE);
-//
+		 Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWELVE", OPERATOR_PAD_BUTTON_TWELVE);
+		 
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_LEFT", OPERATOR_PAD_D_PAD_LEFT);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_RIGHT", OPERATOR_PAD_D_PAD_RIGHT);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_UP", OPERATOR_PAD_D_PAD_UP);
@@ -309,24 +275,16 @@ public class OI {
          if (Math.abs(throttleVal) < 0.05) {
          	throttleVal = 0.0;
          }
-         
-//         if (DRIVER_PAD.getRawButton(OI.DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON)) {
-         // if the slow button is pressing, half the throttle value.
-         if( DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
+		 
+         // if the slow button is pressed, cut the throttle value in third.
+         if ( DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get() ) {
             throttleVal = throttleVal / 3.0;
         }
          
-// Added for ribfest
-//         if (throttleVal > 0.6) {
-//        	 throttleVal = 0.6;
-//         }else if (throttleVal < -0.6) {
-//        	 throttleVal = -0.6;
-//         }
         return(throttleVal);
     }
-    
 	
-	// KBS:  Note that there is a piece of code within pivotArmPower which is shared with other joystick features.
+	// TODO: KBS:  Note that there is a piece of code within pivotArmPower which is shared with other joystick features.
 	//       I'm inclined to put that code in a shared function for "linearizeStickWithDeadZone(double percentage)"
 	//       but also want to do some joystick testing to determine an appropriate size for the deadzone.  20%
 	//       seems a bit too large.  The linearization could also be improved.  A side-effect of the current algorithm
@@ -388,14 +346,6 @@ public class OI {
         if (Math.abs(value) < 0.05) {
         	value = 0.0;
         }
-//      //Put in for demo
-//        if (value > 0.7) {
-//        	value = 0.7;
-//        }
-//      //Put in for demo
-//        if (value < -0.7) { 
-//        	value = -0.7;
-//        }
         
         if (DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get()) {
             value = value / 2.0;
@@ -412,61 +362,7 @@ public class OI {
     public boolean forceLowGear(){
         return DRIVER_PAD_LEFT_LOWER_TRIGGER_BUTTON.get();
     }
-    
-//    public void rumbleOperatorGamePad() {
-//    	DRIVER_PAD.setRumble(Joystick.RumbleType.kLeftRumble, 0);
-//    	DRIVER_PAD.setRumble(Joystick.RumbleType.kRightRumble, 0);
-//    }
         
-    /**
-     * This method will return a positive value when the left joystick is pushed up, 
-     * and it will return a negative value when the left joystick is pushed down.
-     * @return
-     */
-    
-//    public double getArmManualControl(){
-//    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_RIGHT_Y_AXIS)) * -1;
-//    	if(Math.abs(value) <= 0.05){
-//    		value = 0.0;
-//    	}
-//    	return value;
-//    }
-//    public double getWinchControl(){
-//    	//return OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS) * -1;
-//    	double value = (OPERATOR_PAD.getRawAxis(OPERATOR_PAD_LEFT_Y_AXIS)) * -1;
-//    	if(Math.abs(value) <= 0.05){
-//    		value = 0.0;
-//    	}
-//    	return value;
-//    }
-
-//    public boolean getBrownoutMode(){
-//    	return crawlForward();
-//    }
-    
-//	public boolean permissionToLaunch() {
-//		//return(OPERATOR_PAD.getRawButton(OPERATOR_PAD_BUTTON_FIVE));
-//		return OPERATOR_PAD_BUTTON_FIVE.get();
-//	}
-//  
-//	public boolean forceLaunch() {
-//		return FORCE_FIRE_BUTTON.get();
-//	}
-//    
-
-	public boolean autoTarget() {
-		return false;//DRIVER_PAD_RIGHT_LOWER_TRIGGER_BUTTON.get();
-	}
-    
-//	public void CheckInWithFieldManagement() {
-//		m_CheckedInWithFieldManagement = true;
-////		FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramStarting();
-//	}
-	
-//	public boolean IsCheckedInWithFieldManagement() {
-//		return m_CheckedInWithFieldManagement;
-//	}
-
 	// returns true if any of the autoInTeleop buttons are held
 	public boolean autoInTeleop() {
 		return ( //DRIVER_PAD_GREEN_BUTTON.get()  // added for ribfest
