@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
-public class MayhemTalonSRX extends TalonSRX{
+public class MayhemTalonSRX extends TalonSRX {
 
 	ControlMode controlMode;
 	double p;
@@ -66,8 +66,7 @@ public class MayhemTalonSRX extends TalonSRX{
 	public double getD() {return d;}
 	public double getF() {return f;}
 
-	public void changeControlMode(ControlMode mode)
-	{
+	public void changeControlMode(ControlMode mode)	{
 		controlMode = mode;
 	}
 
@@ -75,8 +74,7 @@ public class MayhemTalonSRX extends TalonSRX{
 		this.set(controlMode, deviceID);
 	}
 	
-	public void setFeedbackDevice(FeedbackDevice feedback)
-	{
+	public void setFeedbackDevice(FeedbackDevice feedback) {
 		this.configSelectedFeedbackSensor(feedback, 0, 1000);
 	}
 
@@ -85,7 +83,6 @@ public class MayhemTalonSRX extends TalonSRX{
 	}
 
 	public void configNominalOutputVoltage(float f, float g) {
-
 		this.configNominalOutputForward(f/12.0,  1000);
 		this.configNominalOutputReverse(g/12.0,  1000);
 	}
@@ -102,7 +99,6 @@ public class MayhemTalonSRX extends TalonSRX{
 		this.config_kI(pidProfile, wheelI ,  1000);
 		this.config_kD(pidProfile, wheelD ,  1000);
 		this.config_kF(pidProfile, wheelF ,  1000);
-		
 	}
 
 	public double getSetpoint() {
@@ -127,10 +123,8 @@ public class MayhemTalonSRX extends TalonSRX{
 	}
 
 	public void setVoltageRampRate(double d) {
-		
 		// Need to convert volts per second to time
-		this.configClosedloopRamp(0,  0);
-	
+		this.configClosedloopRamp(0, 0);
 	}
 
 	public void enableControl() {
@@ -138,7 +132,7 @@ public class MayhemTalonSRX extends TalonSRX{
 	}
 
 	public void setPosition(int zeroPositionCount) {
-			this.setSelectedSensorPosition(zeroPositionCount,  0,  1000);
+			this.setSelectedSensorPosition(zeroPositionCount, 0, 1000);
 	}
 
 	public double getPosition() {
@@ -150,10 +144,10 @@ public class MayhemTalonSRX extends TalonSRX{
 	}
 
 	public void setEncPosition(int i) {
-			setPosition(i);
+		setPosition(i);
 	}
 
 	public double get() {
-			return this.getOutputCurrent();
+		return this.getOutputCurrent();
 	}
 }

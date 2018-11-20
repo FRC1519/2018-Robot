@@ -11,12 +11,10 @@ public class RangeFinder_GP2D120 {
 	private double m_historyBuffer[]=new double[HISTORY_BUFFER_SIZE];
 	private int m_historyBufferIndex;
 	private double m_filteredVoltage;
-	private int m_index;
 	
 	public RangeFinder_GP2D120(int channel, int index)	{
 		m_channel = new AnalogInput(channel);
 		m_filteredVoltage = 0.0;
-		m_index = index;
 	}
 	
 	public void periodic() {

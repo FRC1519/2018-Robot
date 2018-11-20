@@ -241,7 +241,6 @@ public class Turret extends Subsystem implements PidTunerObject {
     {
     	SmartDashboard.putNumber("Turret Pos", m_turretMotor.getPosition());
     	SmartDashboard.putNumber("Turret Power", m_turretMotor.getMotorOutputPercent());
-//    	SmartDashboard.putBoolean("Turret Manual Mode",  m_manualmode);
     	SmartDashboard.putNumber("Turret Desired Position", m_desiredPosition);
     	SmartDashboard.putNumber("Turret Field Angle", m_fieldOrientedDesiredAngle);
     	SmartDashboard.putNumber("Turret Encoder", turretEncoder);
