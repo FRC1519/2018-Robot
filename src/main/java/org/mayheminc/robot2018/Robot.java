@@ -51,8 +51,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	public static Shifter shifter = new Shifter();
 	public static Climber climber = new Climber();
 
-	// allocate the "virtual" subsystems; wait to construct these until
-	// robotInit()
+	// allocate the "virtual" subsystems; wait to construct these until robotInit()
 	public static Autonomous autonomous;
 	public static OI oi;
 
@@ -122,6 +121,14 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	}
 
 	/**
+	 * This function is called during every period.  
+	 * We have defined an empty robotPeriodic to avoid a warning message at startup.
+	 */
+	public void robotPeriodic() {
+	}
+
+
+	/**
 	 * This function is called when the disabled button is hit. You can use it
 	 * to reset subsystems before shutting down.
 	 */
@@ -149,6 +156,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double dpTime2 = 0.0;
 	private double dpTime3 = 0.0;
 	private double dpTime4 = 0.0;
+	private double dpTime5 = 0.0;
 	private int dpWaitLoops = 0;
 	private int dpLoops = 0;
 	
@@ -156,18 +164,24 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double dpElapsed2 = 0.0;
 	private double dpElapsed3 = 0.0;
 	private double dpElapsed4 = 0.0;
-	
+	private double dpElapsed5 = 0.0;
+	private double dpElapsedTotal = 0.0;
+
 	public void disabledPeriodic() {
 		
+		// update Smart Dashboard, including fields for setting up autonomous operation
+		// TODO:  KBS - commented out the below and instead immersed various SmartDashboard updates directly below 
+		//    while debugging latency of various calls.  Primary finding is that CTRE calls have latency of about 0.5ms each.
+		// updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
+
 		dpWaitLoops++;
-		if (dpWaitLoops > (10.0 * 1.0/LOOP_TIME)) {
+		if (dpWaitLoops > (10.0 * 1.0/LOOP_TIME)) {  // should wait for 10 seconds after first disabled
 			dpLoops++;
 			dpTime0 = Timer.getFPGATimestamp();
 		
 			// update sensors that need periodic update
 			cubeDetector.periodic();
 			Scheduler.getInstance().run();
-
 
 			cubeDetector.updateSmartDashboard();	
 			
@@ -178,9 +192,6 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 
 			dpTime2 = Timer.getFPGATimestamp();
 			dpElapsed2 = dpElapsed2 + dpTime2 - dpTime1;
-			
-			// update Smart Dashboard, including fields for setting up autonomous operation
-			// updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
 
 			elevator.updateSmartDashboard();
 			elevatorArms.updateSmartDashboard();
@@ -205,16 +216,21 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 
 			Robot.drive.updateHistory();
 			
+			dpTime5 = Timer.getFPGATimestamp();
+			dpElapsed5 = dpElapsed5 + dpTime5 - dpTime4;
+			dpElapsedTotal = dpElapsedTotal + dpTime5 - dpTime0;
+
 			if ((dpLoops % 40) == 0) {
 				System.out.println(
-				"dp1: " + dpElapsed1/dpLoops + 
-				"   dp2: " + dpElapsed2/dpLoops +
-				"   dp3: " + dpElapsed3/dpLoops +
-				"   dp4: " + dpElapsed4/dpLoops
+				"dpAvg1: " + Utils.fourDecimalPlaces(dpElapsed1/dpLoops) + 
+				"   dpAvg2: " + Utils.fourDecimalPlaces(dpElapsed2/dpLoops) +
+				"   dpAvg3: " + Utils.fourDecimalPlaces(dpElapsed3/dpLoops) +
+				"   dpAvg4: " + Utils.fourDecimalPlaces(dpElapsed4/dpLoops) +
+				"   dpAvg5: " + Utils.fourDecimalPlaces(dpElapsed5/dpLoops) +
+				"   dpAvgTot: " + Utils.fourDecimalPlaces(dpElapsedTotal/dpLoops)
 				);
 			}
 		}
-		
 	}
 
 	public void autonomousInit() {
@@ -400,9 +416,9 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double nextSmartDashboardUpdate = Timer.getFPGATimestamp();
 
 	public void updateSmartDashboard(boolean updateAutoFields) {
-		// double currentTime = Timer.getFPGATimestamp();
+		double currentTime = Timer.getFPGATimestamp();
 
-			// if (currentTime > nextSmartDashboardUpdate) {
+			if (currentTime > nextSmartDashboardUpdate) {
 
 				// System.out.println("updateSmartDashboard: current: " + currentTime + " next: " + nextSmartDashboardUpdate);
 
@@ -423,9 +439,12 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 				if (updateAutoFields) {
 					Autonomous.updateSmartDashboard();
 				}
-
+				// TODO:  KBS - should really fix this a bit so that if we are "falling behind" we don't build up a backlog.
+				//        On the other hand, can't just set nextSmartDashboardUpdate = currentTime + SMART_DASHBOARD_UPDATE_INTERVAL
+				//        or the intervals will gradually drift.  Need a more intelligent solution to avoid both undesireable cases.
 				// nextSmartDashboardUpdate += SMART_DASHBOARD_UPDATE_INTERVAL;
-			// }
+				nextSmartDashboardUpdate = currentTime + SMART_DASHBOARD_UPDATE_INTERVAL;
+			}
 	}
 
 	void updateSmartDashboard() {
@@ -433,19 +452,11 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 		double freeMemoryInKB = runtime.freeMemory() / 1024;
 		SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
 
+		// TOD: KBS temporarily commented out while debugging "slow updateSmartDashboard() w/CTRE calls issue"
 		// SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
-		//			SmartDashboard.putBoolean("FRC Comm Checked In", oi.IsCheckedInWithFieldManagement());
 
 		SmartDashboard.putString("Game Data",  gameData.toString());
 
 	}
 
-
-	// public static boolean getBrownoutLowerThreshold() {
-	// 	return (pdp.getVoltage() < BROWNOUT_VOLTAGE_LOWER_THRESHOLD);
-	// }
-
-	// public static boolean getBrownoutUpperThreshold() {
-	// 	return (pdp.getVoltage() > BROWNOUT_VOLTAGE_UPPER_THRESHOLD);
-	// }
 }

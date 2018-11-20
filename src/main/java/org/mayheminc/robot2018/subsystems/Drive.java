@@ -275,6 +275,7 @@ public class Drive extends Subsystem {
 	public double getHeading() {
 		return Navx.getYaw() + m_headingOffset;
 	}
+
 	public double getTilt(){
 		return Navx.getPitch();
 	}
@@ -549,62 +550,42 @@ public class Drive extends Subsystem {
 
 		// ***** KBS:  Uncommenting below, as it takes a LONG time to get PDP values
 		// updateSdbPdp();
-
-		SmartDashboard.putNumber("Current Heading",  getHeading());
-
-//		SmartDashboard.putNumber("yaw",  Navx.getYaw());
-//		SmartDashboard.putNumber("pitch",  Navx.getPitch());
-//		SmartDashboard.putNumber("angle",  Navx.getAngle());
 		
-		SmartDashboard.putNumber("Left Front Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Right Front Encoder Counts", rightFrontTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Right Rear Encoder Counts", rightRearTalon.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("Left Front Encoder Counts", leftFrontTalon.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("Right Front Encoder Counts", rightFrontTalon.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("Left Rear Encoder Counts", leftRearTalon.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("Right Rear Encoder Counts", rightRearTalon.getSelectedSensorPosition(0));
 
 		// Note:  getSpeed() returns ticks per 0.1 seconds
-		SmartDashboard.putNumber("Left Encoder Speed", leftFrontTalon.getSelectedSensorVelocity(0));
-		SmartDashboard.putNumber("Right Encoder Speed", -rightFrontTalon.getSelectedSensorVelocity(0));
+		// SmartDashboard.putNumber("Left Encoder Speed", leftFrontTalon.getSelectedSensorVelocity(0));
+		// SmartDashboard.putNumber("Right Encoder Speed", -rightFrontTalon.getSelectedSensorVelocity(0));
 
 		// To convert ticks per 0.1 seconds into feet per second
 		// a - multiply be 10 (tenths of second per second)
 		// b - divide by 12 (1 foot per 12 inches)
 		// c - multiply by distance (in inches) per pulse
-		SmartDashboard.putNumber("Left Speed (fps)", leftFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
-		SmartDashboard.putNumber("Right Speed (fps)", -rightFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
+		// SmartDashboard.putNumber("Left Speed (fps)", leftFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
+		// SmartDashboard.putNumber("Right Speed (fps)", -rightFrontTalon.getSelectedSensorVelocity(0) * 10 / 12 * DISTANCE_PER_PULSE);
 
-//		SmartDashboard.putNumber("Left Talon Setpoint", leftFrontTalon.getSetpoint());
-//		SmartDashboard.putNumber("Right Talon Setpoint", -rightFrontTalon.getSetpoint());
-
-		SmartDashboard.putNumber("Left Talon Error", leftFrontTalon.getError());
-		SmartDashboard.putNumber("Right Talon Error", -rightFrontTalon.getError());
-
-		SmartDashboard.putNumber("Left Talon Output Voltage", -leftFrontTalon.getOutputVoltage());
-		SmartDashboard.putNumber("Right Talon Output Voltage", rightFrontTalon.getOutputVoltage());
+		// SmartDashboard.putNumber("Left Talon Output Voltage", -leftFrontTalon.getOutputVoltage());
+		// SmartDashboard.putNumber("Right Talon Output Voltage", rightFrontTalon.getOutputVoltage());
 
 		SmartDashboard.putBoolean("Closed Loop Mode", m_closedLoopMode);
-//		SmartDashboard.putBoolean("Speed Racer Drive Mode", m_speedRacerDriveMode);
-//		SmartDashboard.putBoolean("Auto Shift Mode", m_autoShift);
+		SmartDashboard.putBoolean("Speed Racer Drive Mode", m_speedRacerDriveMode);
 
 		SmartDashboard.putBoolean("Heading Correction Mode", m_useHeadingCorrection);
 		SmartDashboard.putNumber("Heading Desired", m_desiredHeading);
 		SmartDashboard.putNumber("Heading Error", m_HeadingError.m_Error);
 		SmartDashboard.putNumber("Heading Correction", -m_HeadingCorrection.HeadingCorrection);
-		
-		SmartDashboard.putBoolean("On Target", isAlignedToTarget(AIM_REQUIRED_LOOPS_ON_TARGET_TELEOP));
 
 		SmartDashboard.putNumber("Joystick Drive Throttle", Robot.oi.driveThrottle());
 		SmartDashboard.putNumber("Joystick SteeringX", Robot.oi.steeringX());
 
-//		SmartDashboard.putBoolean("Low Gear", !m_highGear);
-
-		// determine currentAverageSpeed and display it
-		double currentSpeed = getLeftSpeed() > getRightSpeed() ? getLeftSpeed() : getRightSpeed();
-		//double currentAverageSpeed = (getLeftSpeed() + getRightSpeed()) / 2;
+		// determine currentSpeed and display it
+		// double currentSpeed = getLeftSpeed() > getRightSpeed() ? getLeftSpeed() : getRightSpeed();
 
 		// display current speed to driver
-		SmartDashboard.putNumber("Current Speed",  currentSpeed);
-
-//		SmartDashboard.putNumber("Tilt", getTilt());
+		// SmartDashboard.putNumber("Current Speed",  currentSpeed);
 	}
 
 	//********************************AUTO TARGET*********************************
@@ -647,22 +628,6 @@ public class Drive extends Subsystem {
 	public static final int AIM_REQUIRED_LOOPS_ON_TARGET_AUTONOMOUS = 18;   // was 6 on first day of UNH; 9 on second day
 	
 	public void resetLoopsOnTarget(){
-	}
-	public boolean isAlignedToTarget(int requiredLoopsOnTarget) {
-//		int diff = Math.abs(Robot.targeting.getCubeCenterOffset());
-//		if (diff <= AIM_PIXEL_TOLERANCE ) {
-//			m_loopsOnTarget++;
-//		} else {
-//			if (m_loopsOnTarget >=1) {
-//				DriverStation.reportError("Aim lost after " + m_loopsOnTarget + " loops. \n", false);
-//			}
-//			m_loopsOnTarget = 0;
-//		}
-//		
-//		// require multiple loops of being on target
-//		return (m_loopsOnTarget >= requiredLoopsOnTarget);
-		
-		return false;
 	}
 	
 	final double CAMERA_LAG = 0.2;
