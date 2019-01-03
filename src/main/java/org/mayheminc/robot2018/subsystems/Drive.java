@@ -129,10 +129,6 @@ public class Drive extends Subsystem {
 		double wheelF = 1.0;
 
 		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		
-		// TODO:  KBS - determine whether or not below code should be removed or put back in
-		// Note:  comment out below line so that encoder units are forced to be in counts (x4)
-        //  talon.configEncoderCodesPerRev(360);
 
 		talon.reverseSensor(false);
 		talon.configNominalOutputVoltage(+0.0f, -0.0f);

@@ -175,7 +175,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { // FRCWaitsForItera
 	public void disabledPeriodic() {
 
 		// update Smart Dashboard, including fields for setting up autonomous operation
-		// TODO: KBS - commented out the below and instead immersed various
+		// TODO: Commented out the below and instead immersed various
 		// SmartDashboard updates directly below
 		// while debugging latency of various calls. Primary finding is that CTRE calls
 		// have latency of about 0.5ms each.
@@ -448,7 +448,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { // FRCWaitsForItera
 			if (updateAutoFields) {
 				Autonomous.updateSmartDashboard();
 			}
-			// TODO: KBS - should really fix this a bit so that if we are "falling behind"
+			// TODO: Should really fix this a bit so that if we are "falling behind"
 			// we don't build up a backlog.
 			// On the other hand, can't just set nextSmartDashboardUpdate = currentTime +
 			// SMART_DASHBOARD_UPDATE_INTERVAL
@@ -464,7 +464,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { // FRCWaitsForItera
 		double freeMemoryInKB = runtime.freeMemory() / 1024;
 		SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
 
-		// TODO: KBS temporarily commented out while debugging "slow
+		// Temporarily commented out while debugging "slow
 		// updateSmartDashboard() w/CTRE calls issue"
 		// SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
 
