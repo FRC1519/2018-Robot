@@ -233,8 +233,7 @@ public class OI {
      	OPERATOR_PAD_BUTTON_NINE.whenPressed(new SafePosition());
      	OPERATOR_PAD_BUTTON_TEN.whenPressed(new HandoffCubeToElevator(Elevator.SWITCH_HEIGHT));
 		 
-		 // TODO:  KBS - figure out what to do with this "blackbox" code so that it is
-		 // neither just commented out or generating warnings.
+		 //Uncomment any of the "blackbox" commands in order to debug the OI buttons
 //     	Robot.blackbox.addButton("DRIVER_PAD_BLUE_BUTTON", DRIVER_PAD_BLUE_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_GREEN_BUTTON", DRIVER_PAD_GREEN_BUTTON);
 //     	Robot.blackbox.addButton("DRIVER_PAD_RED_BUTTON", DRIVER_PAD_RED_BUTTON);
@@ -253,8 +252,7 @@ public class OI {
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_NINE", OPERATOR_PAD_BUTTON_NINE);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TEN", OPERATOR_PAD_BUTTON_TEN);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_ELEVEN", OPERATOR_PAD_BUTTON_ELEVEN);
-		 Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWELVE", OPERATOR_PAD_BUTTON_TWELVE);
-		 
+// 		Robot.blackbox.addButton("OPERATOR_PAD_BUTTON_TWELVE", OPERATOR_PAD_BUTTON_TWELVE); 
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_LEFT", OPERATOR_PAD_D_PAD_LEFT);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_RIGHT", OPERATOR_PAD_D_PAD_RIGHT);
 //     	Robot.blackbox.addButton("OPERATOR_PAD_D_PAD_UP", OPERATOR_PAD_D_PAD_UP);
