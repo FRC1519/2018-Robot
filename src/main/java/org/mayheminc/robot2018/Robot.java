@@ -24,7 +24,7 @@ import org.mayheminc.util.Utils;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterativeRobot
+public class Robot extends TimedRobot /* IterativeRobot */ { // FRCWaitsForIterativeRobot
 	static NetworkTable table;
 
 	public static final boolean DEBUG = true;
@@ -58,7 +58,8 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	// autonomous start time monitoring
 	private static long autonomousStartTime;
 	private static boolean printAutoElapsedTime = false;
-	private static final double LOOP_TIME = 0.020;    // The duration of our periodic timed loop, in seconds.  0.020 gives 50 loops/sec
+	private static final double LOOP_TIME = 0.020; // The duration of our periodic timed loop, in seconds. 0.020 gives
+													// 50 loops/sec
 
 	public static final double BROWNOUT_VOLTAGE_LOWER_THRESHOLD = 10.0;
 	public static final double BROWNOUT_VOLTAGE_UPPER_THRESHOLD = 11.0;
@@ -69,12 +70,12 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	public static final boolean DONT_UPDATE_AUTO_SETUP_FIELDS = false;
 
 	public Robot() {
-		super(LOOP_TIME);    // construct a TimedRobot with a timeout of "LOOP_TIME"
+		super(LOOP_TIME); // construct a TimedRobot with a timeout of "LOOP_TIME"
 	}
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	public void robotInit() {
 
@@ -87,20 +88,24 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 		DriverStation.reportError("Initializing... ", false);
 		System.out.println("Done with DriverStation.reportError for 'Initializing...'");
 
-		// // Turn off LiveWindow reporting to avoid appearance of "ERROR 1 CTRE CAN Receive Timeout" messages on concole.
+		// // Turn off LiveWindow reporting to avoid appearance of "ERROR 1 CTRE CAN
+		// Receive Timeout" messages on concole.
 		// // This fix is documented in section 4.7 of the CTRE PDP User's Guide:
 		// // http://www.ctr-electronics.com/downloads/pdf/PDP%20User's%20Guide.pdf
-		
-		// // The CAN Receive Timeout occurs when the requested data has not been received within the timeout.
+
+		// // The CAN Receive Timeout occurs when the requested data has not been
+		// received within the timeout.
 		// // This is usually caused when the PDP is not connected to the CAN bus.
-		// // However, with the 2018 version of WPILib, having a PDP object in robot code can result in a
+		// // However, with the 2018 version of WPILib, having a PDP object in robot
+		// code can result in a
 		// // CTRE CAN Timeout error being reported in the console/DriverStation.
-		// // This seems to be a result of automatic LiveWindow behavior with the PDP and can be fixed by
-		// // disabling LiveWindow telemetry.  LiveWindow can either be disabled for the PDP object…
+		// // This seems to be a result of automatic LiveWindow behavior with the PDP
+		// and can be fixed by
+		// // disabling LiveWindow telemetry. LiveWindow can either be disabled for the
+		// PDP object…
 		// LiveWindow.disableTelemetry(pdp);
 		// // … or by disabling all LiveWindow telemetry:
 		LiveWindow.disableAllTelemetry();
-		
 
 		DriverStation.reportError("About to construct Autonomous Subsystem... \n", false);
 		autonomous = new Autonomous();
@@ -121,36 +126,36 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	}
 
 	/**
-	 * This function is called during every period.  
-	 * We have defined an empty robotPeriodic to avoid a warning message at startup.
+	 * This function is called during every period. We have defined an empty
+	 * robotPeriodic to avoid a warning message at startup.
 	 */
 	public void robotPeriodic() {
 	}
 
-
 	/**
-	 * This function is called when the disabled button is hit. You can use it
-	 * to reset subsystems before shutting down.
+	 * This function is called when the disabled button is hit. You can use it to
+	 * reset subsystems before shutting down.
 	 */
 	public void disabledInit() {
-		
-		// for safety reasons, change the elevator and cturret setpoints to the current position
+
+		// for safety reasons, change the elevator and cturret setpoints to the current
+		// position
 		turret.setDesiredPosition(turret.getCurrentPosition());
 		elevator.holdCurrentPosition();
-		
+
 		if (printAutoElapsedTime) {
 			double autonomousTimeElapsed = (double) (System.currentTimeMillis() - autonomousStartTime) / 1000.0;
 			DriverStation.reportError("Autonomous Time Elapsed: " + autonomousTimeElapsed + "\n", false);
 			printAutoElapsedTime = false;
-		}	   
-		
+		}
+
 		// // print the blackbox.
 		// blackbox.print();
-		
+
 		// // reset the blackbox.
 		// blackbox.reset();
 	}
-	
+
 	private double dpTime0 = 0.0;
 	private double dpTime1 = 0.0;
 	private double dpTime2 = 0.0;
@@ -159,7 +164,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double dpTime5 = 0.0;
 	private int dpWaitLoops = 0;
 	private int dpLoops = 0;
-	
+
 	private double dpElapsed1 = 0.0;
 	private double dpElapsed2 = 0.0;
 	private double dpElapsed3 = 0.0;
@@ -168,26 +173,28 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	private double dpElapsedTotal = 0.0;
 
 	public void disabledPeriodic() {
-		
+
 		// update Smart Dashboard, including fields for setting up autonomous operation
-		// TODO:  KBS - commented out the below and instead immersed various SmartDashboard updates directly below 
-		//    while debugging latency of various calls.  Primary finding is that CTRE calls have latency of about 0.5ms each.
+		// TODO: KBS - commented out the below and instead immersed various
+		// SmartDashboard updates directly below
+		// while debugging latency of various calls. Primary finding is that CTRE calls
+		// have latency of about 0.5ms each.
 		// updateSmartDashboard(UPDATE_AUTO_SETUP_FIELDS);
 
 		dpWaitLoops++;
-		if (dpWaitLoops > (10.0 * 1.0/LOOP_TIME)) {  // should wait for 10 seconds after first disabled
+		if (dpWaitLoops > (10.0 * 1.0 / LOOP_TIME)) { // should wait for 10 seconds after first disabled
 			dpLoops++;
 			dpTime0 = Timer.getFPGATimestamp();
-		
+
 			// update sensors that need periodic update
 			cubeDetector.periodic();
 			Scheduler.getInstance().run();
 
-			cubeDetector.updateSmartDashboard();	
-			
+			cubeDetector.updateSmartDashboard();
+
 			dpTime1 = Timer.getFPGATimestamp();
 			dpElapsed1 = dpElapsed1 + dpTime1 - dpTime0;
-			
+
 			drive.updateSmartDashboard();
 
 			dpTime2 = Timer.getFPGATimestamp();
@@ -200,14 +207,14 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 
 			dpTime3 = Timer.getFPGATimestamp();
 			dpElapsed3 = dpElapsed3 + dpTime3 - dpTime2;
-			
+
 			intake.updateSmartDashboard();
 			turret.updateSmartDashboard();
 
 			// PrintPeriodicPeriod();
 			dpTime4 = Timer.getFPGATimestamp();
 			dpElapsed4 = dpElapsed4 + dpTime4 - dpTime3;
-		
+
 			if (OI.pidTuner != null) {
 				OI.pidTuner.updateSmartDashboard();
 			}
@@ -215,49 +222,50 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 			Autonomous.updateSmartDashboard();
 
 			Robot.drive.updateHistory();
-			
+
 			dpTime5 = Timer.getFPGATimestamp();
 			dpElapsed5 = dpElapsed5 + dpTime5 - dpTime4;
 			dpElapsedTotal = dpElapsedTotal + dpTime5 - dpTime0;
 
 			if ((dpLoops % 40) == 0) {
-				System.out.println(
-				"dpAvg1: " + Utils.fourDecimalPlaces(dpElapsed1/dpLoops) + 
-				"   dpAvg2: " + Utils.fourDecimalPlaces(dpElapsed2/dpLoops) +
-				"   dpAvg3: " + Utils.fourDecimalPlaces(dpElapsed3/dpLoops) +
-				"   dpAvg4: " + Utils.fourDecimalPlaces(dpElapsed4/dpLoops) +
-				"   dpAvg5: " + Utils.fourDecimalPlaces(dpElapsed5/dpLoops) +
-				"   dpAvgTot: " + Utils.fourDecimalPlaces(dpElapsedTotal/dpLoops)
-				);
+				System.out.println("dpAvg1: " + Utils.fourDecimalPlaces(dpElapsed1 / dpLoops) + "   dpAvg2: "
+						+ Utils.fourDecimalPlaces(dpElapsed2 / dpLoops) + "   dpAvg3: "
+						+ Utils.fourDecimalPlaces(dpElapsed3 / dpLoops) + "   dpAvg4: "
+						+ Utils.fourDecimalPlaces(dpElapsed4 / dpLoops) + "   dpAvg5: "
+						+ Utils.fourDecimalPlaces(dpElapsed5 / dpLoops) + "   dpAvgTot: "
+						+ Utils.fourDecimalPlaces(dpElapsedTotal / dpLoops));
 			}
 		}
 	}
 
 	public void autonomousInit() {
-		
-		//force low gear
+
+		// force low gear
 		shifter.setShifter(Shifter.LOW_GEAR);
 
 		// turn off the compressor
-		// KBS:  Not sure we really want to do this -- we did this in 2016 to ensure the compressor
-		//       didn't affect the operation of the autonomous programs.  Not sure we really want this.
-		//       At the least, we can take advantage of the last few seconds in autonomous by turning
-		//       on the compressor at the end of our autonomous programs instead of waiting for the
-		//       teleopInit to be called at the start of teleop.
+		// KBS: Not sure we really want to do this -- we did this in 2016 to ensure the
+		// compressor
+		// didn't affect the operation of the autonomous programs. Not sure we really
+		// want this.
+		// At the least, we can take advantage of the last few seconds in autonomous by
+		// turning
+		// on the compressor at the end of our autonomous programs instead of waiting
+		// for the
+		// teleopInit to be called at the start of teleop.
 		compressor.stop();
 
-		
 		// "Zero" the robot subsystems which have position encoders in this section.
 		// Overall strategy for zeroing subsystems is as follows:
 		// Every time autonomous starts:
-		//    "Zero" the heading gyro using the drive subsystem
-		//    "Zero" the elevator, presuming it is down due to gravity
-		//    "Zero" the turret, presuming it is pointing straight forward
-		//    "Zero" the arm/pivot, which will initiate finding zero by using hard stop
+		// "Zero" the heading gyro using the drive subsystem
+		// "Zero" the elevator, presuming it is down due to gravity
+		// "Zero" the turret, presuming it is pointing straight forward
+		// "Zero" the arm/pivot, which will initiate finding zero by using hard stop
 
 		// zero the drive base gyro at current position
-		drive.zeroHeadingGyro(0.0);		
-		
+		drive.zeroHeadingGyro(0.0);
+
 		// zero the elevator at current position
 		// this presumes the elevator is down due to gravity
 		elevator.Zero();
@@ -266,16 +274,13 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 		turret.zeroEncoder();
 
 		// set the current arm/pivot position to the upright position
-		pivot.commenceZeroingPivot();   // Note:  this will initiate a sequence to move the arm/pivot to vertical
+		pivot.commenceZeroingPivot(); // Note: this will initiate a sequence to move the arm/pivot to vertical
 
-		
 		// where ever the pivot is, lock it there.
-		// KBS:  think we don't want to do this before zeroing the pivot, which will
-        //       require some time in the future.  Commenting out til RJD and KBS discuss
+		// KBS: think we don't want to do this before zeroing the pivot, which will
+		// require some time in the future. Commenting out til RJD and KBS discuss
 		// pivot.LockCurrentPosition();
 
-		
-		
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
@@ -297,9 +302,10 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	 */
 	public void autonomousPeriodic() {
 		// update sensors that need periodic update
-		// KBS:  Why isn't this list the same as the list in teleop?  Should a function be called to
-		//       share this code?
-//		targeting.periodic();
+		// KBS: Why isn't this list the same as the list in teleop? Should a function be
+		// called to
+		// share this code?
+		// targeting.periodic();
 		cubeDetector.periodic();
 
 		Scheduler.getInstance().run();
@@ -309,32 +315,33 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	}
 
 	public void teleopInit() {
-	
+
 		// before doing anything else in teleop, kill any existing commands
 		Scheduler.getInstance().removeAll();
-		
+
 		// Safety measures:
-				// KBS: When commencing teleop, we want to make sure "position-controlled" subsystems don't
-				//      try to move immediately upon enabling the robot.  
+		// KBS: When commencing teleop, we want to make sure "position-controlled"
+		// subsystems don't
+		// try to move immediately upon enabling the robot.
 		// Where ever the pivot, turret, and elevator are, hold them there.
 		pivot.holdCurrentPosition();
 		turret.holdCurrentPosition();
 		elevator.holdCurrentPosition();
-		
+
 		// turn on the compressor
 		compressor.start();
 
-		// NOTE:  BELOW SHOULD BE OBE WITH above Scheduler.getInstance().removeAll();
-//		// This makes sure that the autonomous stops running when
-//		// teleop starts running. If you want the autonomous to
-//		// continue until interrupted by another command, remove
-//		// this line or comment it out.
-//		if (autonomousCommand != null) {
-//			autonomousCommand.cancel();
-//		}
+		// NOTE: BELOW SHOULD BE OBE WITH above Scheduler.getInstance().removeAll();
+		// // This makes sure that the autonomous stops running when
+		// // teleop starts running. If you want the autonomous to
+		// // continue until interrupted by another command, remove
+		// // this line or comment it out.
+		// if (autonomousCommand != null) {
+		// autonomousCommand.cancel();
+		// }
 
 		DriverStation.reportError("Entering Teleop.\n", false);
-		
+
 		shifter.setGear(Shifter.LOW_GEAR);
 	}
 
@@ -346,26 +353,27 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	static double periodicTimer = 0;
 	static int periodicLoops = 0;
 	static String periodicOutputString = "periodic: ";
-	void PrintPeriodicPeriod()
-	{
+
+	void PrintPeriodicPeriod() {
 		double timer = Timer.getFPGATimestamp();
-		double elapsed = timer-periodicTimer;
+		double elapsed = timer - periodicTimer;
 
 		// add a timing figure to the printout, but only if we're too slow
-		if ( elapsed <= (LOOP_TIME + 0.002) ) {
+		if (elapsed <= (LOOP_TIME + 0.002)) {
 			periodicOutputString = periodicOutputString + "* ";
 		} else {
-			periodicOutputString = periodicOutputString +  Utils.threeDecimalPlaces(elapsed) + " ";
+			periodicOutputString = periodicOutputString + Utils.threeDecimalPlaces(elapsed) + " ";
 		}
 		// DriverStation.reportWarning("periodic: " + (timer-periodicTimer), false);
 		if ((periodicLoops % 50) == 1) {
-			// System.out.println("periodic: " + Utils.threeDecimalPlaces(timer-periodicTimer));
+			// System.out.println("periodic: " +
+			// Utils.threeDecimalPlaces(timer-periodicTimer));
 			periodicOutputString = Utils.threeDecimalPlaces(timer) + " " + periodicOutputString;
 			System.out.println(periodicOutputString);
 			periodicOutputString = "periodic: ";
 		}
 		periodicLoops++;
-		periodicTimer = timer;		
+		periodicTimer = timer;
 	}
 
 	public void teleopPeriodic() {
@@ -382,7 +390,7 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 		elevatorArms.periodic();
 		intake.periodic();
 		pivot.periodic();
-//		targeting.periodic();
+		// targeting.periodic();
 		turret.periodic();
 
 		Scheduler.getInstance().run();
@@ -412,39 +420,43 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 	public void testPeriodic() {
 	}
 
-	private double SMART_DASHBOARD_UPDATE_INTERVAL = 0.250;   // was 0.250;
+	private double SMART_DASHBOARD_UPDATE_INTERVAL = 0.250; // was 0.250;
 	private double nextSmartDashboardUpdate = Timer.getFPGATimestamp();
 
 	public void updateSmartDashboard(boolean updateAutoFields) {
 		double currentTime = Timer.getFPGATimestamp();
 
-			if (currentTime > nextSmartDashboardUpdate) {
+		if (currentTime > nextSmartDashboardUpdate) {
 
-				// System.out.println("updateSmartDashboard: current: " + currentTime + " next: " + nextSmartDashboardUpdate);
+			// System.out.println("updateSmartDashboard: current: " + currentTime + " next:
+			// " + nextSmartDashboardUpdate);
 
-				this.updateSmartDashboard();
+			this.updateSmartDashboard();
 
-				cubeDetector.updateSmartDashboard();
-				drive.updateSmartDashboard();
-				elevator.updateSmartDashboard();
-				elevatorArms.updateSmartDashboard();
-				intake.updateSmartDashboard();
-				pivot.UpdateSmartDashboard();
-				turret.updateSmartDashboard();
+			cubeDetector.updateSmartDashboard();
+			drive.updateSmartDashboard();
+			elevator.updateSmartDashboard();
+			elevatorArms.updateSmartDashboard();
+			intake.updateSmartDashboard();
+			pivot.UpdateSmartDashboard();
+			turret.updateSmartDashboard();
 
-				if (OI.pidTuner != null) {
-					OI.pidTuner.updateSmartDashboard();
-				}
-
-				if (updateAutoFields) {
-					Autonomous.updateSmartDashboard();
-				}
-				// TODO:  KBS - should really fix this a bit so that if we are "falling behind" we don't build up a backlog.
-				//        On the other hand, can't just set nextSmartDashboardUpdate = currentTime + SMART_DASHBOARD_UPDATE_INTERVAL
-				//        or the intervals will gradually drift.  Need a more intelligent solution to avoid both undesireable cases.
-				// nextSmartDashboardUpdate += SMART_DASHBOARD_UPDATE_INTERVAL;
-				nextSmartDashboardUpdate = currentTime + SMART_DASHBOARD_UPDATE_INTERVAL;
+			if (OI.pidTuner != null) {
+				OI.pidTuner.updateSmartDashboard();
 			}
+
+			if (updateAutoFields) {
+				Autonomous.updateSmartDashboard();
+			}
+			// TODO: KBS - should really fix this a bit so that if we are "falling behind"
+			// we don't build up a backlog.
+			// On the other hand, can't just set nextSmartDashboardUpdate = currentTime +
+			// SMART_DASHBOARD_UPDATE_INTERVAL
+			// or the intervals will gradually drift. Need a more intelligent solution to
+			// avoid both undesireable cases.
+			// nextSmartDashboardUpdate += SMART_DASHBOARD_UPDATE_INTERVAL;
+			nextSmartDashboardUpdate = currentTime + SMART_DASHBOARD_UPDATE_INTERVAL;
+		}
 	}
 
 	void updateSmartDashboard() {
@@ -452,10 +464,11 @@ public class Robot extends TimedRobot /* IterativeRobot */ { //FRCWaitsForIterat
 		double freeMemoryInKB = runtime.freeMemory() / 1024;
 		SmartDashboard.putNumber("Free Memory", freeMemoryInKB);
 
-		// TOD: KBS temporarily commented out while debugging "slow updateSmartDashboard() w/CTRE calls issue"
+		// TODO: KBS temporarily commented out while debugging "slow
+		// updateSmartDashboard() w/CTRE calls issue"
 		// SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
 
-		SmartDashboard.putString("Game Data",  gameData.toString());
+		SmartDashboard.putString("Game Data", gameData.toString());
 
 	}
 
