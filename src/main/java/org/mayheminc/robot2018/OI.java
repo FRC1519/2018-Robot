@@ -303,7 +303,7 @@ public class OI {
 		return (throttleVal);
 	}
 
-	// TODO: KBS: Note that there is a piece of code within pivotArmPower which is
+	// TODO: Note that there is a piece of code within pivotArmPower which is
 	// shared with other joystick features.
 	// I'm inclined to put that code in a shared function for
 	// "linearizeStickWithDeadZone(double percentage)"
